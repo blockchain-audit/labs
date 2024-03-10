@@ -1,0 +1,250 @@
+# https://play.d2lang.com/?script=qlDQtVOo5AIEAAD__w%3D%3D&
+# https://terrastruct-site-assets.s3.us-west-1.amazonaws.com/documents/d2_cheat_sheet.pdf
+grid-rows: 6
+
+title: EVM {
+  shape: text
+  near: top-center
+  style: {
+    font-size: 55
+    italic: true
+  }
+}
+
+stack manipulation {
+  grid-rows: 2
+  doc: ||asm
+    POP     (0x50):         Remove the top item from the stack.
+    PUSH[x] (0x60 to 0x7f): Pushes a 1 to 32-byte immediate value onto the stack.    [1-32]
+    DUP [x] (0x80 to 0x8f): Duplicate the nth from the top of the stack and push it  [1-16]
+    SWAP[x] (0x90 to 0x9f): Swap the top of the stack with the nth item from the top [1-16]
+  ||
+
+  runtime: ||asm
+    PUSH0
+    PUSH1 0x20
+    POP
+    POP
+    PUSH2 0x2020
+    POP
+    PUSH2 0x2020
+    DUP1
+    PUSH1 0x11
+    DUP1
+    SWAP1
+    PUSH1 0x20
+    PUSH0
+    RETURN
+  ||
+
+  summary: ||md
+    - 32-byte words: The basic data unit.
+    - LIFO structure: Last-in, first-out access.
+    - Instruction-driven operations.
+    - Most instructions run on top 1-2 values.
+    - Finite size (1024 slots of 32 bytes [256 bits]).
+    - Instructions can reach until the 16th slot
+    - No explicit value addressing.
+    - Dynamic size adjustment during execution.
+    - Handles empty stack gracefully for most instructions.
+    - Errors possible with certain instructions on empty stack.
+    - Dual role: data storage and control flow.
+    - Strict type-checking for values.
+    - All instructions interacts with the stack
+    - Holds function arguments and return values.
+  ||
+  link: https://medium.com/coinmonks/solidity-stack-how-does-it-work-5a216d87db0d
+}
+
+
+
+memory {
+  grid-rows: 3
+  doc: ||asm
+    # direct manipulation:
+    MLOAD          (0x51): Load a 32-byte word from memory.
+    MSTORE         (0x52): Store a 32-byte word to memory.
+    MSTORE8        (0x53): Store a single byte to memory.
+
+    # info
+    CODECOPY       (0x39): Copies code to a specified memory location.
+    RETURNDATACOPY (0x3e): Copies return data to a specified memory location.
+    EXTCODECOPY    (0x3c): Copies the code of an external account.
+    MSIZE          (0x59): Get the size of the active memory.
+  ||
+
+  store-load: ||asm
+    PUSH2 0x1000  // VALUE TO STORE
+    PUSH1 0x00    // POINTER [0]
+    MSTORE
+
+    PUSH1 0x05    // VALUE TO STORE
+    PUSH1 0x20    // POINTER [32]
+    MSTORE
+
+    PUSH1 0x1F     // VALUE TO STORE
+    PUSH1 0x40     // POINTER [64]
+    MSTORE
+
+    PUSH1 0x20
+    MLOAD
+  ||
+
+  runtime: ||binary
+
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 10 00
+
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 05
+
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 0f
+  ||
+
+  summary: ||md
+    - Non-Persistent: EVM memory is volatile, resetting after each transaction.
+    - Initial Emptiness: Starts empty, requiring explicit data storage initialization.
+    - Gas Costs: Reading, writing, and expanding memory operations consume gas.
+    - Limited Size: Memory size dynamically adjusts but is constrained by gas limits.
+    - Word-Oriented: Operates in 32-byte word increments.
+    - Stack Usage: Intermediate computations often use memory.
+    - Sequential Structure: Addresses follow consecutive indices.
+    - Zero-Indexed: First byte is at index 0.
+    - Immutable Storage: Once written, data remains unchanged in memory.
+    - Memory Expansion: Dynamically increases as needed, in 32-byte chunks.
+    - Deallocated on End: Memory is deallocated when the contract execution concludes.
+    - No Off-Chain Storage: Information isn't saved outside the execution context.
+    - Data Visibility: Contents are visible within the contract but not externally.
+    - Memory Copying: Copying data between memory locations is gas-intensive.
+  ||
+}
+
+calls: {
+  grid-rows: 4
+  doc: ||asm
+    CALLVALUE    (0x34): Retrieves the value (ether) sent along with the transaction.
+    CALLDATALOAD (0x35): Loads a 32-byte word from the input data.
+    CALLDATASIZE (0x36): Retrieves the size of the input data (message data).
+    CALLDATACOPY (0x37): Copies input data to a specified memory location.
+  ||
+
+  mnemonic: ||asm
+    PUSH1 0x00    // offset calldata position
+    CALLDATALOAD  // load 32 bytes onto stack from position 0
+    PUSH1 0x20    // offset calldata position [32 in decimal]
+    CALLDATALOAD  // load 32 bytes onto stack from pos 32
+    ADD           // execute add operation on the stack
+    PUSH1 0x00    // add 0 to be the memory offset
+    MSTORE        // store the add result on the offset
+    PUSH1 0x20    // offset of memory to start returning from
+    PUSH1 0x00    // length of memory to return
+    RETURN        // return memory, form 0x00, with 0x20 size
+  ||
+
+  selector: ||bash
+    cast sig 'addTwo(uint256,uint256)'
+    > 0x0f52d66e
+  ||
+
+  calldata: ||asm
+    0000000000000000000000000000000000000000000000000000000000000001
+    0000000000000000000000000000000000000000000000000000000000000002
+  ||
+
+  huff: ||asm
+    #define function addTwo(uint256,uint256) view returns(uint256)
+
+    #define macro MAIN() = takes(0) returns(0) {
+      // get the function selector
+      0x00
+      calldataload
+      0xE0
+      shr
+
+      // jump to the implementation of the ADD_TWO function
+      // if the calldata matches the function selector
+      __FUNC_SIG(addTwo) eq addTwo jumpi
+
+      addTwo:
+          ADD_TWO()
+    }
+
+    #define macro ADD_TWO() = takes(0) returns(0) {
+      0x04 calldataload     // load first 32 bytes onto the stack - number 1
+      0x24 calldataload     // load second 32 bytes onto the stack - number 2
+      add                   // add number 1 and 2 and put the result onto the stack
+
+      0x00 mstore           // place the result in memory
+      0x20 0x00 return      // return the result
+    }
+  ||
+}
+
+storage: {
+  grid-rows: 3
+
+  summary: ||asm
+    SLOAD  (0x54): Load a 32-byte word from storage.
+    SSTORE (0x55): Store a 32-byte word to storage.
+  ||
+
+  mnemonic: ||asm
+    PUSH20 0xdEaDbEeFdEaDbEeFdEaDbEeFdEaDbEeFdEaDbEeF
+    PUSH1 0x00
+    SSTORE
+
+    PUSH20 0xC0FFEE0000000000000000000000000000000000
+    PUSH1 0x01
+    SSTORE
+
+    PUSH1 0x00
+    SLOAD
+    PUSH1 0x01
+    SLOAD
+  ||
+
+  huff: ||asm
+    #define function setValue(uint256) nonpayable returns ()
+    #define function getValue() view returns (uint256)
+
+    // storage Slots
+    #define constant VALUE_LOCATION = FREE_STORAGE_POINTER()
+
+    #define macro SET_VALUE() = takes (0) returns (0) {
+        0x04 calldataload
+        [VALUE_LOCATION]
+        sstore
+
+        // End Execution
+        stop
+    }
+
+    #define macro GET_VALUE() = takes (0) returns (0) {
+        // Load value from storage.
+        [VALUE_LOCATION]
+        sload
+
+        // Store value in memory.
+        0x00 mstore
+
+        // Return value
+        0x20 0x00 return
+    }
+
+    #define macro MAIN() = takes (0) returns (0) {
+        // Identify which function is being called.
+        0x00 calldataload 0xE0 shr
+        dup1 __FUNC_SIG(setValue) eq set jumpi
+        dup1 __FUNC_SIG(getValue) eq get jumpi
+        0x00 0x00 revert
+        set:
+            SET_VALUE()
+        get:
+            GET_VALUE()
+    }
+    ||
+}
+
+
+
