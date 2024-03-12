@@ -14,6 +14,7 @@
 
 * https://topmonks.github.io/solidity_quick_ref/
 * https://zerotomastery.io/cheatsheets/solidity-cheat-sheet/
+* https://github.com/blockchain-audit/labs/blob/master/doc/solidity/cheat-sheet.pdf
 
 
 ## Transactions
