@@ -1,4 +1,3 @@
-
 pragma solidity >=0.6.12 <0.9.0;
 
 contract Ballot{
@@ -6,9 +5,11 @@ contract Ballot{
 //voter is chooses
     struct Voter{
 
-        //what is weight?
+        //count of delegate have to this user
         uint weight;
         bool voted; //if user already choose
+
+        //possible to give the other voter to choose instead of me
         address delegate;
         uint vote;//index of voted
     }
@@ -57,6 +58,71 @@ function giveRightToVote(address voter) public {
     require(voters[voter].weight == 0);
     voters[voter].weight = 1;
 }
+
+function delegate(address to) public{
+    //what is storage?
+    Voter storage sender = voters[msg.sender];
+    //voter not already voterd 
+    require(!sender.voted);
+    //not possible to vote me
+    require(to != msg.sender);
+
+    //address(0) this address not valid
+    // while nothing delegate
+    while(voters[to].delegate != address(0)){
+        to = voters[to].delegate;
+
+//nothing that delegate will be I
+        require(to != msg.sender);
+    }
+
+    sender.voted = true;
+    sender.delegate = to;
+    //what is storage?
+    //the delegate of user
+    Voter storage delegate_ = voters[to];
+    if(delegate_.voted){
+        //if the delegate already choose 
+        // add to the proposal the number of weight
+        proposals[delegate_.vote].voteCount += sender.weight;
+    }
+    else{
+        //if not voted need to add the weight the number of weight that was on sender 
+        delegate_.weight += sender.weight;
+    }
+}
+
+    ///@dev vote ant this voted instesd of delegeted of this user
+    ///@param proposal - index of proposal
+    function vote(uint proposal) public {
+        Voter storage sender = voters[msg.sender];
+        // if weight 0 has no right to vote beacuse the chairperson not right your
+        require(sender.weight != 0);
+        // if use not voted
+        require(!sender.voted);
+        sender.voted = true;
+        sender.vote = proposal;
+        //adding to proposal this voter
+        // if proposal out the arr this throw and return all changes
+        proposals[proposal].voteCount += sender.weight;
+    }
+    ///@dev function that return the index of winner proposal
+    function winningProposal() public view returns(uint winningProposal_){
+        uint winnimgVoteCount = 0;
+        for(uint p = 0; p < proposals.length; p++){
+            //if  count that choose thisproposal more big
+            if(proposals[p].voteCount > winnimgVoteCount){
+                winnimgVoteCount = proposals[p].voteCount;
+                winningProposal_ = p;
+            }
+        }
+    }
+
+///@dev return the name of proposal that win
+function winnerName() public view returns(bytes32 winnerName_){
+    winnerName_ = proposals[winningProposal()].name;
+}
+
 
 
 }
