@@ -1,0 +1,4 @@
+pragma solidity
+
+contract hello{
+}
