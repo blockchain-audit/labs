@@ -1,0 +1,43 @@
+// SPDX-License-Identifier: GPL-3.0
+pragma solidity ^0.8.20;
+
+contract Wallet1 {
+    address[] public owners;
+    address public mainOwner;
+
+    constructor() {
+        mainOwner = msg.sender;
+        owners.push(msg.sender);
+    }
+
+    receive() external payable {}
+
+    function withdraw(uint wad) external isOwner {
+        payable (msg.sender).transfer(wad);
+    }
+
+    function getBalance() external view returns (uint) {
+        return address(this).balance;
+    }
+
+    modifier  isOwner() {
+        bool containsOwner = false;
+        for (uint i=0; i < owners.length; i++) {
+        if (msg.sender == owners[i]) {
+            containsOwner = true;
+
+            break;
+        }
+}
+        require(containsOwner == true, "sender is not owner");
+        _;
+    }
+
+    function addOwner(address newOwner) external
+    {
+        require(msg.sender == mainOwner, "Only the main owner can add new owner");
+        owners.push(newOwner);
+    }
+
+
+ }
