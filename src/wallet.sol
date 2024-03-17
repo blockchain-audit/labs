@@ -14,7 +14,7 @@ contract wallet {
     // function receiveit() external payable {
     //     balances[msg.sender] += msg.value;
     // }
-    function withdraw(uint256 amount) public {
+    function withdraw(uint256 amount) public isOwner{
         payable(msg.sender).transfer(amount);
     }
    
