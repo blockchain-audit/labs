@@ -13,13 +13,17 @@ contract SimpleStoreTest is Test {
     /// @dev Setup the testing environment.
     function setUp() public {
         s = new Store();
+        address my_add = address(s);
     }
 
     /// @dev Ensure that you can set and get the value.
     function testSetAndGetValue(uint256 value) public {
         s.setValue(value);
-        console.log(value);
-        console.log(s.getValue());
         assertEq(value, s.getValue());
+    }
+
+    function testSetInternal() public {
+        s.setInternal(true);
+        assertEq(true, s.getBool());
     }
 }
