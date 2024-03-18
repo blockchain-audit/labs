@@ -3,7 +3,7 @@ pragma solidity >=0.6.12 <0.9.0;
 
 contract WalletGabaiim {
     address public owner;
-    mapping (address => bool) gabaiim;
+    mapping (address => bool)public gabaiim ;
     uint public countGabaiim = 0;
 
 
@@ -14,7 +14,10 @@ contract WalletGabaiim {
 
     receive() external payable { }
 
+
+
     function withdraw(uint256 amount) public isOwnerOrGabai{
+        require(payable(address(this)).balance >= amount,"Not Enough Money in wallet");
         payable(msg.sender).transfer(amount);
     }
    
