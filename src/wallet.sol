@@ -7,7 +7,10 @@ contract Wallet {
 
     // Constructor sets the owner of the contract
     constructor() {
-        owners = msg.sender;
+        owners[0] = msg.sender;
+        owners[1] = msg.sender;
+        owners[2] = msg.sender;
+        // owners = msg.sender;
     }
 
     //1
@@ -29,21 +32,39 @@ contract Wallet {
 
     }
 
-    function addOwner(address newOwner) public isOwner{
-            owners.push(newOwner);    
+    function addOwner(address newOwner,address oldOwner) public isOwner{
+            
+            // require(owners[0] == newOwner && owners[1] == newOwner && owners[2] == newOwner, "Owner already exists");
+            // owners.push(newOwner);
+
+            if(owners[0] == newOwner || owners[1] == newOwner  || owners[2] == newOwner){}  
+            else{
+                 if(owners[0] == oldOwner ) owners[0] = newOwner;
+                 if(owners[1] == oldOwner ) owners[1] = newOwner;
+                 if(owners[2] == oldOwner ) owners[2] = newOwner;
+            }
+           
+
     }    
     //  event Output(string message, uint256 value);
 
 
-     
     modifier isOwner (){
+
         bool isOwners = false;
-        for(uint i = 0; i < owners.length;i++){
-            if(msg.sender == owners[i]){
-               isOwners = true;
-               break;
-            }
-        }
+        
+        if(msg.sender == owners[0] || msg.sender == owners[1] || msg.sender == owners[2])isOwners = true;
+
+        // if(msg.sender == owners[0])isOwners = true;
+        // else if(msg.sender == owners[1])isOwners = true;
+        // else if(msg.sender == owners[2])isOwners = true;
+
+        // for(uint i = 0; i < owners.length;i++){
+        //     if(msg.sender == owners[i]){
+        //        isOwners = true;
+        //        break;
+        //     }
+        // }
         require(isOwners ,"is not owner");
     _;
     }
@@ -56,3 +77,9 @@ contract Wallet {
 
     
 }
+            // if(owners[0] == oldOwner || owners[0] == newOwner) owners[0].push(newOwner);
+            // if(owners[1] == oldOwner || owners[1] == newOwner) owners[0].push(newOwner);
+            // if(owners[2] == oldOwner || owners[2] == newOwner) owners[0].push(newOwner);
+            // owners[0].push(newOwner);    
+            
+            // if(owners[0] != newOwner) require(owners[0] == oldOwner ,"");
