@@ -2,37 +2,40 @@
 
 pragma solidity ^0.8.20;
 
-
 ///@title Wallet
 contract Wallet {
     address payable public owner;
-    address[] public owners;
+    uint256 public count = 0;
+    bool public isGabay;
+
+    mapping(address => bool) public gabaim;
 
     constructor() {
         owner = payable(msg.sender); // 'msg.sender' is sender of current call
-        owners.push(msg.sender);
     }
 
     receive() external payable {}
 
-    function addOwner(address gabay) public isOwner {
-        require(owners.length < 3, "there are already 3 owners");
-        owners.push(gabay);
+    function addGabay(address gabay) public isOwner {
+        require(count < 3, "too many Gabaim");
+        gabaim[gabay] = true;
+        count++;
     }
 
     modifier isOwner() {
-        bool flag = false;
-        for (uint256 i = 0; i <= owners.length; i++) {
-            if (msg.sender == owners[i]) {
-                flag = true;
-                break;
-            }
-        }
-        require(flag, "Permission denied");
+        require(msg.sender == owner, "Caller is not owner");
         _;
     }
 
-    function withdraw(uint256 amount) external isOwner {
+    modifier isAllowed() {
+        require(
+            msg.sender == owner || gabaim[msg.sender] == true,
+            "Caller is not allowed"
+        );
+        _;
+    }
+
+    function withdraw(uint256 amount) external isAllowed {
         require(
             msg.sender.balance >= amount,
             "There is no enough money to withdraw"
@@ -42,5 +45,11 @@ contract Wallet {
 
     function getBalance() external view returns (uint256) {
         return address(this).balance;
+    }
+
+    function deleteGabay(address gabay) external isAllowed {
+        require(gabaim[gabay] == true, "this is not a gabay");
+        gabaim[gabay] = false;
+        count--;
     }
 }
