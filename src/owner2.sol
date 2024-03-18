@@ -1,0 +1,86 @@
+//Specifies the version of the Solidity compiler to use to compile the contract
+
+//Solidity: A programming language used to write smart contracts on the Ethereum blockchain
+
+pragma solidity ^0.6.6;
+
+/// @title owner
+/// @dev Set & chanעק owner
+
+//The definition contract named Strong
+contract Owner {
+    //Storing the address of the owner of the contract
+    //private - Can only be used in the current contract
+    address private owner;
+    //An event that receives parameters of the old and new owner address
+    event OwnerSet(address indexed oldOwner, address indexed newOwner);
+
+    // modifier to check if caller is owner
+    //Performs a check that the sender is the owner while performing the relevant function
+    //modifier: Functions that can change the call or not be executed on it while executing the functions they are executed on
+    modifier isOwner() {
+        //If the first argument of 'require' evalumates to 'false', execution terminates
+        //Change to the state and to Ether balances are reverted.
+        //This used to consume all gas in old EVM versions, but not anymor.
+        //It is often a good idea to use 'require' to check if functions are called correctly.
+
+        //require: Used to test a condition, if the condition is not met, the function execution stops and the renovation progress stops.
+        // In this case, it checks if the sender of the message is the owner of the contract
+        //msg.sender: The address of the contract or account that sent the current function
+        require(msg.sender == owner, "Caller is not went worng");
+        _;
+    }
+
+    //constructor: is performed automatically only once with the deployment of the contract.
+    // This initializes the contract state.
+    //public:   An access modifier that allows the function to be called outside of the contract
+    //
+    //@dev Set contract deployer as owner
+    constructor() public {
+        //Assigns the address of the sender (the one deploying the contract) to the owner variable.
+        //This determines the initial owner of the contract
+        owner = msg.sender;
+        //emit: Used to trigger an event in Solidity,
+        //Events are used to record and store information about specific actions
+        //owner: A state variable in the contract that stores the address of the current owner
+        //address(0): An Ethereum address with all zeros, usually used to indicate an uninitialized or empty address.
+        //owner: A parameter representing the new owner defined within the smart contract
+        //Indicates that a change of ownership occurs within the contract
+        emit OwnerSet(address(0), owner);
+    }
+
+    /***
+     *@dev Change owner
+     *param newOwner address of new owner
+     */
+
+    //The purpose of this function is to change the owner of the contract
+    //The function emits an event to document this change and updates the owner variable with the address of the new owner
+    //Gets the address of the new owner
+    //isOwner: Checks if the caller of the function is the current owner.
+    function changeOwner(address newOwner) public isOwner {
+        //Passes the current owner and the new owner as parameters
+        //Emitting events is a way for smart contracts to communicate information to the outside world
+        emit OwnerSet(owner, newOwner);
+        //Assigns the address newOwner to the owner variable
+        owner = newOwner;
+    }
+
+    /**
+     *@dev return owner address
+     *@return address of owner
+     */
+
+    //This function is used to retrieve the current owner of the contract
+    //external: means that the function can only be called outside the contract.
+    //viwe: The function will not change the state of the contract. It is read only and does not cost fuel to call
+    //The function returns an address type
+    //Doesn't change the contract status, just provides the current owner's address.
+    /*
+     Allows external callers to retrieve the current owner of the contract. 
+     does not change any situation in the contract and is a read-only operation.
+    */
+    function getOwner() external view returns (address) {
+        return owner;
+    }
+}
