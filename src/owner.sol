@@ -9,7 +9,7 @@ contract Owner {
     //check if you the owner if not return error message
     modifier isOwner(){
         require(msg.sender == owner,"Caller is not owner");
-        ;
+        _;
     }
      constructor() {
         owner = msg.sender;
