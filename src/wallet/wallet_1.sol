@@ -1,14 +1,11 @@
-
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
-
 ///@title Wallet
 contract Wallet {
     address public owner;
     mapping(address => bool) public withdraws;
    uint limit;
    uint keys ;
-
     constructor() {
         owner = msg.sender;
         withdraws[msg.sender] = true;
@@ -20,7 +17,6 @@ contract Wallet {
     function changeLimit(uint newLimite) public{
         limit = newLimite;
     }
-
     //i saw that there are a few functions that have the same require
     //it gave me a few advatages like saving gas
     modifier isOwner() {
@@ -30,14 +26,12 @@ contract Wallet {
         );
         _;
     }
-
     /// @dev a function that can recieve money that was deposited to my wallet
     //this function is a builet in function
     receive() external payable {}
-
     /// @dev add gabaim to be able to withdraw too.
     function addWithdraws(address withdrawer) public isOwner {
-        require(keys < limit, "you've passed the limit "); 
+        require(keys < limit, "you've passed the limit ");
         keys++;
         withdraws[withdrawer] = true;
     }
@@ -62,7 +56,7 @@ contract Wallet {
             address(this).balance >= withdrawAmount,
             "not enough eth to withdraw"
         );
-payable(msg.sender).transfer(withdrawAmount);
+          payable(msg.sender).transfer(withdrawAmount);
         // the balanc is updatet automatically
     }
     /// @dev a function to view the wallets balance
