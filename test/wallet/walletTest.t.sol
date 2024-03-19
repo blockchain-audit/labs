@@ -8,11 +8,9 @@ import "../../src/wallet/wallet.sol";
 
 contract WalletTest is Test{
     wallet public w;
-   
 
 
-
-    function setUp() public {
+      function setUp() public {
         w = new wallet();  
        
         
