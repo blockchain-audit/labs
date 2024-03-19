@@ -1,0 +1,9 @@
+shape: sequence_diagram
+# Liquid Staking: Earn staking rewards without locking your tokens.
+Alice -> lido finance : sends ETH
+Lido Finance -> Lido: Receives ETH
+Lido -> Ethereum Network: Stakes Alice's ETH
+Ethereum Network --> Lido: Confirmation
+lido -> Alice : sends stETH
+Alice -> Alice's wallet : Receives stETH
+Alice's Wallet -> Alice: Earns staking rewards passively

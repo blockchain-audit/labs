@@ -51,7 +51,7 @@ contract Wallet {
     /// @dev a function for the owner to withdraw mony from the wallet
     /// @param withdrawAmount a uint for the amount of eth to withdraw
     function withdraw(uint256 withdrawAmount) public {
-  require(withdraws[msg.sender], "WALLET-not-allowed");
+     require(withdraws[msg.sender], "WALLET-not-allowed");
         require(
             address(this).balance >= withdrawAmount,
             "not enough eth to withdraw"
