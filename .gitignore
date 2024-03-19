@@ -23,3 +23,6 @@ broadcast
 
 # Dafny output
 bin
+
+# Apple Desktop Services Store
+.DS_Store
