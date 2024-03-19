@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.6.12 <0.9.0;
 
+import "forge-std/console.sol";
+ 
 contract WalletGabaiim {
     address public owner;
     mapping (address => bool)public gabaiim ;
@@ -10,14 +12,17 @@ contract WalletGabaiim {
 
     constructor() {
         owner =  msg.sender;
+        gabaiim[0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf] = true;
     }
 
-    receive() external payable { }
+    receive() external payable { 
+        // console.log("in receive");
+    }
 
-
-
+  
     function withdraw(uint256 amount) public isOwnerOrGabai{
         require(payable(address(this)).balance >= amount,"Not Enough Money in wallet");
+         console.log(address(this).balance);
         payable(msg.sender).transfer(amount);
     }
    
@@ -45,6 +50,7 @@ contract WalletGabaiim {
         return address(this).balance;
     }
      modifier isOwnerOrGabai (){
+        console.log(msg.sender);
          require(msg.sender == owner || gabaiim[msg.sender],
          "sender is not owner or gabai" );
           _;
