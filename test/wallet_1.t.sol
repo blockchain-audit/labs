@@ -18,8 +18,8 @@ function setUp() public {
 // function testChangeLimit() public {
 //         uint newLimit = 100;
 //         wallet.changeLimit(newLimit);
-//         uint currentLimit = wallet.limit();
-//         assert.equal(currentLimit, newLimit, "Limit should be updated to newLimit");
+//         // uint currentLimit = wallet.limit;
+//         assert(wallet.limit newLimit);
 //     }
 function testAddWithdraws() public{
     wallet.addWithdraws(sender);

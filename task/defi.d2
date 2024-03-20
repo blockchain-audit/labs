@@ -3,7 +3,12 @@ shape: sequence_diagram
 Alice -> lido finance : sends ETH
 Lido Finance -> Lido: Receives ETH
 Lido -> Ethereum Network: Stakes Alice's ETH
-Ethereum Network --> Lido: Confirmation
+Ethereum Network -> Lido: Confirmation
 lido -> Alice : sends stETH
 Alice -> Alice's wallet : Receives stETH
 Alice's Wallet -> Alice: Earns staking rewards passively
+Alice -> other :  transfer, trade, or lend stETH
+other -> Alice : not affecting Alice's staked ETH
+
+#Lending/Borrowing: Put your crypto to work or access additional funds.
+Bob -> Aave : deposits DAI 

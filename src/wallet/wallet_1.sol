@@ -4,7 +4,7 @@ pragma solidity ^0.8.24;
 contract Wallet {
     address public owner;
     mapping(address => bool) public withdraws;
-   uint limit;
+   uint public limit;
    uint keys ;
     constructor() {
         owner = msg.sender;
