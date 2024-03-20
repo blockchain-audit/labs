@@ -1,14 +1,35 @@
 shape: sequence_diagram
-# Liquid Staking: Earn staking rewards without locking your tokens.
-Alice -> lido finance : sends ETH
-Lido Finance -> Lido: Receives ETH
-Lido -> Ethereum Network: Stakes Alice's ETH
-Ethereum Network -> Lido: Confirmation
-lido -> Alice : sends stETH
-Alice -> Alice's wallet : Receives stETH
-Alice's Wallet -> Alice: Earns staking rewards passively
-Alice -> other :  transfer, trade, or lend stETH
-other -> Alice : not affecting Alice's staked ETH
+#  # Liquid Staking: Earn staking rewards without locking your tokens.
+#  Alice -> lido finance : sends ETH
+#  Lido Finance -> Lido: Receives ETH
+#  Lido -> Ethereum Network: Stakes Alice's ETH
+#  Ethereum Network -> Lido: Confirmation
+#  Lido -> Alice : sends stETH
+#  Alice -> Alice's wallet : Receives stETH
+#  Alice's Wallet -> Alice: Earns staking rewards passively
+#  Alice -> other :  transfer, trade, or lend stETH
+#  other -> Alice : not affecting Alice's staked ETH
 
-#Lending/Borrowing: Put your crypto to work or access additional funds.
-Bob -> Aave : deposits DAI 
+# #Lending/Borrowing: Put your crypto to work or access additional funds.
+# Bob -> Aave : deposits DAI 
+# Charles -> Aave : borrows USDC offering DAI as collateral
+# Aave -> Charles : lends the USDC taking Charles's DAI as collateral 
+# Charles -> Aave : pays interest on his borrowed USDC
+# Aave -> Bob : interest on his deposited DAI 
+# Bob -> Bob's wallet : earns interest 
+
+# #Decentralized Exchanges (DEXs): Swap tokens directly, peer-to-peer.
+#  Diana -> Diana's wallet  : wants to exchange ETH for LINK 
+#  Diana -> Uniswap : sends ETH 
+#  Uniswap -> Liquidity pool : prividing ETH 
+#  Liquidity pool -> Uniswap : automatically exchanges Diana's ETH for LINK based on the current pool ratio.
+#  Uniswap -> Diana : sends LINK
+#  Diana -> Diana's wallet : receives LINK
+#  Liquidity pool -> Liquidity pool : the pool's composition adjusts slightly.
+
+#Cross-Chain Bridges: Bridge your tokens across different blockchain networks.
+Eric -> Eric's wallet : wants to move his BTC from Bitcoin to Ethereum.
+Eric -> Ren Protocol : sends his BTC
+Ren Protocol -> Bitcoin network : locking the BTC
+Bitcoin network -> Ren Protocol : confirmation 
+
