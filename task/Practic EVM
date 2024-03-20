@@ -1,0 +1,15 @@
+### Practic in EVM - Stack operations
+## https://www.evm.codes/playground?fork=cancun
+
+PUSH1 0x10 // [10]
+PUSH1 0x10 // [10,10]
+PUSH1 0x99 // [99,10,10]
+PUSH1 0x01  // [01,99,10,10]
+PUSH1 0x05  // [05,01,99,10,10]
+ADD // [6,99,10,10]
+POP //[99, 10,10]
+LT //[0, 10]
+DUP1 // [0,0,10]
+PUSH1 0x25 // [25,0,0,10]
+PUSH2 0x03 // [3,25,0,0,10]
+DUP2 // [25,3,25,0,0,10]
