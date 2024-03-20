@@ -1,5 +1,5 @@
-### Practic in EVM - Stack operations
-## https://www.evm.codes/playground?fork=cancun
+# Practic in EVM - Stack operations
+# https://www.evm.codes/playground?fork=cancun
 
 PUSH1 0x10 // [10]
 PUSH1 0x10 // [10,10]
@@ -13,3 +13,16 @@ DUP1 // [0,0,10]
 PUSH1 0x25 // [25,0,0,10]
 PUSH2 0x03 // [3,25,0,0,10]
 DUP2 // [25,3,25,0,0,10]
+
+
+
+SWAP1 // [3,25,25,0,0,10]
+MUL // [6f, 25, 0,0,10]
+DIV // [3,0,0,10]
+SLOAD // [0,0,0,10]
+//JUMP
+AND  // [0,0,10]
+PUSH1 0x06 //[6,0,0,10]
+OR // [6,0,10]
+PUSH1 0x07 // [7,6,0,10]
+SWAP2 // [0,6,7,10]
