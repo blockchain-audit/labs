@@ -2,44 +2,30 @@
 pragma solidity 0.8.24;
 contract wallet {
     address payable public owner;
-    address[] public  owners;
+    //key=address value =1 if is owner or 0 not 
+    mapping(address => uint256) public myHashTable;
     uint256 balance ;
-    uint256 count=1;
     constructor(){
         owner=payable( msg.sender);
+        myHashTable[0x5B38Da6a701c568545dCfcB03FcB875f56beddC4]=1;
+        myHashTable[0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2]=1;
+        myHashTable[0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db]=1;
     }
     //like export in react
     receive() external payable { }
-    modifier onlyOwner() {
-        bool flag=false;
-        for (uint i=0; i<owners.length; i++) 
-        {
-        require(owners[i]==msg.sender);
-        flag=true;
-        }
-        require(flag, "you are not owner");
-        _;
-        
-
-    } 
-       
-   function  withDraw(uint amount)public onlyOwner{
-    require(msg.sender == owner,"Only the owner can withdraw");
+    function  withDraw(uint amount,address addressOwner)public {
+    require(myHashTable[addressOwner]==1,"Only the owner can withdraw");
     //address(this)=זה הכתובת של הארנק של החוזה 
     require(amount<=address(this).balance,"not enough eth in wallet");
      payable(owner).transfer(amount);  
-  }
+   }
    
-function addOwners(address newOwner)public {
-    require(msg.sender == owner, "Only the owner can call this function");
-    //require(msg.sender == owner, "Only the owner can call this function");
-    require(count < 3 && count !=1, "There are enough owner");
-    owners.push(newOwner);
-    count++;
-
-}
-
-function getValue()external  view returns (uint){
-    return address(this).balance;
-}
+    function changeOwners(address newOwner,address oldOwner)public {
+    require(myHashTable[newOwner]==0,"you are the owner");
+    myHashTable[newOwner]=1;
+    myHashTable[oldOwner]=0;
+    }
+    function getValue(address key) public view returns (uint256) {
+        return myHashTable[key];
+    }
 }
