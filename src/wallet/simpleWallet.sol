@@ -2,7 +2,7 @@
 pragma solidity 0.8.20;
 
 
-contract Wallet {
+contract SimpleWallet {
     address payable public owner;
 
     constructor(){
