@@ -21,7 +21,7 @@ contract wallet {
    }
    
     function changeOwners(address newOwner,address oldOwner)public {
-    require(myHashTable[newOwner]==0,"you are the owner");
+    require(myHashTable[newOwner]!=1,"you are the owner");
     myHashTable[newOwner]=1;
     myHashTable[oldOwner]=0;
     }
