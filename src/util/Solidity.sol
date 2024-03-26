@@ -2,7 +2,7 @@
 
 pragma solidity >=0.7.0 <0.9.0;
 
-import "hardhat/console.sol";
+
 
 
 contract Owner {
@@ -23,7 +23,7 @@ contract Owner {
 
     //Defines as owner
     constructor() {
-        console.log("Owner contract deployed by:", msg.sender);
+        // emit LogMessage("Owner contract deployed by:", msg.sender);
         owner = msg.sender; // ?
         emit OwnerSet(address(0), owner);
     }
