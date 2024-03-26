@@ -5,29 +5,26 @@ interface ITest {
     function payme() external payable;
 }
 
-abstract contract TestBase{
+abstract contract TestBase {
     //virtual without implemented must to overriden
     //external - call the function only other contreact
-    function nobody()external view virtual ;
+    function nobody() external view virtual;
 
     //virtual with implement may overriden
     //pure - not read and modify the state variable
     //view - not modify but can read state variable
     //internal = rpotected, possible to use function in this cotract and inherit contract
-    function _ovvrideMwPlease(uint a) internal pure virtual returns(uint){
+    function _ovvrideMwPlease(uint256 a) internal pure virtual returns (uint256) {
         return a;
     }
-    
+
     //possible to ovveride in other contract
-    function overidableByStateVariable() external virtual returns(uint){
+    function overidableByStateVariable() external virtual returns (uint256) {
         return 1;
     }
 
     //can to ovveriden but not overload
-    modifier checker()virtual;
-
+    modifier checker() virtual;
 }
 
-    contract TestBase2{
-        
-    }
+contract TestBase2 {}

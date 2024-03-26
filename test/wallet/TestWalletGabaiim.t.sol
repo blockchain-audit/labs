@@ -5,7 +5,7 @@ import "forge-std/Test.sol";
 import "forge-std/console.sol";
 import "@labs/wallet/WalletGabaiim.sol";
 
-contract TestWalletGabaiim is Test {
+contract TestWasomeRandomUserlletGabaiim is Test {
     WalletGabaiim public wallet;
     address public someRandomUser = vm.addr(1);
 
@@ -19,7 +19,7 @@ contract TestWalletGabaiim is Test {
     }
 
     function testReceive() public {
-        uint balance = wallet.balance();
+        uint256 balance = wallet.balance();
         vm.startPrank(someRandomUser);
         payable(address(wallet)).transfer(20);
         vm.stopPrank();
@@ -27,7 +27,7 @@ contract TestWalletGabaiim is Test {
     }
 
     function testWithdraw() public {
-        uint balance = wallet.balance();
+        uint256 balance = wallet.balance();
         vm.startPrank(someRandomUser);
         wallet.withdraw(50);
         vm.stopPrank();
@@ -35,7 +35,7 @@ contract TestWalletGabaiim is Test {
     }
 
     function testWithdrawButNoMoney() public {
-        uint balance = wallet.balance();
+        uint256 balance = wallet.balance();
         vm.startPrank(someRandomUser);
         vm.expectRevert("Not Enough Money in wallet");
         wallet.withdraw(balance + 1);
@@ -51,7 +51,7 @@ contract TestWalletGabaiim is Test {
     }
 
     function testAddGabai() public {
-        uint count = wallet.countGabaiim();
+        uint256 count = wallet.countGabaiim();
         vm.startPrank(someRandomUser);
         wallet.addGabai(0x074AC318E0f004146dbf4D3CA59d00b96a100100);
         assertTrue(wallet.gabaiim(0x074AC318E0f004146dbf4D3CA59d00b96a100100));
@@ -77,10 +77,7 @@ contract TestWalletGabaiim is Test {
 
     function testChangeGabai() public {
         vm.startPrank(someRandomUser);
-        wallet.changeGabai(
-            0xCfEb056B0C0e2Cf1Cb321B4D22c1E35ee01CdAC7,
-            0x7ae3DbAC75D264B6F6976639ebBfC645601D3F15
-        );
+        wallet.changeGabai(0xCfEb056B0C0e2Cf1Cb321B4D22c1E35ee01CdAC7, 0x7ae3DbAC75D264B6F6976639ebBfC645601D3F15);
         assertTrue(wallet.gabaiim(0x7ae3DbAC75D264B6F6976639ebBfC645601D3F15));
         assertFalse(wallet.gabaiim(0xCfEb056B0C0e2Cf1Cb321B4D22c1E35ee01CdAC7));
         vm.stopPrank();
@@ -90,20 +87,14 @@ contract TestWalletGabaiim is Test {
         address rendomUser = vm.addr(12);
         vm.startPrank(rendomUser);
         vm.expectRevert("You do not have permission to do so");
-        wallet.changeGabai(
-            0xCfEb056B0C0e2Cf1Cb321B4D22c1E35ee01CdAC7,
-            0x7ae3DbAC75D264B6F6976639ebBfC645601D3F15
-        );
+        wallet.changeGabai(0xCfEb056B0C0e2Cf1Cb321B4D22c1E35ee01CdAC7, 0x7ae3DbAC75D264B6F6976639ebBfC645601D3F15);
         vm.stopPrank();
     }
 
     function testChangeGabaiOldNotGabai() public {
         vm.startPrank(someRandomUser);
         vm.expectRevert("the adress oldGabai not gabai");
-        wallet.changeGabai(
-            0x7ae3DbAC75D264B6F6976639ebBfC645601D3F15,
-            0x38C6a688D7e357cE98037A4B51E9B3E3237cc9a8
-        );
+        wallet.changeGabai(0x7ae3DbAC75D264B6F6976639ebBfC645601D3F15, 0x38C6a688D7e357cE98037A4B51E9B3E3237cc9a8);
         vm.stopPrank();
     }
 
@@ -111,10 +102,7 @@ contract TestWalletGabaiim is Test {
         vm.startPrank(someRandomUser);
         wallet.addGabai(0x7ae3DbAC75D264B6F6976639ebBfC645601D3F15);
         vm.expectRevert("the new gabai already gabai");
-        wallet.changeGabai(
-            0x7ae3DbAC75D264B6F6976639ebBfC645601D3F15,
-            0xCfEb056B0C0e2Cf1Cb321B4D22c1E35ee01CdAC7
-        );
+        wallet.changeGabai(0x7ae3DbAC75D264B6F6976639ebBfC645601D3F15, 0xCfEb056B0C0e2Cf1Cb321B4D22c1E35ee01CdAC7);
         vm.stopPrank();
     }
 }

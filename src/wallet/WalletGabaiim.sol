@@ -12,7 +12,7 @@ contract WalletGabaiim {
         owner = msg.sender;
     }
 
-    receive() external payable { }
+    receive() external payable {}
 
     function withdraw(uint256 amount) public isOwnerOrGabai {
         require(payable(address(this)).balance >= amount, "Not Enough Money in wallet");

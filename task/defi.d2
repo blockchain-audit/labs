@@ -1,5 +1,15 @@
 shape: sequence_diagram
+
 Alice -> Lido : ETH
 Lido -> Ethereum network:ETH
 Lido->Alice:stETH
 Ethereum network -> Lido:earns staking rewards passively.
+
+Bob-> Aave : DAI
+Charles -> Aave : DAI
+Aave-> Charles : USDC
+Aave -> Bob : earn interest
+Charles -> Aave : earn interest
+
+
+

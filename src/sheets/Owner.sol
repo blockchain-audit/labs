@@ -1,4 +1,4 @@
-    pragma solidity >=0.6.12 <0.9.0;
+pragma solidity >=0.6.12 <0.9.0;
 
 ///@dev set and change owner
 
@@ -34,4 +34,3 @@ contract Owner {
         return owner;
     }
 }
-
