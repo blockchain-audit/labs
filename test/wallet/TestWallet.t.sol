@@ -3,7 +3,7 @@ pragma solidity ^0.8.24;
 import "foundry-huff/HuffDeployer.sol";
 import "forge-std/Test.sol";
 import "forge-std/console.sol";
-// import "@hack/store/store.sol";
+import "@hack/store/store.sol";
 import "../../src/wallet/SmartWallet.sol";
 
 contract TestWallet is Test{
