@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract Wallet {
+contract smartWAllet {
     address [] public owners;
 
     constructor() {
