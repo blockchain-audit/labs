@@ -9,7 +9,7 @@ when you finish, update the column T2-SOL in our sheet file, with 1 when you fin
 give a thumb here also
 */
 
-pragma solidity ^0.6.6;
+pragma solidity ^0.8.20;
 
 contract Collectores {
     address public owner;
