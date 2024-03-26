@@ -22,6 +22,7 @@ gpg file_name.asc
 ```
 
 * [typing](https://www.keybr.com/)
+* [typing-club](https://www.typingclub.com/)
 
 ```
 # see our labs repo
