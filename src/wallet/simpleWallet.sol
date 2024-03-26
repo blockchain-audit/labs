@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: Unlicense
-pragma solidity 0.8.20;
+pragma solidity 0.8.24;
 
 
 contract SimpleWallet {
     address payable public owner;
 
     constructor(){
-        owner = payable(msg.sender);        
+        owner = payable(msg.sender);
     }
 
     receive() external payable {}

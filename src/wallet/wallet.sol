@@ -22,7 +22,7 @@ contract Wallet {
 
     modifier  isOwner() {
 
-        require(owners[msg.sender] == false || mainOwner == msg.sender,"Sender is not one of the owners");
+        require(owners[msg.sender] == true || mainOwner == msg.sender,"Sender is not one of the owners");
         _;
     }
 
@@ -30,12 +30,10 @@ contract Wallet {
 
         require(msg.sender == mainOwner, "Only mainOwner can add another owner");
         require(countOwners < 3, "There are already 3 owners");
-        require(owners[newOwner], "The owner is already exist");
+        require(!owners[newOwner], "The owner is already exist");
 
         countOwners++;
         owners[newOwner] = true;
-
-
     }
 
     function changeOwner(address oldOwner, address newOwner) external {
@@ -45,15 +43,5 @@ contract Wallet {
         require(owners[newOwner],"New owner is already an owner");
         owners[oldOwner] = false;
         owners[newOwner] = true;
-
-
     }
-
-    function addOwner(address newOwner) external
-    {
-        require(msg.sender == mainOwner, "Only the main owner can add new owner");
-        owners.push(newOwner);
-    }
-
-
  }
