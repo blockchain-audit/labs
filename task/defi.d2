@@ -1,0 +1,15 @@
+#shape: sequence_diagram
+#Alice -> Lido:ETH
+#Lido -> Ethereum network:ETH
+#Ethereum network -> Alice:stETH
+
+shape: sequence_diagram
+    #participant Alice
+    #participant Lido Finance
+
+    Alice -> Lido Finance: Send ETH
+    Lido Finance -> Lido Finance: Hold ETH on Ethereum network
+    Lido Finance -> Alice: Receive stETH
+    Alice -> Alice: Passive staking rewards
+    note right of Alice: Alice can transfer, trade or lend stETH without affecting her ETH
+    
