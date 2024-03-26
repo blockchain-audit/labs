@@ -17,7 +17,7 @@ contract WalletGabaim {
     }
     //like export in react
     receive() external payable { }
-    function  withDraw(uint amount,address addressOwner)public {
+    function withDraw(uint amount,address addressOwner)public {
     require(myHashTable[addressOwner]==1,"Only the owner can withdraw");
     //address(this)=זה הכתובת של הארנק של החוזה 
     require(amount<=address(this).balance,"not enough eth in wallet");
@@ -25,12 +25,12 @@ contract WalletGabaim {
    }
    
     function changeOwners(address newOwner,address oldOwner)public {
-        require(msg.sender==owner,"you are the not owner");
+    require(msg.sender==owner,"you are the not owner");
     require(myHashTable[newOwner]!=1,"you are owner");
     myHashTable[newOwner]=1;
     myHashTable[oldOwner]=0;
     }
-    function getValue(address key) public view returns (uint256) {
-        return myHashTable[key];
+    function getValue() public view returns (uint256) {
+        return address(this).balance;
     }
 }
