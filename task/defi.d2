@@ -1,4 +1,18 @@
-shape: sequence_diagram
-Alice -> Lido:ETH
-Lido -> Ethereum network:ETH
-Ethereum network -> Alice:stETH
+shape : sequence_diagram
+#Liquid Staking
+Alice->Lido:ETH
+Lido->Ethereum network:Alice's Ethereum
+Lido->Alice :stETH
+Alice->another:can transfer, trade, or lend
+
+#Lending/Borrowing
+Bob -> DAI :Bob deposits on Aave.
+USDC->Charles :Charles borrows USDC.
+DAI->Bob: earns interest on his deposited DAI.
+Charles ->USDC:pays interest on his borrowed USDC.
+
+Diana->ETH:wants to exchange  for LINK.
+Diana ->wants to exchange ETH for LINK.
+Diana interacts with Uniswap, providing ETH to a liquidity pool containing ETH and LINK.
+The pool automatically exchanges Diana's ETH for LINK based on the current pool ratio.
+Diana receives LINK, while the pool's composition adjusts slightly.

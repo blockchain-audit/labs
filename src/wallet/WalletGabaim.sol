@@ -1,6 +1,10 @@
+
+
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.24;
-contract wallet {
+pragma solidity >=0.6.12 <0.9.0;
+import "forge-std/console.sol";
+
+contract WalletGabaim {
     address payable public owner;
     //key=address value =1 if is owner or 0 not 
     mapping(address => uint256) public myHashTable;
