@@ -41,7 +41,7 @@ contract TestWallet  {
     
     //get&set
     function testSetAndGetValue(uint256 value) public {
-        wallet.setValue(value);
+        w.setValue(value);
         console.log(value);
         console.log(s.getValue());
         assertEq(value, s.getValue());
@@ -77,3 +77,5 @@ contract TestWallet  {
     }
 
 }
+
+
