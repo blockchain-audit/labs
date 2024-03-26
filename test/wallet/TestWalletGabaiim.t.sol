@@ -27,16 +27,18 @@ contract TestWalletGabaiim is Test {
     }
 
     function testWithdraw() public {
+        uint balance = wallet.balance();
         vm.startPrank(someRandomUser);
         wallet.withdraw(50);
         vm.stopPrank();
-        assertEq(wallet.balance(), 50);
+        assertEq(wallet.balance(), balance - 50);
     }
 
     function testWithdrawButNoMoney() public {
+        uint balance = wallet.balance();
         vm.startPrank(someRandomUser);
         vm.expectRevert("Not Enough Money in wallet");
-        wallet.withdraw(120);
+        wallet.withdraw(balance + 1);
         vm.stopPrank();
     }
 
