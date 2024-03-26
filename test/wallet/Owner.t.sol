@@ -38,7 +38,7 @@ import "../../src/wallet/WalletGabaim.sol";
 
    }
     function testChangeOwner()public{
-   // vm.expectRevert();
+    vm.expectRevert(); 
     address oldCollector = 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4;
     address newCollector = 0x7c0FA5571c4A1A67FD21Ed9209674868cC8dc86;
     walletG.changeOwners(newCollector,oldCollector);
@@ -48,18 +48,17 @@ function testwithDrawIsnOwner()public{
 uint balance= walletG.getValue();
 vm.startPrank(userAddress);
 vm.expectRevert();
-//0xCfEb056B0C0e2Cf1Cb321B4D22c1E35ee01CdAC7
 walletG.withDraw(50,0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496);
 assertEq(walletG.getValue(), balance );
 }
-// function testwithDrawIsOwner()public{
-// uint balance= walletG.getValue();
-// vm.startPrank(userAddress);
-// payable(address(walletG)).transfer(200);
-// //console.log(address(walletG).getValue);
-// walletG.withDraw(50,0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db);
-// assertEq(walletG.getValue(), balance - 50);
-// }
+function testwithDrawIsOwner()public{
+uint balance= walletG.getValue();
+vm.startPrank(userAddress);
+payable(address(walletG)).transfer(200);
+//console.log(address(walletG).getValue);
+walletG.withDraw(50,0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db);
+assertEq(walletG.getValue(), balance - 50);
+}
 
 }
 
