@@ -11,6 +11,8 @@ import "../../src/wallet/WalletGabaim.sol";
     address public userAddress=0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496;
    function setUp ()public {
       //יצירת מנופע מהמחלקה
+      uint256 amountWithDraw=50;
+
       walletG =new WalletGabaim();
       // מעבירה לארנק חלק מהכסף שנמצא בכתובת 
       payable(address(walletG)).transfer(100);
@@ -42,23 +44,29 @@ import "../../src/wallet/WalletGabaim.sol";
     walletG.changeOwners(newCollector,oldCollector);
 
    }
-function testwithDrawIsnOwner()public{
+function testwithDrawIsnOwner(uint256 amountWithDraw)public{
 uint balance= walletG.getValue();
 vm.startPrank(userAddress);
 vm.expectRevert();
 walletG.withDraw(50,0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496);
 assertEq(walletG.getValue(), balance );
 }
-function testwithDrawIsOwner()public{
+function testwithDrawIsOwner(uint amountWithDraw)public{
 uint balance= walletG.getValue();
-uint256 amountWithDraw=50;
 vm.startPrank(userAddress);
 payable(address(walletG)).transfer(200);
 //console.log(address(walletG).getValue);
 walletG.withDraw(amountWithDraw,0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db);
 assertEq(walletG.getValue(), balance - amountWithDraw);
 }
-
+  function testFuzz_Withdraw(uint256 amountWithDraw) public {
+        payable(address(walletG)).transfer(amountWithDraw);
+        
+        uint256 preBalance = address(this).balance;
+        walletG.withDraw();
+        uint256 postBalance = address(this).balance;
+        assertEq(preBalance + amountWithDraw, postBalance);
+    }
 }
 
    
