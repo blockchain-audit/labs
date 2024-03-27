@@ -37,9 +37,8 @@ contract WalletTest is Test {
     function testAddGabayNotOwner() public {
         uint256 countTest=w.count();
         vm.startPrank(0x074AC318E0f004146dbf4D3CA59d00b96a100100);
+        vm.expectRevert("Caller is not owner");
         w.addGabay(0x074AC318E0f004146dbf4D3CA59d00b96a100100);
-        assertTrue(w.gabaim(0x074AC318E0f004146dbf4D3CA59d00b96a100100)==false);
-        assertEq(w.count(),countTest);
         vm.stopPrank();
     }
 
@@ -61,13 +60,13 @@ contract WalletTest is Test {
     }
 
        function testWithdraw() public {
+        vm.startPrank(myUser);
         uint256 amount=50 wei;
         uint256 prevBalance=address(w).balance;
         uint256 expectedBalance=prevBalance-amount;
-
         w.withdraw(amount);
-
-         assertEq(expectedBalance,address(w).balance,"ERROR! the balance didn't decrease after the withdraw");
+        assertEq(expectedBalance,address(w).balance,"ERROR! the balance didn't decrease after the withdraw");
+        vm.stopPrank();
     }
       function testWithdrawNotAllowed() public {
         address anotherUser = vm.addr(12);
