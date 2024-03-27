@@ -6,7 +6,7 @@ import "forge-std/console.sol";
 import "@hack/wallet/wallet_1.sol";
 
 
-contract Wallet1Test{
+contract Wallet1Test is Test{
 
 Wallet public wallet;
 
