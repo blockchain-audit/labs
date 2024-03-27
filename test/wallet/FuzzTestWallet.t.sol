@@ -10,12 +10,7 @@ contract FuzzTestWallet is Test {
     address public someRandomUser = vm.addr(1);
 
     function setUp() public {
-        // vm.startPrank(someRandomUser);
         wallet = new WalletGabaiim();
-        // vm.deal(someRandomUser, 200);
-        // payable(address(wallet)).transfer(100);
-        // wallet.addGabai(0xCfEb056B0C0e2Cf1Cb321B4D22c1E35ee01CdAC7);
-        // vm.stopPrank();
     }
 
     function testReceive(uint256 amount) public {
