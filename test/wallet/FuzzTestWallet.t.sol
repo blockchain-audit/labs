@@ -19,6 +19,7 @@ contract FuzzTestWallet is Test {
     function testFuzz_Withdraw(uint256 amount) public {
         console.log(amount);
         console.log(1 ether);
+        console.log(2 ether);
         payable(address(s)).transfer(1 ether);
         uint256 preBalance = address(this).balance;
         s.withdraw();
