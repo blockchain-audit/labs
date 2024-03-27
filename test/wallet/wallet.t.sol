@@ -19,26 +19,29 @@ contract WalletTest is Test {
       w.addGabay(0xCfEb056B0C0e2Cf1Cb321B4D22c1E35ee01CdAC7);
       vm.stopPrank();
     }
-        function testReceive() public {
+        function testReceive(uint256 value) public {
         uint256 balance =w.getBalance();
-        payable(address(w)).transfer(20);
-        assertEq(w.getBalance(), balance + 20);
+        payable(address(w)).transfer(value);
+        assertEq(w.getBalance(), balance + value);
     }
-     function testAddGabay() public {
+     function testAddGabay(address add) public {
       uint256 countTest=w.count();
       vm.startPrank(myUser);
-      w.addGabay(0x074AC318E0f004146dbf4D3CA59d00b96a100100);
-      assertTrue(w.gabaim(0x074AC318E0f004146dbf4D3CA59d00b96a100100));
+      vm.expectRevert("this is already a gabay");
+      w.addGabay(add);
+      assertTrue(w.gabaim(add));
       assertEq(w.count(), countTest + 1);
       vm.stopPrank();
 
     }
 
-    function testAddGabayNotOwner() public {
+    function testAddGabayNotOwner(address add) public {
         uint256 countTest=w.count();
-        vm.startPrank(0x074AC318E0f004146dbf4D3CA59d00b96a100100);
+        vm.startPrank(add);
         vm.expectRevert("Caller is not owner");
         w.addGabay(0x074AC318E0f004146dbf4D3CA59d00b96a100100);
+        assertTrue(w.gabaim(0x074AC318E0f004146dbf4D3CA59d00b96a100100)==false);
+        assertEq(w.count(),countTest);
         vm.stopPrank();
     }
 
@@ -59,18 +62,16 @@ contract WalletTest is Test {
 
     }
 
-       function testWithdraw() public {
+       function testWithdraw(uint256 amount) public {
         vm.startPrank(myUser);
-        uint256 amount=50 wei;
         uint256 prevBalance=address(w).balance;
         uint256 expectedBalance=prevBalance-amount;
         w.withdraw(amount);
         assertEq(expectedBalance,address(w).balance,"ERROR! the balance didn't decrease after the withdraw");
         vm.stopPrank();
     }
-      function testWithdrawNotAllowed() public {
-        address anotherUser = vm.addr(12);
-        vm.startPrank(anotherUser);
+      function testWithdrawNotAllowed(address add) public {
+        vm.startPrank(add);
         vm.expectRevert("Caller is not allowed");
         w.withdraw(20);
         vm.stopPrank();
@@ -100,3 +101,4 @@ contract WalletTest is Test {
        vm.stopPrank();
     }
 }
+
