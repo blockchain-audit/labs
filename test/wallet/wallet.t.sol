@@ -14,8 +14,6 @@ import "../../src/wallet/WalletGabaim.sol";
       walletG =new WalletGabaim();
       // מעבירה לארנק חלק מהכסף שנמצא בכתובת 
       payable(address(walletG)).transfer(100);
-      //שליחה לפונקציה להוספת גבאי -מנהל חדש 
-    //  vm.expectRevert();
    }
   function testReceive()public {
    uint256 balance=walletG.getValue();
@@ -32,7 +30,7 @@ import "../../src/wallet/WalletGabaim.sol";
     function testChangeOwnerError()public{
    // vm.expectRevert();
     address oldCollector = 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4;
-    address newCollector = 0x7c0FA5571c4A1A67FD21Ed9209674868cC8dc86b;
+    address newCollector = 0x9876543210987654321098765432109876543210;
     vm.expectRevert();
     walletG.changeOwners(oldCollector,oldCollector);
 
@@ -40,7 +38,7 @@ import "../../src/wallet/WalletGabaim.sol";
     function testChangeOwner()public{
     vm.expectRevert(); 
     address oldCollector = 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4;
-    address newCollector = 0x7c0FA5571c4A1A67FD21Ed9209674868cC8dc86;
+    address newCollector = 0x9876543210987654321098765432109876543210;
     walletG.changeOwners(newCollector,oldCollector);
 
    }
@@ -53,11 +51,12 @@ assertEq(walletG.getValue(), balance );
 }
 function testwithDrawIsOwner()public{
 uint balance= walletG.getValue();
+uint256 amountWithDraw=50;
 vm.startPrank(userAddress);
 payable(address(walletG)).transfer(200);
 //console.log(address(walletG).getValue);
-walletG.withDraw(50,0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db);
-assertEq(walletG.getValue(), balance - 50);
+walletG.withDraw(amountWithDraw,0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db);
+assertEq(walletG.getValue(), balance - amountWithDraw);
 }
 
 }
