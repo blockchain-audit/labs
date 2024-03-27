@@ -18,6 +18,7 @@ contract Wallet {
 
     function addGabay(address gabay) public isOwner {
         require(count < 3, "too many Gabaim");
+        require(gabaim[gabay] == false,"this is already a gabay");
         gabaim[gabay] = true;
         count++;
     }
