@@ -1,5 +1,5 @@
 
-pragma solidity ^0.6.6;
+pragma solidity ^0.8.20;
 //use for documentaion in three slashes  descriptive data for UI elements/actions
  /// @title SimplBank
  /// @author Chana
