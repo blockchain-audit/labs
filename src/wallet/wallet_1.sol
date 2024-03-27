@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
-///@title Wallet
+/// @title Wallet
+
 contract Wallet {
     address public owner;
     mapping(address => bool) public withdraws;
