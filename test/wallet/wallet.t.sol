@@ -8,7 +8,9 @@ import "../../src/wallet/walletGabaim.sol";
 contract TestWallet is Test {
     //מופע לארנק
     WalletGabaim public walletG;
-    address public userAddress = 0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db;
+    address public ownerAddress = 0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db;
+    address public noOwnerAddress = 0x9876543210987654321098765432109876543210;
+
     function setUp() public {
         walletG = new WalletGabaim();
         // מעבירה לארנק חלק מהכסף שנמצא בכתובת
@@ -41,26 +43,21 @@ contract TestWallet is Test {
     //     address newCollector = 0x9876543210987654321098765432109876543210;
     //     walletG.changeOwners(newCollector, oldCollector);
     // }
-    // function testwithDrawIsnOwner() public {
-    //     uint256 amountWithDraw = 50;
-    //     uint balance = walletG.getValue();
-    //     vm.startPrank(userAddress);
-    //     vm.expectRevert();
-    //     walletG.withDraw(amountWithDraw);
-
-    //     assertEq(walletG.getValue(), balance);
-    // }
+    function testwithDrawIsnOwner() public {
+        uint256 amountWithDraw = 50;
+        // uint balance = walletG.getValue();
+        vm.startPrank(noOwnerAddress);
+        vm.expectRevert("Only the owner can withdraw");
+        walletG.withDraw(amountWithDraw);
+        vm.stopPrank();
+        // assertEq(walletG.getValue(), balance);
+    }
     function testwithDrawIsOwner() public {
         payable(address(walletG)).transfer(200);
         uint256 amountWithDraw = 50;
-        uint balance = walletG.getValue();
-        vm.startPrank(userAddress);
-        //console.log(address(walletG).getValue);
+        uint balance = address(walletG).balance;
+        vm.startPrank(ownerAddress);
         walletG.withDraw(amountWithDraw);
-        console.log("fffff");
-        console.log(balance + amountWithDraw);
-        console.log("rrr");
-        console.log(walletG.getValue());
         assertEq(walletG.getValue(), balance - amountWithDraw);
     }
     //   function testFuzz_Withdraw(uint256 amountWithDraw) public {
