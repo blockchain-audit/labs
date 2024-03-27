@@ -1,5 +1,5 @@
 shape: sequence_diagram
-#  # Liquid Staking: Earn staking rewards without locking your tokens.
+#  # 1. Liquid Staking: Earn staking rewards without locking your tokens.
 #  Alice -> lido finance : sends ETH
 #  Lido Finance -> Lido: Receives ETH
 #  Lido -> Ethereum Network: Stakes Alice's ETH
@@ -10,7 +10,7 @@ shape: sequence_diagram
 #  Alice -> other :  transfer, trade, or lend stETH
 #  other -> Alice : not affecting Alice's staked ETH
 
-# #Lending/Borrowing: Put your crypto to work or access additional funds.
+# # 2. Lending/Borrowing: Put your crypto to work or access additional funds.
 # Bob -> Aave : deposits DAI 
 # Charles -> Aave : borrows USDC offering DAI as collateral
 # Aave -> Charles : lends the USDC taking Charles's DAI as collateral 
@@ -18,7 +18,7 @@ shape: sequence_diagram
 # Aave -> Bob : interest on his deposited DAI 
 # Bob -> Bob's wallet : earns interest 
 
-# #Decentralized Exchanges (DEXs): Swap tokens directly, peer-to-peer.
+# # 3. Decentralized Exchanges (DEXs): Swap tokens directly, peer-to-peer.
 #  Diana -> Diana's wallet  : wants to exchange ETH for LINK 
 #  Diana -> Uniswap : sends ETH 
 #  Uniswap -> Liquidity pool : prividing ETH 
@@ -27,9 +27,20 @@ shape: sequence_diagram
 #  Diana -> Diana's wallet : receives LINK
 #  Liquidity pool -> Liquidity pool : the pool's composition adjusts slightly.
 
-#Cross-Chain Bridges: Bridge your tokens across different blockchain networks.
-Eric -> Eric's wallet : wants to move his BTC from Bitcoin to Ethereum.
-Eric -> Ren Protocol : sends his BTC
-Ren Protocol -> Bitcoin network : locking the BTC
-Bitcoin network -> Ren Protocol : confirmation 
+# # 4. Cross-Chain Bridges: Bridge your tokens across different blockchain networks.
+# Eric -> Eric's wallet : wants to move his BTC from Bitcoin to Ethereum.
+# Eric -> Ren Protocol : sends his BTC
+# Ren Protocol -> Bitcoin network : locking the BTC
+# Bitcoin network -> Ren Protocol : confirmation 
+# Ren Protocol -> Ethereum Network : mints an equivalent amount of wrapped BTC (renBTC) on Ethereum
+# Ren Protocol -> Eric : renBTC
+# Eric -> Ethereum platform : use renBTC like DeFi protocols.
+
+# 5. Collateralized Debt Positions (CDPs): Mint stablecoins against your crypto holdings.
+Sarah -> MakerDAO : deposits ETH
+Sarah -> MakerDAO :mints DAI (stablecoin) based on the value of her locked ETH.
+Sarah -> other : 
+
+
+
 
