@@ -5,7 +5,7 @@ import "forge-std/Test.sol";
 import "forge-std/console.sol";
 import "../../src/wallet/walletGabaim.sol";
 
-contract TestWallet is Test {
+contract TestWalletGabaim is Test {
     //מופע לארנק
     WalletGabaim public walletG;
     address public ownerAddress = 0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db;
