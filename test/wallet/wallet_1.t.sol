@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
 import "forge-std/Test.sol";
@@ -27,16 +28,16 @@ function setUp() public {
 receive() external payable {}
 function testAddWithdraws() public{
     wallet.addWithdraws(sender);
-    assert(wallet.withdraws(sender) == true);
+    assertEq(wallet.withdraws(sender) , true);
 }
 function testChangeWithdraws() public{
     wallet.changeWithdraws(sender,address(this));
-    assert(wallet.withdraws(address(this)) == true);
-    assert(wallet.withdraws(sender) == false);
+    assertEq(wallet.withdraws(address(this)) , true);
+    assertEq(wallet.withdraws(sender) , false);
 }
 function testDeleteWithdraws() public{
     wallet.deleteWithdraws(sender);
-    assert(wallet.withdraws(sender) == false);
+    assertEq(wallet.withdraws(sender) , false);
 }
 
 function testWithdraw() public{
@@ -44,8 +45,8 @@ function testWithdraw() public{
     uint256 balance2=address(wallet).balance;
     uint256 amountToWithdraw = 40;
     wallet.withdraw(amountToWithdraw);
-    assert (address(this).balance == (balance1+amountToWithdraw));
-    assert (address(wallet).balance == (balance2 - amountToWithdraw));
+    assertEq(address(this).balance , (balance1+amountToWithdraw));
+    assertEq(address(wallet).balance , (balance2 - amountToWithdraw));
 }
 function testGetBalance() public{
      assertEq(address(wallet).balance, wallet.getBalance());
