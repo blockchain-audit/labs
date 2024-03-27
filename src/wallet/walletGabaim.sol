@@ -20,11 +20,12 @@ contract WalletGabaim {
         //address(this)=זה הכתובת של הארנק של החוזה
         require(amount <= address(this).balance, "no money");
         console.log(owner);
-    console.log(address(this).balance);
+        console.log(address(this).balance);
         console.log("jj");
         console.log(msg.sender);
-        //מי שבא למשוך הוא אמור לקבל את הכסף 
+        //מי שבא למשוך הוא אמור לקבל את הכסף
         payable(msg.sender).transfer(amount);
+        console.log(address(this).balance);
     }
 
     function changeOwners(address newOwner, address oldOwner) public {

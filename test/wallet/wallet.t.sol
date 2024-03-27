@@ -51,15 +51,16 @@ contract TestWallet is Test {
     //     assertEq(walletG.getValue(), balance);
     // }
     function testwithDrawIsOwner() public {
+        payable(address(walletG)).transfer(200);
         uint256 amountWithDraw = 50;
         uint balance = walletG.getValue();
         vm.startPrank(userAddress);
-        payable(address(walletG)).transfer(200);
         //console.log(address(walletG).getValue);
-        vm.expectRevert();
         walletG.withDraw(amountWithDraw);
-        console.log(balance);
-
+        console.log("fffff");
+        console.log(balance + amountWithDraw);
+        console.log("rrr");
+        console.log(walletG.getValue());
         assertEq(walletG.getValue(), balance - amountWithDraw);
     }
     //   function testFuzz_Withdraw(uint256 amountWithDraw) public {
