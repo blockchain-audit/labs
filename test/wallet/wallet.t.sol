@@ -5,10 +5,12 @@ import "forge-std/Test.sol";
 import "forge-std/console.sol";
 import "@hack/wallet/wallet.sol";
 
+
 contract WalletTest is Test {
     Wallet public w;
     address public myUser = vm.addr(1);
 
+   
     function setUp() public {
       vm.startPrank(myUser);
       w = new Wallet();
@@ -23,21 +25,21 @@ contract WalletTest is Test {
         assertEq(w.getBalance(), balance + 20);
     }
      function testAddGabay() public {
-      uint256 countTest=w.count;
+      uint256 countTest=w.count();
       vm.startPrank(myUser);
       w.addGabay(0x074AC318E0f004146dbf4D3CA59d00b96a100100);
-      assertTrue(w.gabaim[0x074AC318E0f004146dbf4D3CA59d00b96a100100]);
-      assertEq(w.count, countTest + 1);
+      assertTrue(w.gabaim(0x074AC318E0f004146dbf4D3CA59d00b96a100100));
+      assertEq(w.count(), countTest + 1);
       vm.stopPrank();
 
     }
 
     function testAddGabayNotOwner() public {
-        uint256 countTest=w.count;
+        uint256 countTest=w.count();
         vm.startPrank(0x074AC318E0f004146dbf4D3CA59d00b96a100100);
         w.addGabay(0x074AC318E0f004146dbf4D3CA59d00b96a100100);
-        assertTrue(w.gabaim[0x074AC318E0f004146dbf4D3CA59d00b96a100100]==false);
-        assertEq(w.count,countTest);
+        assertTrue(w.gabaim(0x074AC318E0f004146dbf4D3CA59d00b96a100100)==false);
+        assertEq(w.count(),countTest);
         vm.stopPrank();
     }
 
@@ -91,11 +93,11 @@ contract WalletTest is Test {
     }
 
        function testDeleteGabay() public {
-        uint256 countTest=w.count;
+        uint256 countTest=w.count();
        vm.startPrank(myUser);
        w.deleteGabay(0xCfEb056B0C0e2Cf1Cb321B4D22c1E35ee01CdAC7);
-       assertTrue(w.gabaim[0xCfEb056B0C0e2Cf1Cb321B4D22c1E35ee01CdAC7]==false);
-       assertEq(w.count,countTest-1);
+       assertTrue(w.gabaim(0xCfEb056B0C0e2Cf1Cb321B4D22c1E35ee01CdAC7)==false);
+       assertEq(w.count(),countTest-1);
        vm.stopPrank();
     }
 }
