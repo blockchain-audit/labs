@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 contract Wallet {
     mapping(address => bool) public owners;
     address public mainOwner;
-    uint256 countOwners;
+    uint256 public countOwners;
 
     constructor() {
         mainOwner = msg.sender;

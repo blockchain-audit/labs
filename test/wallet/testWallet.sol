@@ -28,12 +28,48 @@ contract TestWallet is Test {
         wallet.addOwner(owner);
         vm.startPrank(owner);
         payable(address(wallet)).transfer(100);
+        uint256 balanceWallet = address(wallet).balance;
+        uint256 balanceOwner = address(owner).balance;
         wallet.withdraw(1);
         vm.stopPrank();
-        vm.startPrank(notOwnerAddress);
-        vm.expectRevert("Sender is not one of the owners");
-        wallet.withdraw(20);
+
+        assertEq(address(owner).balance - 1, balanceOwner);
+        assertEq(address(wallet).balance + 1, balanceWallet);
     }
 
+    function testWithdrawNotOwner() public {
+        vm.startPrank(notOwnerAddress);
+        vm.expectRevert("Sender is not one of the owners");
+        wallet.withdraw(1);
+    }
+
+    function testAddOwner() public {
+        address owner1 = address(5678);
+        uint countOwners;
+        wallet.addOwner(owner1);
+        assertTrue(wallet.owners(owner1));
+        assertEq(wallet.countOwners(), countOwners + 1);
+    }
+
+    function testAddOwnerNotMain() public {
+        vm.startPrank(owner);
+        vm.expectRevert("Only mainOwner can add another owner");
+        wallet.addOwner(notOwnerAddress);
+    }
+
+    function testAddOwnerAlreadyExist() public {
+        wallet.addOwner(owner);
+        vm.expectRevert("The owner is already exist");
+        wallet.addOwner(owner);
+    }
+
+    function testAddOwnerMoreThenThree() public {
+        wallet.addOwner(owner);
+        wallet.addOwner(address(7));
+        wallet.addOwner(address(8));
+        vm.expectRevert("There are already 3 owners");
+        wallet.addOwner(address(9));
+        console.log("number of owners:", wallet.countOwners());
+    }
 }
 
