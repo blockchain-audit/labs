@@ -81,18 +81,15 @@ contract FuzzTestWallet is Test {
     }
 
     function testChangeGabai(address oldGabai, address newGabai) public {
-        // vm.startPrank(someRandomUser);
         wallet.addGabai(oldGabai);
         if (oldGabai == newGabai) {
             vm.expectRevert("the new gabai already gabai");
             wallet.changeGabai(oldGabai, newGabai);
-        }
-        else {
+        } else {
             wallet.changeGabai(oldGabai, newGabai);
             assertTrue(wallet.gabaiim(newGabai));
             assertFalse(wallet.gabaiim(oldGabai));
         }
-
     }
 
     function testChangeGabaiNotOwner(address oldGabai, address newGabai) public {

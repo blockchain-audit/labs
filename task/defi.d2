@@ -1,15 +1,21 @@
 shape: sequence_diagram
 
-Alice -> Lido : ETH
-Lido -> Ethereum network:ETH
-Lido->Alice:stETH
-Ethereum network -> Lido:earns staking rewards passively.
+Alice -> Lido: ETH
+Lido -> Ethereum network: ETH
+Lido -> Alice: stETH
+Lido -> Alice: earns staking rewards passively.
 
-Bob-> Aave : DAI
-Charles -> Aave : DAI
-Aave-> Charles : USDC
-Aave -> Bob : earn interest
-Charles -> Aave : earn interest
+Bob -> Aave: DAI
+Charles -> Aave: DAI
+Aave -> Charles: USDC
+Aave -> Bob: earn interest
+Charles -> Aave: pays interest
 
 
+Diana -> Uniswap : ETH
+Uniswap -> Diana : Link - current pool ratio.
+
+
+Eric -> RenProtocol : lock your BTC
+RenProtocol -> Eric : renBTC (wrapper BTC) on Ethereum platforms
 
