@@ -45,7 +45,8 @@ contract Wallet {
     }
     /// @dev a function to delete a withdraw
     function deleteWithdraws(address withdraweToDelete) public isOwner {
-       keys--;
+        require(withdraweToDelete != owner , "you shuold not delete the owner");
+        keys--;
         delete withdraws[withdraweToDelete];
     }
     /// @dev a function for the owner to withdraw mony from the wallet

@@ -1,47 +1,54 @@
 // // SPDX-License-Identifier: MIT
-// pragma solidity ^0.8.24;
+pragma solidity ^0.8.24;
 
-// import "forge-std/Test.sol";
-// import "forge-std/console.sol";
-// import "@hack/wallet/wallet_1.sol";
+import "forge-std/Test.sol";
+import "forge-std/console.sol";
+import "@hack/wallet/wallet_1.sol";
 
 
-// contract WalletFuzzTest is Test {
-//     Wallet public wallet;
-//     address public sender;
+contract Wallet1FuzzTest is Test{
 
-//     function init() external {
-//         wallet = new Wallet();
-//         sender = msg.sender;
-//         payable(address(wallet)).transfer(50);
+Wallet public wallet;
+
+address public sender ;
+
+function setUp() public {
+    wallet = new Wallet();
+    sender = msg.sender;
+    payable(address(wallet)).transfer(50);
+}
+// function testChangeLimit() public {
+//         uint newLimit = 100;
+//         wallet.changeLimit(newLimit);
+//         // uint currentLimit = wallet.limit;
+//         assert(wallet.limit newLimit);
 //     }
 
-//     receive() external payable {}
+receive() external payable {}
+function testFuzzAddWithdraws(address check) public{
+    wallet.addWithdraws(check);
+    assertEq(wallet.withdraws(check) , true);
+}
+function testFuzzChangeWithdraws(address check) public{
+    wallet.changeWithdraws(check,address(this));
+    assertEq(wallet.withdraws(address(this)) , true);
+    assertEq(wallet.withdraws(check) , false);
+}
+function testFuzzDeleteWithdraws(address check) public{
+    wallet.deleteWithdraws(check);
+    assertEq(wallet.withdraws(check) , false);
+}
 
-//     function testWithdrawFuzz() public {
-//         // Define the range for fuzz testing
-//         uint256[] memory amounts = new uint256[](10); // Adjust as needed
-//         for (uint256 i = 0; i < amounts.length; i++) {
-//             amounts[i] = random() % (address(this).balance + 1); // Generate random withdrawal amounts
-//         }
+function testFuzzWithdraw(uint256 amount) public{
+    vm.assume(amount <= address(wallet).balance);
+    uint256 balance1=address(this).balance;
+    uint256 balance2=address(wallet).balance;
+    wallet.withdraw(amount);
+    assertEq(address(this).balance , (balance1 + amount));
+    assertEq(address(wallet).balance , (balance2 - amount));
+}
+function testGetBalance() public{
+     assertEq(address(wallet).balance, wallet.getBalance());
+}
 
-//         for (uint256 i = 0; i < amounts.length; i++) {
-//             // Assume that contract has sufficient balance for withdrawal
-//             vm.assume(address(this).balance >= amounts[i]);
-
-//             // Call the withdraw function with random withdrawal amounts
-//             (bool success, ) = address(wallet).call{value: 0}(abi.encodeWithSignature("withdraw(uint256)", amounts[i]));
-//             if (success) {
-//                 console.log("Withdrawal successful for amount:", amounts[i]);
-//             } else {
-//                 console.log("Withdrawal failed for amount:", amounts[i]);
-//             }
-//         }
-//     }
-// }
-
-// contract WalletTestFuzz {
-
-
-
-// }
+}
