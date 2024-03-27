@@ -8,13 +8,15 @@ import "../../src/wallet/walletGabaim.sol";
 contract TestWalletGabaim is Test {
     //מופע לארנק
     WalletGabaim public walletG;
+
     address public ownerAddress = 0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db;
     address public noOwnerAddress = 0x9876543210987654321098765432109876543210;
 
     function setUp() public {
         walletG = new WalletGabaim();
+        //מכניסה כסף לחוזה חכם שלייי הנוכחייי
+        vm.deal(address(this), 100);
         // מעבירה לארנק חלק מהכסף שנמצא בכתובת
-        payable(address(walletG)).transfer(100);
     }
     function testReceive() public {
         uint256 balance = walletG.getValue();
@@ -44,19 +46,13 @@ contract TestWalletGabaim is Test {
         // assertEq(walletG.getValue(), balance);
     }
     function testwithDrawIsOwner() public {
-        payable(address(walletG)).transfer(200);
+        //  payable(address(walletG)).transfer(200);
+        vm.deal(address(walletG), 200);
+        //  payable(address(walletG)).transfer(200);
         uint256 amountWithDraw = 50;
         uint balance = address(walletG).balance;
         vm.startPrank(ownerAddress);
         walletG.withDraw(amountWithDraw);
         assertEq(walletG.getValue(), balance - amountWithDraw);
     }
-    //   function testFuzz_Withdraw(uint256 amountWithDraw) public {
-    //         payable(address(walletG)).transfer(amountWithDraw);
-
-    //         uint256 preBalance = address(this).balance;
-    //         walletG.withDraw();
-    //         uint256 postBalance = address(this).balance;
-    //         assertEq(preBalance + amountWithDraw, postBalance);
-    //     }
 }
