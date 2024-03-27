@@ -1,6 +1,7 @@
 pragma solidity ^0.8.24;
 
 import "forge-std/Test.sol";
+import "forge-std/Vm.sol";
 import "forge-std/console.sol";
 import "@hack/wallet/wallet_1.sol";
 
@@ -47,7 +48,7 @@ function testWithdraw() public{
     assert (address(wallet).balance == (balance2 - amountToWithdraw));
 }
 function testGetBalance() public{
-     assert(address(wallet).balance == wallet.getBalance());
+     assertEq(address(wallet).balance, wallet.getBalance());
 }
 
 }
