@@ -5,7 +5,7 @@ import "forge-std/console.sol";
 import "@hack/wallet/wallet_1.sol";
 
 
-contract Wallet1TestFuzz{
+contract Wallet1Test{
 
 Wallet public wallet;
 
@@ -39,14 +39,12 @@ function testDeleteWithdraws() public{
 }
 
 function testWithdraw() public{
-    console.log(address(this));
-    console.log(address(this).balance);
-    console.log(address(wallet));
-    console.log(address(wallet).balance);
-    console.log(msg.sender);
-    console.log(msg.sender.balance);
-    wallet.withdraw(1);
-    console.log(msg.sender.balance);   
+    uint256 balance1=address(this).balance;
+    uint256 balance2=address(wallet).balance;
+    uint256 amountToWithdraw = 40;
+    wallet.withdraw(amountToWithdraw);
+    assert (address(this).balance == (balance1+amountToWithdraw));
+    assert (address(wallet).balance == (balance2 - amountToWithdraw));
 }
 function testGetBalance() public{
      assert(address(wallet).balance == wallet.getBalance());
