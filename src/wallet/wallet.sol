@@ -6,7 +6,6 @@ pragma solidity ^0.8.20;
 contract Wallet {
     address payable public owner;
     uint256 public count = 0;
-    bool public isGabay;
 
     mapping(address => bool) public gabaim;
 
