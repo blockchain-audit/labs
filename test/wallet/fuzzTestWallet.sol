@@ -26,20 +26,6 @@ contract FuzzTestWallet is Test {
         uint256 balanceAfter = address(wallet).balance;
         assertEq(balanceAfter - amount, balanceBefore);
     }
-
-
-
-
-
-//    function testReceive(uint256 amount) public {
-//        vm.startPrank(owner);
-//        uint256 balanceBefore = address(wallet).balance;
-//        vm.deal(owner, amount);
-//        payable(address(wallet)).transfer(amount);
-//        uint256 balanceAfter = address(wallet).balance;
-//        assertEq(balanceAfter - amount, balanceBefore);
-//    }
-
 //    function testWithdraw(uint256 amount) public         wallet.addOwner(owner);
 //        vm.startPrank(owner);
 //        vm.deal(owner, amount);
