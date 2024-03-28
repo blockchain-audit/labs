@@ -71,5 +71,6 @@ contract TestWallet is Test {
         wallet.addOwner(address(9));
         console.log("number of owners:", wallet.countOwners());
     }
+
 }
 
