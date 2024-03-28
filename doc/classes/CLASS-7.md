@@ -109,7 +109,7 @@ contract CollectorsWallet {
         address oldCollector,
         address newCollector
     ) external onlyOwner {
-        require(collectors[newCollector] == 1, "A Collector exist"); // check if collector exist in my hash
+        require(collectors[newCollector] == 0, "A Collector exist"); // check if collector exist in my hash
         collectors[newCollector] = 1;
         collectors[oldCollector] = 0;
     }
