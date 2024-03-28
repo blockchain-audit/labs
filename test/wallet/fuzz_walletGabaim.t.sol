@@ -32,7 +32,7 @@ contract TestFuzzWalletGabaim is Test {
         walletG.changeOwners(newOwner, oldOwner);
     }
        function testChangeOwner(address oldOwner, address newOwner) public {
-        //vm.startPrank(oldOwner);
+        vm.startPrank(oldOwner);
         vm.assume(oldOwner == walletG.getOwner()&& (newOwner != walletG.getOwner()||1!= walletG.getGabaim(newOwner)));
         walletG.changeOwners(newOwner, oldOwner);
     }
@@ -52,14 +52,13 @@ contract TestFuzzWalletGabaim is Test {
         walletG.withDraw(amountWithDraw);
         assertEq(walletG.getValue(), balance - amountWithDraw);
     }
-      function test_fuzzWithDrawBigAmount(uint amountWithDraw,address ownerAddress) public {
-        vm.deal(address(walletG), amountWithDraw);
+      function test_fuzzWithDrawBigAmount(uint256 amountWithDraw,uint256 amount) public {
+        vm.deal(address(walletG), amount);
         uint balance = address(walletG).balance;
         //vm.startPrank(ownerAddress);
         vm.assume(amountWithDraw >balance);
         vm.expectRevert("Dont have enough money");
         walletG.withDraw(amountWithDraw);
-        assertEq(walletG.getValue(), balance - amountWithDraw);
     }
      function test_fuzzWithDrawIsnOwner(uint256 amountWithDraw,address noOwnerAddress) public {
         //vm.startPrank(noOwnerAddress);

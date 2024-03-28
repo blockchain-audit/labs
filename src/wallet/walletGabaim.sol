@@ -15,7 +15,7 @@ contract WalletGabaim {
     }
     //like export in react
     receive() external payable {}
-    function withDraw(uint amount) public {
+    function withDraw(uint256 amount) public {
         require(myHashTable[msg.sender] == 1|| msg.sender==owner, "Only the owner can withdraw");
         //address(this)=זה הכתובת של הארנק של החוזה
         require(amount <= address(this).balance, "Dont have enough money");
