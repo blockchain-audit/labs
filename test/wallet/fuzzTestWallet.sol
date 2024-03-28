@@ -49,11 +49,5 @@ contract FuzzTestWallet is Test {
         vm.expectRevert("Sender is not one of the owners");
         wallet.withdraw(amount);
     }
-
-
-
-
-
 }
-
 
