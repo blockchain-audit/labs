@@ -14,15 +14,18 @@ contract WalletTest is Test {
     function setUp() public {
       vm.startPrank(myUser);
       w = new Wallet();
-      vm.deal(myUser, 200);
       payable(address(w)).transfer(100);
       w.addGabay(0xCfEb056B0C0e2Cf1Cb321B4D22c1E35ee01CdAC7);
       vm.stopPrank();
     }
         function testReceive(uint256 value) public {
+        vm.deal(myUser,value);
+        vm.startPrank(myUser);
         uint256 balance =w.getBalance();
         payable(address(w)).transfer(value);
+        vm.stopPrank();
         assertEq(w.getBalance(), balance + value);
+        
     }
      function testAddGabay(address add) public {
       uint256 countTest=w.count();
