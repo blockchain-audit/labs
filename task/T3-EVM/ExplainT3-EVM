@@ -1,0 +1,28 @@
+### T3 - EVM
+
+##Analyze:
+/*
+Add the binaries to the byte-inspector and make the flow in all opcodes in both binaries, in the creation and deployed code.
+https://bytespector.org/
+*/
+
+#creation: 
+
+/*
+6080604052348015600e575f80fd5b5060a58061001b5f395ff3fe6080604052348015600e575f80fd5b50600436106030575f3560e01c80632096525514603457806355241077146048575b5f80fd5b5f5460405190815260200160405180910390f35b605760533660046059565b5f55565b005b5f602082840312156068575f80fd5b503591905056fea2646970667358221220a2e522006a558e40186229aad2723e3067fac294181cdc7a3711caa76aec816664736f6c63430008140033
+*/
+
+Creation - the code of th constructor and create the constructur.
+Creating a constructor is only called once in the initial compilation of the contract.
+  (after that you can make functions and us but create a constructor only once)
+
+#Deployed:
+
+/*
+6080604052348015600e575f80fd5b50600436106030575f3560e01c80632096525514603457806355241077146048575b5f80fd5b5f5460405190815260200160405180910390f35b605760533660046059565b5f55565b005b5f602082840312156068575f80fd5b503591905056fea2646970667358221220a2e522006a558e40186229aad2723e3067fac294181cdc7a3711caa76aec816664736f6c63430008140033
+*/
+
+After compiling the code including the actions and functions (and the constructor)
+but the constructor exits the first time the code is compiled
+and when compiling from a second time and so on it does not restart
+
