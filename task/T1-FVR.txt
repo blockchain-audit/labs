@@ -1,0 +1,12 @@
+1
+every fish is lives in water
+every lives in water is an animal
+every fish is an animal
+
+2.
+every fish is an animal
+there is no animal that is a person
+there is no fish that is a person
+
+3.
+
