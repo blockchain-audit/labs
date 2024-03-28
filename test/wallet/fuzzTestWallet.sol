@@ -13,7 +13,6 @@ contract FuzzTestWallet is Test {
         wallet = new Wallet();
         owner = address(1234);
         notOwnerAddress = address(2345);
-        vm.deal(owner, 100);
     }
 
     function testReceive(uint amount) public {
@@ -27,29 +26,33 @@ contract FuzzTestWallet is Test {
         assertEq(balanceAfter - amount, balanceBefore);
     }
 
+    function testWithdraw(uint256 amount) public {
+        vm.deal(address(wallet), amount);
+        wallet.addOwner(owner);
+        vm.startPrank(owner);
+        uint256 balanceWallet = address(wallet).balance;
+        uint256 balanceOwner = address(owner).balance;
+        console.log("balance wallet:", balanceWallet);
+        console.log("balance owner", balanceOwner);
+        console.log(address(this));
+        wallet.withdraw(amount);
+        vm.stopPrank();
+
+        assertEq(address(owner).balance - amount, balanceOwner);
+        assertEq(address(wallet).balance + amount, balanceWallet);
+    }
+
+
+    function testWithdrawNotOwner(uint256 amount, address add) public {
+        vm.startPrank(add);
+        vm.assume(add != address(this));
+        vm.expectRevert("Sender is not one of the owners");
+        wallet.withdraw(amount);
+    }
 
 
 
 
-//    function testReceive(uint256 amount) public {
-//        vm.startPrank(owner);
-//        uint256 balanceBefore = address(wallet).balance;
-//        vm.deal(owner, amount);
-//        payable(address(wallet)).transfer(amount);
-//        uint256 balanceAfter = address(wallet).balance;
-//        assertEq(balanceAfter - amount, balanceBefore);
-//    }
-
-//    function testWithdraw(uint256 amount) public         wallet.addOwner(owner);
-//        vm.startPrank(owner);
-//        vm.deal(owner, amount);
-//        payable(address(wallet)).transfer(100);
-//        wallet.withdraw(amount);
-//        vm.stopPrank();
-//        vm.startPrank(notOwnerAddress);
-//        vm.expectRevert("Sender is not one of the owners");
-//        wallet.withdraw(amount);
-//    }
 
 }
 
