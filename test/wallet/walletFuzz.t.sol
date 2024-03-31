@@ -20,7 +20,10 @@ contract WallerFuzzTest is Test{
        assertEq(beforeWithDraw + amount, address(gabai).balance);
        
        console.log("beforeWithDraw    ", beforeWithDraw);
+       console.log("hhhhhhhhhhh");
        console.log("after withDraw     ", address(gabai).balance);
        vm.stopPrank(); 
+
+
     }
 }
