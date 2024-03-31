@@ -19,6 +19,7 @@ contract WalletTest is Test {
       wallet1 = new Wallet();
       payable(address(wallet1)).transfer(100);
     }
+    
 
     function testWithdrawWork() public {
     //    User user1 = new User();

@@ -36,9 +36,9 @@ contract Wallet {
         //  }
         require(gabaim[msg.sender] || msg.sender == owner,"only owner ");
         payable(msg.sender).transfer(wad);
-        console.log("msg.sender",msg.sender.balance);
-        console.log("this",address(this).balance);
-        console.log("owner",address(owner).balance);
+       // console.log("msg.sender",msg.sender.balance);
+       // console.log("this",address(this).balance);
+       // console.log("owner",address(owner).balance);
      //   balances[msg.sender] -= wad;
        
     }
