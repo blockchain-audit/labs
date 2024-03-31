@@ -1,4 +1,4 @@
- SPDX-License-Identifier: Unlicense
+ //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.15;
 import "forge-std/Test.sol";
 import "forge-std/console.sol";
@@ -52,7 +52,7 @@ contract WalletTest is Test {
 //       wallet1.withdraw(50);
 //       console.log("balence",wallet1.getBalance());
 //       vm.stopPrank();
-//     }
+    // }
     // function testInsert() public {
     //     address userAddress =0x29392969D235eA463A6AA42CFD4182ED2ecB5117;
     //     vm.startPrank(userAddress);
@@ -61,6 +61,7 @@ contract WalletTest is Test {
     //     console.log("address(wallet1).balance;", address(wallet1).balance);
     //     console.log("address(userAddress).balance;", address(userAddress).balance);
     //     wallet1.insert(0x138b601992D3E744cD2a883bF5a46b3a23D9E7F5);
+
     //     vm.stopPrank();
     // }
     function testremove() public {
