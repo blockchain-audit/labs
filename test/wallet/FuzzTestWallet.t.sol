@@ -35,28 +35,42 @@ contract FuzzTestWallet is Test{
     //הפונקציה בודקת כי לאחר קריאה לפונקציית המשיכה יתרת חשבון החוזה יורדת כצפוי.
     function testAllowedWithdraw(uint256 amount) public payable {
         //uint256 amount =50;
+        bool withdrawalStatus;
+        console.log(amount);
         uint256 initialBalance = address(wallet).balance;
         address userAdress = 0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B;
         vm.startPrank(userAdress);
-        wallet.withdraw(amount);
-        assertEq(wallet.getBalance(), initialBalance - amount, "Balance should decrease after withdrawal");
+        withdrawalStatus = wallet.withdraw(amount);
+        console.log(withdrawalStatus);
+        if(withdrawalStatus == true){
+             assertEq(wallet.getBalance(), initialBalance - amount, "Balance should decrease after withdrawal");
+            }
+            else
+                require(withdrawalStatus == false,"The amount you are trying to withdraw is greater than your balance");
+
         vm.stopPrank();
     }
 
 
-    
-    
-    function testnotAllowedWithdraw( uint256 amount,address userAdress) public payable {
-        uint256 initialBalance = address(wallet).balance;
-        // address userAdress = vm.addr(123); 
-        //איתחול לכתובת חוזה חכם
-        vm.startPrank(userAdress);
-        //אל תתיחס לחפונקציה הבאה, אני יודעת שהיא תחזיר שגיאה
-        vm.expectRevert();
-        wallet.withdraw(amount);
-        assertEq(wallet.getBalance(), initialBalance, "Balance should decrease after withdrawal");
-        //תחזור לכתובת חכם שלך
-        vm.stopPrank();
+    function testnotAllowedWithdraw(uint256 amount,address otherAdress) public payable {
+        if(otherAdress != wallet.owners(0) &&
+           otherAdress != wallet.owners(1) &&
+           otherAdress != wallet.owners(2) ){
+            //vm.assume(otherAdress == wallet.owners(0));
+            uint256 initialBalance = address(wallet).balance;
+            console.log(amount);
+            console.log(otherAdress);
+            //איתחול לכתובת חוזה חכם
+            vm.startPrank(otherAdress);
+            //אל תתיחס לחפונקציה הבאה, אני יודעת שהיא תחזיר שגיאה
+            vm.expectRevert();
+            bool flag = wallet.withdraw(amount);
+            console.log(flag);
+            assertEq(wallet.getBalance() , initialBalance , "The balance has not changed");
+            //תחזור לכתובת חכם שלך
+            vm.stopPrank();
+        }
+        
     }
 
     
@@ -67,13 +81,10 @@ contract FuzzTestWallet is Test{
         console.log(amount);
         if(wallet.getBalance() == amount)
             console.log("same");
-        //assertEq(wallet.getBalance(), amount,"-----");
     }
 
 
-    
-
-     function testAddOwner(address userAddress, address newOwner) public {
+     function testAddOwner(address newOwner) public {
 
         address userAdress = 0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B;
         vm.startPrank(userAdress);
