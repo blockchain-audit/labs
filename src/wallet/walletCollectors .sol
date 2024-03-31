@@ -22,7 +22,6 @@ contract Collectores {
     // Constructor function that builds the contract
     constructor() public {
         owner = msg.sender;
-        // Owner is also a collector by default
         // The contract owner is also a collector by default
         collectors[msg.sender] = true;
     }

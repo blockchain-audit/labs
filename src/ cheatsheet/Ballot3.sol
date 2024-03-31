@@ -1,5 +1,5 @@
 //Solidity's version
-pragma solidity ^0.6.6;
+pragma solidity ^0.8.20;
 
 //Definition of a smart contract
 contract Ballot {
