@@ -34,7 +34,5 @@ contract WalletGabaim {
     function getGabaim(address hashAddress)public view returns (uint256){
         return (myHashTable[hashAddress]);
     }
-     function getOwner()public view returns (address){
-        return address(owner);
-    }
+ 
 }

@@ -27,18 +27,18 @@ contract TestFuzzWalletGabaim is Test {
         function testChangeOwnerExsist(address oldOwner, address newOwner) public {
             //if new owner is exsist
             // vm.startPrank(newOwner);
-        vm.assume(newOwner == walletG.getOwner()||1== walletG.getGabaim(newOwner));
+        vm.assume(newOwner == address(this)||1== walletG.getGabaim(newOwner));
         vm.expectRevert("you are owner");
         walletG.changeOwners(newOwner, oldOwner);
     }
        function testChangeOwner(address oldOwner, address newOwner) public {
         vm.startPrank(oldOwner);
-        vm.assume(oldOwner == walletG.getOwner()&& (newOwner != walletG.getOwner()||1!= walletG.getGabaim(newOwner)));
+        vm.assume(oldOwner == address(this)&& (newOwner != address(this)||1!= walletG.getGabaim(newOwner)));
         walletG.changeOwners(newOwner, oldOwner);
     }
     function testChangeOwnerNotAllowed(address oldOwner, address newOwner) public {
         vm.startPrank(oldOwner);
-        vm.assume(oldOwner != walletG.getOwner());
+        vm.assume(oldOwner != address(this));
         vm.expectRevert("Only the Owner allowed to do this");
         walletG.changeOwners(newOwner, oldOwner);
         vm.stopPrank();
@@ -62,7 +62,7 @@ contract TestFuzzWalletGabaim is Test {
     }
      function test_fuzzWithDrawIsnOwner(uint256 amountWithDraw,address noOwnerAddress) public {
         //vm.startPrank(noOwnerAddress);
-        vm.assume(noOwnerAddress!=walletG.getOwner()||1!= walletG.getGabaim(noOwnerAddress));
+        vm.assume(noOwnerAddress!=address(this)||1!= walletG.getGabaim(noOwnerAddress));
         vm.expectRevert("Only the owner can withdraw");
         walletG.withDraw(amountWithDraw);
         vm.stopPrank();
