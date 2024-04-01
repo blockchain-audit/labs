@@ -3,14 +3,14 @@ pragma solidity >=0.5.11;
 
 import "forge-std/Test.sol";
 import "forge-std/console.sol";
-import "@labs/wallet/WalletGabaiim.sol";
+import "@labs/wallet/Wallet.sol";
 
 contract FuzzTestWallet is Test {
-    WalletGabaiim public wallet;
+    Wallet public wallet;
     address public someRandomUser = vm.addr(1);
 
     function setUp() public {
-        wallet = new WalletGabaiim();
+        wallet = new Wallet();
     }
 
     function testReceive(uint256 amount) public {
@@ -24,7 +24,7 @@ contract FuzzTestWallet is Test {
 
     function testWithdraw(uint256 amount) public {
         vm.deal(someRandomUser, amount);
-        wallet.addGabai(someRandomUser);
+        wallet.addOwner(someRandomUser);
         vm.startPrank(someRandomUser);
         payable(address(wallet)).transfer(amount);
         uint256 balance = wallet.balance();
@@ -34,7 +34,7 @@ contract FuzzTestWallet is Test {
     }
 
     function testWithdrawButNoMoney(uint256 amount) public {
-        wallet.addGabai(someRandomUser);
+        wallet.addOwner(someRandomUser);
         vm.startPrank(someRandomUser);
         if (amount != 0) {
             vm.expectRevert("Not Enough Money in wallet");
@@ -46,70 +46,70 @@ contract FuzzTestWallet is Test {
     function testWithdrawNotAuthorized(uint256 amount) public {
         address rendomUser = vm.addr(12);
         vm.startPrank(rendomUser);
-        vm.expectRevert("sender is not owner or gabai");
+        vm.expectRevert("sender is not owner");
         wallet.withdraw(amount);
         vm.stopPrank();
     }
 
-    function testAddGabai(address newGabai) public {
-        uint256 count = wallet.countGabaiim();
-        wallet.addGabai(newGabai);
-        assertTrue(wallet.gabaiim(newGabai));
-        assertEq(wallet.countGabaiim(), count + 1);
+    function testAddOwner(address newOwner) public {
+        uint256 count = wallet.countOwners();
+        wallet.addOwner(newOwner);
+        assertTrue(wallet.owners(newOwner));
+        assertEq(wallet.countOwners(), count + 1);
     }
 
-    function testAddGabaiAlreadyExsist(address newGabai) public {
-        wallet.addGabai(newGabai);
-        vm.expectRevert("the gabai already exsist");
-        wallet.addGabai(newGabai);
+    function testAddOwnerAlreadyExsist(address newOwner) public {
+        wallet.addOwner(newOwner);
+        vm.expectRevert("the owner already exsist");
+        wallet.addOwner(newOwner);
     }
 
-    function testAddGabaiMoreThree(address newGabai) public {
-        wallet.addGabai(0x562b99aCA39C6e94d93F483E074BBaf5789c87Cd);
-        wallet.addGabai(0x29392969D235eA463A6AA42CFD4182ED2ecB5117);
-        wallet.addGabai(0x2691200b3624C82757F28B52E4573bB61f6CCFf4);
+    function testAddOwnerMoreThree(address newOwner) public {
+        wallet.addOwner(0x562b99aCA39C6e94d93F483E074BBaf5789c87Cd);
+        wallet.addOwner(0x29392969D235eA463A6AA42CFD4182ED2ecB5117);
+        wallet.addOwner(0x2691200b3624C82757F28B52E4573bB61f6CCFf4);
         if (
-            newGabai == 0x562b99aCA39C6e94d93F483E074BBaf5789c87Cd
-                || newGabai == 0x29392969D235eA463A6AA42CFD4182ED2ecB5117
-                || newGabai == 0x2691200b3624C82757F28B52E4573bB61f6CCFf4
+            newOwner == 0x562b99aCA39C6e94d93F483E074BBaf5789c87Cd
+                || newOwner == 0x29392969D235eA463A6AA42CFD4182ED2ecB5117
+                || newOwner == 0x2691200b3624C82757F28B52E4573bB61f6CCFf4
         ) {
-            vm.expectRevert("the gabai already exsist");
+            vm.expectRevert("the owner already exsist");
         } else {
-            vm.expectRevert("there are already 3 gabaiim");
+            vm.expectRevert("there are already 3 owners");
         }
-        wallet.addGabai(newGabai);
+        wallet.addOwner(newOwner);
     }
 
-    function testChangeGabai(address oldGabai, address newGabai) public {
-        wallet.addGabai(oldGabai);
-        if (oldGabai == newGabai) {
-            vm.expectRevert("the new gabai already gabai");
-            wallet.changeGabai(oldGabai, newGabai);
+    function testChangeOwner(address oldOwner, address newOwner) public {
+        wallet.addOwner(oldOwner);
+        if (oldOwner == newOwner) {
+            vm.expectRevert("the new owner already owner");
+            wallet.changeOwner(oldOwner, newOwner);
         } else {
-            wallet.changeGabai(oldGabai, newGabai);
-            assertTrue(wallet.gabaiim(newGabai));
-            assertFalse(wallet.gabaiim(oldGabai));
+            wallet.changeOwner(oldOwner, newOwner);
+            assertTrue(wallet.owners(newOwner));
+            assertFalse(wallet.owners(oldOwner));
         }
     }
 
-    function testChangeGabaiNotOwner(address oldGabai, address newGabai) public {
+    function testChangeOwnerNotOwner(address oldOwner, address newOwner) public {
         vm.startPrank(someRandomUser);
         vm.expectRevert("You do not have permission to do so");
-        wallet.changeGabai(oldGabai, newGabai);
+        wallet.changeOwner(oldOwner, newOwner);
         vm.stopPrank();
     }
 
-    function testChangeGabaiOldNotGabai(address oldGabai, address newGabai) public {
-        vm.expectRevert("the adress oldGabai not gabai");
-        wallet.changeGabai(oldGabai, newGabai);
+    function testChangeOwnerOldNotOwner(address oldOwner, address newOwner) public {
+        vm.expectRevert("the adress oldOwner not owner");
+        wallet.changeOwner(oldOwner, newOwner);
     }
 
-    function testChangeGabaiNewAlreadyGabai(address oldGabai, address newGabai) public {
-        if (oldGabai != newGabai) {
-            wallet.addGabai(newGabai);
-            wallet.addGabai(oldGabai);
-            vm.expectRevert("the new gabai already gabai");
-            wallet.changeGabai(oldGabai, newGabai);
+    function testChangeOwnerNewAlreadyOwner(address oldOwner, address newOwner) public {
+        if (oldOwner != newOwner) {
+            wallet.addOwner(newOwner);
+            wallet.addOwner(oldOwner);
+            vm.expectRevert("the new owner already owner");
+            wallet.changeOwner(oldOwner, newOwner);
         }
     }
 }
