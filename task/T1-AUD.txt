@@ -1,0 +1,8 @@
+
+1.ApproveScam - all user can enable to another user to take all his money
+    wallet-
+        before - all owner can to take all money of wallet
+        after - all owner can to take only money that mainOwner confirmed
+
+2.Array-deletion - delete from arr and not deleted // Not connected to my wallet
+3.Backdoor-assembly - owner can to choose winner // Not connected to my wallet
