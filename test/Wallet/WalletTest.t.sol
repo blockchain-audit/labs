@@ -11,6 +11,7 @@ contract WalletTest is Test{
     Wallet public w;
     function  setUp() public{
         w = new Wallet();
+        payable(address(w)).transfer(1000);
     }
        function testReceive() public {
         address randomAddress = vm.addr(1234); // create random address
@@ -23,7 +24,7 @@ contract WalletTest is Test{
         assertEq(finalBalance, initialBalance + 50);
         vm.stopPrank();
     }
- function testAllowedWithdraw() external {
+    function testAllowedWithdraw() external {
     
         uint256 withdrawAmount = 50;
         address userAddress = 0x7a3b914a1f0bD991BAf826F4fE9a47Bb9880d25f; // address of allowed user
@@ -37,23 +38,36 @@ contract WalletTest is Test{
         
         vm.stopPrank();
     }
-    
-   /* function testUpdate() public{
-        address oldGabai = "0xaC4E320Ed1235F185Bc6AC8856Ec7FEA7fF0310d";
-        address newGabai = "0x7c0FA5571c4A1A67FD21Ed9209674868cC8dc86b";
-
-        // address userAddress = 0x7a3b914a1f0bD991BAf826F4fE9a47Bb9880d25f; // address of allowed user
-        //address userAddress = vm.addr(1); // address of not allowed user
-        //vm.startPrank(userAddress); // send from random address
+    function testUpdate() public{
+        address oldGabai = 0xaC4E320Ed1235F185Bc6AC8856Ec7FEA7fF0310d;
+        address newGabai = 0x81Ee0c1564B711bDf324295a1f1e02E1920876aD;
+        address userAddress = 0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496; // address of allowed user
+        vm.startPrank(userAddress); // send from random address
+        w.update(oldGabai, newGabai);
         vm.expectRevert();
         w.update(oldGabai, newGabai);
-         vm.stopPrank();
+        assertEq(w.gabaim(newGabai),1);
+        assertEq(w.gabaim(oldGabai),0);
+        assertEq(w.owner(),0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496); 
+        vm.stopPrank();
+    }
+
+    // function testUpdate() public{
+    //     address oldGabai = 0xaC4E320Ed1235F185Bc6AC8856Ec7FEA7fF0310d;
+    //     address newGabai = 0x7c0FA5571c4A1A67FD21Ed9209674868cC8dc86b;
+
+    //     // address userAddress = 0x7a3b914a1f0bD991BAf826F4fE9a47Bb9880d25f; // address of allowed user
+    //     //address userAddress = vm.addr(1); // address of not allowed user
+    //     //vm.startPrank(userAddress); // send from random address
+    //     vm.expectRevert();
+    //     w.update(oldGabai, newGabai);
+    //      vm.stopPrank();
        
-        //assert(w.gabaim[newGabai] == 1);
-        /*assertEq(w.gabaim[newGabai],1);
-        assertEq(w.gabaim[oldGabai],0);
-        //assertEq(w.owner(),"0x7a3b914a1f0bD991BAf826F4fE9a47Bb9880d25f"); 
-    }*/
+    //     //assert(w.gabaim[newGabai] == 1);
+    //     //assertEq(w.gabaim[newGabai],1);
+    //    // assertEq(w.gabaim[oldGabai],0);
+    //     //assertEq(w.owner(),"0x7a3b914a1f0bD991BAf826F4fE9a47Bb9880d25f"); 
+    // }
 
     function testGetBalance() public{
        
