@@ -4,7 +4,7 @@ pragma solidity ^0.8.24;
 import "forge-std/Test.sol";
 import "forge-std/console.sol";
 
-import "../../src/wallet/wallet.sol";
+import "../../src/Wallet/Wallet.sol";
 
 contract WalletTest is Test{
 
