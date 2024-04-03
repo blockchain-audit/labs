@@ -1,3 +1,76 @@
+Classical Logic
+===============
+
+* read this Rambam [book](file:///Users/henry/Downloads/rambam-logic.pdf)
+
+
+### Crossed Intermediate Field
+
+```
+All   C is  B
+All   B is  A
+All   C is  A
+
+Every C is  B
+No    B is  A
+No    C is  A
+
+Some  C is  B
+All   B is  A
+Some  C is  A
+
+Some  C is  B
+No    B is  A
+Some  C is! A
+```
+
+### Right Intermediate Field
+
+```
+All   C is  B
+No    A is  B
+No    C is  A
+
+No    C is  B
+All   A is  B
+No    C is  A
+
+Some  C is  B
+No    A is  B
+Some  C is! A
+
+Some  C is! B
+All   A is  B
+Some  C is! A
+```
+
+### Left Intermediate Field
+
+```
+All   B is  C
+All   B is  A
+Some  C is  A
+
+Some  B is  C
+All   B is  A
+Some  C is  A
+
+All   B is  C
+Some  B is  A
+Some  C is  A
+
+All   B is  C
+No    B is  A
+Some  C is! A
+
+Some  B is  C
+No    B is  A
+Some  C is! A
+
+All   B is  C
+Some  B is! A
+Some  C is! A
+```
 
 
 Propositional Logic
