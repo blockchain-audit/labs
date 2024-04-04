@@ -17,7 +17,7 @@ contract Wallet {
 
     function addGabay(address gabay) public isOwner {
         require(count < 3, "too many Gabaim");
-        require(gabaim[gabay] == false,"this is already a gabay");
+        require(gabaim[gabay] == false, "this is already a gabay");
         gabaim[gabay] = true;
         count++;
     }
@@ -28,18 +28,12 @@ contract Wallet {
     }
 
     modifier isAllowed() {
-        require(
-            msg.sender == owner || gabaim[msg.sender] == true,
-            "Caller is not allowed"
-        );
+        require(msg.sender == owner || gabaim[msg.sender] == true, "Caller is not allowed");
         _;
     }
 
     function withdraw(uint256 amount) external isAllowed {
-        require(
-            msg.sender.balance >= amount,
-            "There is no enough money to withdraw"
-        );
+        require(msg.sender.balance >= amount, "There is no enough money to withdraw");
         payable(msg.sender).transfer(amount);
     }
 

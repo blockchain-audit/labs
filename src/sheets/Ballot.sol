@@ -2,18 +2,18 @@
 
 pragma solidity >=0.7.0 <0.9.0;
 // @title Ballot
-contract Ballot {
 
+contract Ballot {
     struct Voter {
-        uint weight; 
-        bool voted;  
-        address delegate; 
-        uint vote; 
+        uint256 weight;
+        bool voted;
+        address delegate;
+        uint256 vote;
     }
 
     struct Proposal {
-        bytes32 name;   // short name (until 32 bytes)
-        uint voteCount; // number of accumulated votes
+        bytes32 name; // short name (until 32 bytes)
+        uint256 voteCount; // number of accumulated votes
     }
 
     address public chairperson;
@@ -22,45 +22,35 @@ contract Ballot {
 
     Proposal[] public proposals;
 
-  
     constructor(bytes32[] memory proposalNames) {
         chairperson = msg.sender;
         voters[chairperson].weight = 1;
 
-        for (uint i = 0; i < proposalNames.length; i++) {
-          //runs on the proposals array and creates a new proposal and appends it to the array
-            proposals.push(Proposal({
-                name: proposalNames[i],
-                voteCount: 0
-            }));
+        for (uint256 i = 0; i < proposalNames.length; i++) {
+            //runs on the proposals array and creates a new proposal and appends it to the array
+            proposals.push(Proposal({name: proposalNames[i], voteCount: 0}));
         }
     }
 
-  //checks a few options and does the most match
+    //checks a few options and does the most match
     function giveRightToVote(address voter) public {
-        require(
-            msg.sender == chairperson,
-            "Only chairperson can give right to vote."
-        );
-        require(
-            !voters[voter].voted,
-            "The voter already voted."
-        );
+        require(msg.sender == chairperson, "Only chairperson can give right to vote.");
+        require(!voters[voter].voted, "The voter already voted.");
         require(voters[voter].weight == 0);
         voters[voter].weight = 1;
     }
 
-  //doesn't let someone to vote again or to vote to himself
+    //doesn't let someone to vote again or to vote to himself
     function delegate(address to) public {
         Voter storage sender = voters[msg.sender];
         require(!sender.voted, "You already voted.");
         require(to != msg.sender, "Self-delegation is disallowed.");
-       
+
         while (voters[to].delegate != address(0)) {
             to = voters[to].delegate;
-        
-        // may not find a loop
-           
+
+            // may not find a loop
+
             require(to != msg.sender, "Found loop in delegation.");
         }
         sender.voted = true;
@@ -77,24 +67,21 @@ contract Ballot {
         }
     }
 
-   //checks if he has right to vote
-    function vote(uint proposal) public {
+    //checks if he has right to vote
+    function vote(uint256 proposal) public {
         Voter storage sender = voters[msg.sender];
         require(sender.weight != 0, "Has no right to vote");
         require(!sender.voted, "Already voted.");
         sender.voted = true;
         sender.vote = proposal;
 
-
         proposals[proposal].voteCount += sender.weight;
     }
 
     //return the winning proposal
-    function winningProposal() public view
-            returns (uint winningProposal_)
-    {
-        uint winningVoteCount = 0;
-        for (uint p = 0; p < proposals.length; p++) {
+    function winningProposal() public view returns (uint256 winningProposal_) {
+        uint256 winningVoteCount = 0;
+        for (uint256 p = 0; p < proposals.length; p++) {
             if (proposals[p].voteCount > winningVoteCount) {
                 winningVoteCount = proposals[p].voteCount;
                 winningProposal_ = p;
@@ -103,9 +90,7 @@ contract Ballot {
     }
 
     //return the name of the winning proposal
-    function winnerName() public view
-            returns (bytes32 winnerName_)
-    {
+    function winnerName() public view returns (bytes32 winnerName_) {
         winnerName_ = proposals[winningProposal()].name;
     }
 }
