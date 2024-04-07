@@ -7,3 +7,6 @@
 [submodule "lib/solmate"]
 	path = lib/solmate
 	url = https://github.com/transmissions11/solmate
+[submodule "src/new-project/lib/forge-std"]
+	path = src/new-project/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
