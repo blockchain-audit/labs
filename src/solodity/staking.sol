@@ -1,9 +1,9 @@
 pragma solidity 0.8.20;
 
-/// @author: Chana Cohen
-/// @title Stake
+// @author: Chana Cohen
+// @title Stake
 contract Stake {
-    //struct Staker{    
+    //struct Staker{
     uint amountStaked;
     //uint lastStakerTime
     //}
@@ -22,9 +22,10 @@ contract Stake {
     //event Staked(address staker, uint amount);
     //
     modifier isOwner() {
-     require(msg.sender == owner, "Caller is not went worng");
+        require(msg.sender == owner, "Caller is not went worng");
         _;
     }
+
     constructor() {
         //
         owner = msg.sender;
@@ -40,41 +41,37 @@ contract Stake {
     //Function of a body interested in depositing money in a contract
     function stake(uint amount) external payable {
         require(amount > 0, "Must stake more of zero");
-        requrie(
+        require(
             stakers[msg.sender] == 0,
             "Cannot stake again until previous stake is withdrawn"
         );
         stakers[msg.sender] = amount;
         //stakers[msg.sender] = msg.value;
         dates[msg.sender] = block.timestamp;
-         //beginDate = block.timestamp;
+        //beginDate = block.timestamp;
         totalStaking = totalStaking + amount;
 
-       
-        emite(stakers[msg.sender], amount);
+        // emit(stakers[msg.sender], amount);
     }
 
     function calculateRreward() public returns (uint) {
         require(
-            block.timestamp >= beginDate + 7 days,
-            "You can receive the prize only after 7 days from the day of deposit"
+            block.timestamp >= dates[msg.sender] + 7 days,
+            "You can receive the prize only after 7 days from the day of deposit."
         );
         uint reward = 0;
         //uint rewardPercent = 0;
         //Calculation of the percentage of the award and the amount of the award
-        reward = totalReward * stakers[msg.sender]/totalStaking;
+        reward = (totalReward * stakers[msg.sender]) / totalStaking;
         //rewardPercent = (stakers[msg.sender] / (totalStaking / 100));
         //uint reward = (totalReward * reward) / 100;
-        
-        stakers[msg.sender].transfer(reward + stakers[msg.sender]);
+
+        uint totalAmount = reward + stakers[msg.sender];
+        payable(msg.sender).transfer(totalAmount);
         stakers[msg.sender] = 0;
         dates[msg.sender] = 0 days;
         totalStaking -= stakers[msg.sender];
         totalReward -= reward;
         return reward;
     }
-
-    
-
 }
-
