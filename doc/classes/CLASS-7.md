@@ -1,6 +1,14 @@
 
 
 
+```
+curl -L https://foundry.paradigm.xyz | bash
+
+
+curl -L get.huff.sh | bash
+```
+
+
 * [logic-rambam](../reference/rambam-logic.pdf)
 * [sylogisms](../reference/silogisms.pdf)
 * [audit-101](https://github.com/blockchain-audit/DeFiVulnLabs/tree/main)
@@ -163,4 +171,5 @@ Added --debug with the funciton name
 
 ```
 forge test --debug testWithdraw1 -vvv
+>>>>>>> a33fc42f4cc71e6488d31b4b9e2e3e60460e0e23
 ```
