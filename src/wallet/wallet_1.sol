@@ -15,6 +15,7 @@ contract wallet {
     require(amount<=address(this).balance,"not enough eth in wallet");
      payable(owner).transfer(amount);  
   }
+  
 function getValue()external  view returns (uint){
     return address(this).balance;
 }
