@@ -37,3 +37,26 @@ Fixed-point arithmetic is a way to represent and perform arithmetic operations o
 9. **Decentralized Autonomous Organizations (DAOs):**  **Governance Staking:**  DAO members stake tokens to vote on proposals and influence the direction of the organization. Staking weight often increases with the amount staked. (e.g. MakerDAO, Uniswap)
 10. **Yield Farming:**  **Short-term Liquidity Staking:** Users strategically move their tokens between different DeFi protocols to capture the highest possible returns. This is a complex strategy with high risks  and requires active management.
 
+
+
+
+## Forge
+
+
+```
+mkdir new-project
+cd new-project
+
+forge init
+
+forge install OpenZeppelin/openzeppelin-contracts
+```
+
+```solidity
+import {ERC20} from "@oz/token/ERC20/ERC20.sol";
+
+contract MyERC20 is ERC20 {
+    constructor() ERC20("Name", "SYM") {
+        this;
+    }
+}`
