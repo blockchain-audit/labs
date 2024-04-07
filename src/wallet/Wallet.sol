@@ -11,6 +11,7 @@ contract Wallet {
     constructor() {
         mainOwner = msg.sender;
     }
+    // https://meli.org.il/wp-content/uploads/2021/04/19-10-2020-%D7%91%D7%9C%D7%95%D7%A7%D7%A6%D7%99%D7%99%D7%9F-%D7%9E%D7%90%D7%92%D7%95%D7%A1%D7%99%D7%A1%D7%98%D7%9D-%D7%9C%D7%90%D7%A7%D7%95%D7%A1%D7%99%D7%A1%D7%98%D7%9D.pdf?&~nfopt(fileDistorted=12231389391604575)
 
     receive() external payable {}
 

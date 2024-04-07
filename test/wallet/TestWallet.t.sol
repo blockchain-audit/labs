@@ -44,7 +44,7 @@ contract TestWallet is Test {
         vm.stopPrank();
     }
 
-    function testAddOwner () public {
+    function testAddOwner() public {
         uint256 count = wallet.countOwners();
         wallet.addOwner(0x074AC318E0f004146dbf4D3CA59d00b96a100100);
         assertTrue(wallet.owners(0x074AC318E0f004146dbf4D3CA59d00b96a100100));
