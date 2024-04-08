@@ -11,6 +11,7 @@ address public owner;
 //  string name="my Token";
     constructor(){
         owner=msg.sender;
+       // balanceOf[msg.sender]=10**6;
     }
     function transfer(address to, uint256 amount) external returns (bool){
         balanceOf[msg.sender]-=amount;
@@ -54,7 +55,7 @@ address public owner;
 
     // / @notice Returns the symbol of the token.
     function symbol() external view returns (string memory){
-        return "kk";
+        return "Coin";
     }
 
     /// @notice Returns the decimals places of the token.
