@@ -21,14 +21,14 @@ contract TestWallet is Test{
 
 
     function testInitialOwners() public {
-    address[] memory initialOwners = wallet.getOwners(); 
+        address[] memory initialOwners = wallet.getOwners(); 
 
 
-    // וודא שקיים אורך תקין וכי כל הבעלים הראשוניים הם החוזה הנוכחי
-    assert(initialOwners.length == 3);
-    assert(initialOwners[0] == 0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B);
-    assert(initialOwners[1] == 0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c);
-    assert(initialOwners[2] == 0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db);
+        // וודא שקיים אורך תקין וכי כל הבעלים הראשוניים הם החוזה הנוכחי
+        assert(initialOwners.length == 3);
+        assert(initialOwners[0] == 0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B);
+        assert(initialOwners[1] == 0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c);
+        assert(initialOwners[2] == 0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db);
     }
 
 
