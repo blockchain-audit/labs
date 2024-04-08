@@ -1,3 +1,11 @@
+this staking specs:
+from the day the contract is deployed - any one can stake his tokens on the contract and recieve rewards
+the staker has to lock his tokens for atlist 7 days - after 7 days he can unlock his tokens and recieve his rewared
+the rewared is calculated like this: his percent of staking from the totalstaking * the total rewared
+
+
+
+
 stakers:
 * staker 1 : stakes 5000 tokens on any day - his begin-date starts and his tokens are locked for 7 days (day 12).
 * staker 2 : stakes 20000 tokens on any day - his begin-date starts and his tokens are locked for 7 days (day 15).
