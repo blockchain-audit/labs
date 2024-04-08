@@ -1,0 +1,18 @@
+Example:
+Reuven deposits a token in type-MyToken.
+Reuven can always deposit, every day and every hour
+On the day Reuven wants to withdraw the money, a check will be made- to see if he can receive a bonus.
+
+Calculation of the test:
+
+Every person who deposits a token-
+the amount goes into a pool.
+The bonus is received according to the ratio between the amount of 
+deposits that were in the pool minimum 7 days to the current balance in the pool.
+
+Reuven receives:
+1. The amount he withdrew from how much he deposited in the deposit pool.
+2. If the depositor's amount meets the calculation and he needs to receive a bonus, 
+he gets it from the big pool - the bonus pool.
+3. The percentage he will receive from the large pool is not from the entire pool 
+but from 10 percent of the pool so that it remains for additional investors
