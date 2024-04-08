@@ -1,0 +1,8 @@
+There are million tokens in the pool. 
+Each depositor can withdraw his tokens starting 7 days from the day of the deposit.
+When the tokens are deposited, the calculation is like this:
+the amount of tokens deposited *100 / the amount of tokens in the pool after the deposit.
+For example: Nitai deposited 300000 tokens in a pool that contained a million tokens. 
+After 7 days from the day of the deposit, Nitai will be able to withdraw 23.0769230769% of the pool.
+
+ 
