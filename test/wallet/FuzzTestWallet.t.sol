@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Unlicense
-<<<<<<< HEAD
+// <<<<<<< HEAD
 pragma solidity >=0.5.11;
 
 import "forge-std/Test.sol";
@@ -27,7 +27,7 @@ contract FuzzTestWallet is Test {
         assertEq(preBalance + 1 ether, postBalance);
     }
 }
-=======
+
 pragma solidity ^0.8.24;
 import "foundry-huff/HuffDeployer.sol";
 import "forge-std/Test.sol";
@@ -143,4 +143,4 @@ contract FuzzTestWallet is Test{
     }
 
 }
->>>>>>> 322bcb194b3db662628f4b58a9facd91299150d4
+// >>>>>>> 322bcb194b3db662628f4b58a9facd91299150d4
