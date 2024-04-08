@@ -8,7 +8,7 @@ import "../../lib/solmate/src/tokens/ERC20.sol";
 contract stake is ERC20{
 ERC20 public token;
 address public owner;
-uint256 public totalReward = 10000000;
+uint256 public totalReward = 1000000000;
 uint256 public totalStaking;
 uint256 public beginDate;
 mapping (address => uint256) public stakers;
@@ -35,6 +35,7 @@ function stakeing(uint256 value) external payable {
 function unlockAll() external payable{
     require(stakers[msg.sender]>0 , "you do not have locked coins");
     require(dates[msg.sender] + 7 days <= block.timestamp , "you are not entitled to get a rewared");
+    // uint reward = (((100/(totalStaking/stakers[msg.sender]))*(totalReward))/100);
     uint256 rewared = stakers[msg.sender]/totalStaking*totalReward;
     transfer(msg.sender , rewared + stakers[msg.sender] );
     totalStaking -= stakers[msg.sender];

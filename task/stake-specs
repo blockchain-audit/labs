@@ -1,0 +1,14 @@
+stakers:
+* staker 1 : stakes 5000 tokens on any day - his begin-date starts and his tokens are locked for 7 days (day 12).
+* staker 2 : stakes 20000 tokens on any day - his begin-date starts and his tokens are locked for 7 days (day 15).
+* staker 3 : stakes 6000 tokens on any day - his begin-date starts and his tokens are locked for 7 days (day 21).
+* staker 4 : stakes 100000 tokens on any day - his begin-date starts and his tokens are locked for 7 days (day 27).
+
+rewards:
+* staker 1 : after 7 days (on day 18) he unlockes his tokens and gets a rewared 200000 (the totale staking 25000)
+[(5000/25000)*1000000]
+* staker 2 :decides to unlock his tokens 12 days after (on day 27) and gets a rewared 769230 (the totale staking 25000)
+[(20000/26000)*1000000]
+* staker 3 :decides to unlock his tokens after 7 days (on day 28) and gets a rewared 56603 (the total staking 106000)
+[(6000/100000)*1000000]
+
