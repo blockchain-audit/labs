@@ -8,7 +8,7 @@ uint256 public totalSupply;
 mapping (address=>uint256)public balanceOf;
 mapping(address => mapping(address => uint)) public allowance;
 address public owner;
- string name="my Token";
+//  string name="my Token";
     constructor(){
         owner=msg.sender;
     }
@@ -35,9 +35,11 @@ address public owner;
         balanceOf[msg.sender]+=amount;
         totalSupply+=amount;
         emit Transfer(address(0), msg.sender, amount);
+
     }
      modifier onlyOwner {
         require(msg.sender == owner, "Only the owner can call this function");
+        console.log('mint',msg.sender);
         _;
     }
     //שריפת מטבע 
@@ -47,14 +49,18 @@ address public owner;
         emit Transfer(msg.sender, address(0), amount);
     }
     function name() external view returns (string memory){
-        return name;
+        return "ygg";
     }
 
-    /// @notice Returns the symbol of the token.
-    function symbol() external view returns (string memory);
+    // / @notice Returns the symbol of the token.
+    function symbol() external view returns (string memory){
+        return "kk";
+    }
 
     /// @notice Returns the decimals places of the token.
-    function decimals() external view returns (uint8);
+    function  decimals() external view returns (uint8){
+        return 7;
+    }
 }
 
 
