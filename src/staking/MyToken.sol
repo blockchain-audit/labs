@@ -8,6 +8,7 @@ contract MyToken is IERC20 {
     mapping(address => uint256) public balanceOf;
     mapping(address => mapping(address => uint256)) public allowance;
     string public name = "MyToken";
+    string public symbol = "MTK";
 
     //withdraw
     function transfer(address to, uint256 amount) external returns (bool) {
@@ -41,11 +42,6 @@ contract MyToken is IERC20 {
         balanceOf[msg.sender] -= amount;
         totalSupply -= amount;
         emit Transfer(msg.sender, address(0), amount);
-    }
-
-    /// @notice Returns the symbol of the token.
-    function symbol() external view returns (string memory) {
-        return "jhg";
     }
 
     /// @notice Returns the decimals places of the token.
