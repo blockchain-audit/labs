@@ -37,6 +37,8 @@ function unlockAll() external payable{
     require(dates[msg.sender] + 7 days <= block.timestamp , "you are not entitled to get a rewared");
     // uint reward = (((100/(totalStaking/stakers[msg.sender]))*(totalReward))/100);
     uint256 rewared = stakers[msg.sender]/totalStaking*totalReward;
+    // _mint(msg.sender,rewared)
+    // transfer(msg.sender ,stakers[msg.sender] );
     transfer(msg.sender , rewared + stakers[msg.sender] );
     totalStaking -= stakers[msg.sender];
     delete stakers[msg.sender];
