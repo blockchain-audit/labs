@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.20;
 
-import "@hack/homeStaking/myToken.sol";
+import "./myToken.sol";
 
 struct Staker
 {
@@ -16,16 +16,19 @@ contract Staking
     MyToken public token; 
     uint public rewards;
     uint public totalStakersSupply;
+    uint public wad = 1000000000000000000;
 
     constructor (address _token)
     {
         token = MyToken(_token);
         owner = msg.sender;
-        rewards = 1000000;
+        token.mint(address(this), 1000000);
     }
 
     function staking(uint amount) external returns (bool)
     {
+        token.approve(address(this), amount);
+        token.transferFrom(msg.sender, address(this), amount);
         Staker memory newStaker = Staker(block.timestamp, amount);
         stakers[msg.sender] = newStaker;
         totalStakersSupply += amount;
@@ -36,7 +39,10 @@ contract Staking
     // {
         
     // }
-    
 
+    function calcReward(uint stakingtokens) external returns (uint)
+    {
+        uint percent = stakingtokens / totalStakersSupply * 100;
+    } 
 }
 
