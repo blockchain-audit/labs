@@ -1,0 +1,14 @@
+
+
+explanation :
+    in my totalsupply staking have in begining 1000000 MyToken 
+    and everyone can to stake and it is possible to out this after 7 days
+    everyone get percent reward from 1000000 MyToken in accordance to her stake percent from all staker
+
+exampels :
+    in one day : alice stake 5000 MyToken
+    in 2 day : bob stake 1000 MyToken
+    in 3 day : adam stake 1000 MyToken
+
+    in 7 day : alice want to withdraw his stake + reward, he get 5000(his stake) + 200000(reward) - 
+    1000000 / (25000 / 5000)
