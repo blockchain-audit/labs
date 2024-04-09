@@ -35,11 +35,11 @@ function stakeing(uint256 value) external payable {
 function unlockAll() external payable{
     require(stakers[msg.sender]>0 , "you do not have locked coins");
     require(dates[msg.sender] + 7 days <= block.timestamp , "you are not entitled to get a rewared");
-    // uint reward = (((100/(totalStaking/stakers[msg.sender]))*(totalReward))/100);
-    uint256 rewared = stakers[msg.sender]/totalStaking*totalReward;
-    // _mint(msg.sender,rewared)
-    // transfer(msg.sender ,stakers[msg.sender] );
-    transfer(msg.sender , rewared + stakers[msg.sender] );
+    uint256 reward = (((100/(totalStaking/stakers[msg.sender]))*(totalReward))/100);
+    // uint256 rewared = stakers[msg.sender]/totalStaking*totalReward;
+    _mint(msg.sender,reward);
+    transfer(msg.sender ,stakers[msg.sender] );
+    // transfer(msg.sender , rewared + stakers[msg.sender] );
     totalStaking -= stakers[msg.sender];
     delete stakers[msg.sender];
     delete dates[msg.sender];
@@ -50,8 +50,11 @@ function unlock(uint amount) external payable{
     require(stakers[msg.sender]>0 , "you do not have locked coins");
     require(dates[msg.sender] + 7 days <= block.timestamp , "you are not entitled to get a rewared");
     require (stakers[msg.sender] > amount ,"you do not have the currect amount");
-    uint256 rewared = amount/totalStaking*totalReward;
-    transfer(msg.sender , rewared + amount );
+    uint256 reward = (((100/(totalStaking/amount))*(totalReward))/100);
+    // uint256 rewared = amount/totalStaking*totalReward;
+    _mint(msg.sender,reward);
+    transfer(msg.sender ,amount);
+    // transfer(msg.sender , rewared + amount );
     totalStaking -= amount;
     stakers[msg.sender] -= amount;
 }
