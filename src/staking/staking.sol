@@ -2,8 +2,8 @@
 // https://solidity-by-example.org/defi/staking-rewards/
 pragma solidity ^0.8.20;
 
-import "labs/new-project/lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
-import "....//new-project/src/MyToken.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "../../../new-project/src/MyToken.sol";
 
 contract StakingRewards {
     IERC20 public immutable stakingToken;
@@ -50,7 +50,7 @@ contract StakingRewards {
         require(today-startDate[msg.sender]>=7,"the reward duration is not finished yet");
     }
 
-    function withdraw(uint _amount) external onlyOwner,isSevenDays{
+    function withdraw(uint _amount) external onlyOwner isSevenDays{
         require(_amount>0,"amount = 0");
         require(deposits[msg.sender]>=_amount,"you don't have enouph tokens to withdraw");
         uint calc = deposits[msg.sender]/rewards[msg.sender]*_amount;
