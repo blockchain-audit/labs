@@ -28,19 +28,15 @@ contract Staking {
     }
 
     function withdraw() public {
-        require(staker[msg.sender].time - block.timestamp >= 7 days, "It hasn't been 7 days yet");
+        require(block.timestamp - staker[msg.sender].time >= 7 days, "It hasn't been 7 days yet");
         uint256 amount = staker[msg.sender].amount;
-        uint256 CountReward = calcReward(amount , myToken.balanceOf(address(this) , reward );
+        uint256 CountReward = calcReward(amount, myToken.balanceOf(address(this)) - reward, reward);
         myToken.transfer(msg.sender, amount + CountReward);
         reward -= CountReward;
     }
 
-
-    function calcReward(uint256 amount ,uint256 totalStaking, uint256 balanceReward) public pure returns(uint256){
-        uint256 CountReward =(balanceReward / (totalStaking / amount) * wad))*wad;
+    function calcReward(uint256 amount, uint256 totalStaking, uint256 balanceReward) public view returns (uint256) {
+        uint256 CountReward = (balanceReward / 100 * 2 * 1e18 / ((totalStaking * 1e18 / amount)));
         return CountReward;
     }
 }
-
-
-
