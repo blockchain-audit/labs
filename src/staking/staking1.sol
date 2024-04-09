@@ -8,7 +8,7 @@ import "../../lib/solmate/src/tokens/ERC20.sol";
 contract stake is ERC20{
 ERC20 public token;
 address public owner;
-uint256 public totalReward = 1000000000;
+uint256 public totalReward = 1000000;
 uint256 public totalStaking;
 uint256 public beginDate;
 mapping (address => uint256) public stakers;
