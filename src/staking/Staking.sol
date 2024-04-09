@@ -22,7 +22,7 @@ contract Staking {
     }
 
     function stake(uint256 amount) public {
-        staker[msg.sender].amount = amount;
+        staker[msg.sender].amount += amount;
         staker[msg.sender].time = block.timestamp;
         myToken.transferFrom(msg.sender, address(this), amount);
     }
