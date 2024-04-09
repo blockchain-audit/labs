@@ -1,5 +1,33 @@
-STAKING SPECS:
 
 Author: Chana Cohen.
 
+STAKING SPECS:
 
+A smart contract holds 1000000 tokens. From the day of its activation, anyone can deposit anything in it
+Money he wants and lock the money for 7 days, his money cannot be withdrawn. After 7 days, the money depositor must withdraw his money and return the prize he deserves according to the amount he deposited in relation to all deposits.
+The prize is calculated as follows:
+On the withdrawal day (after 7 days have passed) the depositor will receive a prize - money:
+    The number of percentages that is the amount deposited of all deposits when withdrawing the money
+from the total consideration.
+
+Total consideration:
+3% of the million (or what is left of it after people have deposited Okiblo the reward they deserve) contract tokens are held as a reward to reward the depositors.
+
+Calculation of the reward:
+The percentage of the depositor's bet is what the depositor's total * total consideration.
+
+
+Example:
+
+
+
+
+
+
+
+
+
+
+Main points:
+1. Stakers are rewarded proportionally to their contribution to the total stake during the 7-day window.
+2. Staking earlier increases the chance of a larger reward since the total staked amount might be lower.
