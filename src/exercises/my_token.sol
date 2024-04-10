@@ -32,7 +32,7 @@ address public owner;
         return true;
     }
     //הנפקת מטבע
-    function mint (uint256 amount)external onlyOwner{
+    function mint (uint256 amount)external {
         balanceOf[msg.sender]+=amount;
         totalSupply+=amount;
         emit Transfer(address(0), msg.sender, amount);
