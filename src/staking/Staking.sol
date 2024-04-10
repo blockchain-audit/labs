@@ -13,6 +13,7 @@ contract Staking {
     uint256 wad = 10 ** 18;
     MyToken myToken;
     uint256 public reward;
+    uint256 public totalStaking = 0;
     mapping(address => User) public staker;
 
     constructor(address token) {
@@ -25,18 +26,20 @@ contract Staking {
         staker[msg.sender].amount += amount;
         staker[msg.sender].time = block.timestamp;
         myToken.transferFrom(msg.sender, address(this), amount);
+        totalStaking += amount;
     }
 
     function withdraw() public {
         require(block.timestamp - staker[msg.sender].time >= 7 days, "It hasn't been 7 days yet");
         uint256 amount = staker[msg.sender].amount;
-        uint256 CountReward = calcReward(amount, myToken.balanceOf(address(this)) - reward, reward);
+        uint256 CountReward = calcReward(amount, totalStaking, reward);
         myToken.transfer(msg.sender, amount + CountReward);
         reward -= CountReward;
+        totalStaking -= amount;
     }
 
-    function calcReward(uint256 amount, uint256 totalStaking, uint256 balanceReward) public view returns (uint256) {
-        uint256 CountReward = (balanceReward / 100 * 2 * 1e18 / ((totalStaking * 1e18 / amount)));
+    function calcReward(uint256 amount, uint256 staking, uint256 balanceReward) public view returns (uint256) {
+        uint256 CountReward = (balanceReward / 100 * 2 * 1e18 / ((staking * 1e18 / amount)));
         return CountReward;
     }
 }

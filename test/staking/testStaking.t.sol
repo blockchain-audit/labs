@@ -15,12 +15,12 @@ contract testStaking is Test {
     }
 
     function testStake() public {
-        uint256 totalStaking = myToken.balanceOf(address(staking));
+        uint256 totalStaking = staking.totalStaking();
         uint256 wad = 10 ** 18;
         myToken.mint(10 * wad);
         myToken.approve(address(staking), 2 * wad);
         staking.stake(2 * wad);
-        assertEq(myToken.balanceOf(address(staking)), totalStaking + 2 * wad);
+        assertEq(staking.totalStaking(), 2 * wad);
     }
 
     function testWithdraw() public {
@@ -31,7 +31,7 @@ contract testStaking is Test {
         staking.stake(2 * wad);
         vm.warp(block.timestamp + 7 days);
         staking.withdraw();
-        assertEq(myToken.balanceOf(address(staking)) - staking.reward(), 0);
+        assertEq(staking.totalStaking(), 0);
         assertEq(myToken.balanceOf(address(this)), 2 * wad + 20000 * 1e18);
         assertEq(staking.reward(), 980000 * 10 ** 18);
     }
@@ -52,7 +52,7 @@ contract testStaking is Test {
         vm.warp(block.timestamp + 7 days);
         //staker 1 : withdraw tokens
         staking.withdraw();
-        assertEq(myToken.balanceOf(address(staking)) - staking.reward(), 18 * 10 ** 18);
+        assertEq(staking.totalStaking(), 18 * 10 ** 18);
         assertEq(myToken.balanceOf(address(this)), 2 * wad + 2000 * 1e18);
         assertEq(staking.reward(), 998000 * 10 ** 18);
         //staker 3 : stake 18 tokens
@@ -65,7 +65,7 @@ contract testStaking is Test {
         vm.startPrank(vm.addr(1));
         staking.withdraw();
         vm.stopPrank();
-        assertEq(myToken.balanceOf(address(staking)) - staking.reward(), 18 * 10 ** 18);
+        assertEq(staking.totalStaking(), 18 * 10 ** 18);
         assertEq(myToken.balanceOf(vm.addr(1)), 18 * wad + 9980 * 1e18);
         assertEq(staking.reward(), 988020 * 10 ** 18);
     }
@@ -81,7 +81,6 @@ contract testStaking is Test {
     }
 
     function testCalcReward() public {
-        console.log(staking.calcReward(18 * 10 ** 18, 36 * 10 ** 18, 998000 * 10 ** 18));
         assertEq(staking.calcReward(5000 * 10 ** 18, 25000 * 10 ** 18, 1000000 * 10 ** 18), 4000 * 10 ** 18);
         assertEq(staking.calcReward(10000 * 10 ** 18, 25000 * 10 ** 18, 1000000 * 10 ** 18), 8000 * 10 ** 18);
         assertEq(staking.calcReward(10000 * 10 ** 18, 10000 * 10 ** 18, 1000000 * 10 ** 18), 20000 * 10 ** 18);
