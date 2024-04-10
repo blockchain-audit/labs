@@ -19,13 +19,95 @@ The percentage of the depositor's bet is what the depositor's total * total cons
 
 Example:
 
+    Scenario 2:
+        Stakers:
+            Staker 1: Depozit 10,000 tokens on day 1
+                      amountStaked = 10,000
+                      totalReward = 1,000,000
+            Staker 2: Depozit 20,000 tokens on day 3
+                      amountStaked = 30,000
+                      totalReward = 1,000,000
+            Staker 3: Depozit 150,000 tokens on day 6
+                      amountStaked = 180,000
+                      totalReward = 1,000,000
+            Staker 4: Depozit 1,000 tokens on day 7
+                      amountStaked = 181,000
+                      totalReward = 1,000,000
+            Staker 5: Depozit 25,000 tokens on day 7
+                      amountStaked = 206,000
+                      totalReward = 1,000,000
 
+        Rewards:
+            Staker 1: After 7 days from the date of deposit (day 8) 
+                      amountStaked = 206,000
+                      totalReward = 1,000,000
+                      totalReward * 0.03 * (depozit / amountStaked)
+                      1,000,000 * 0.03 * (10,000 / 206,000)
+                      A number of percentages out of all deposits:
+                      10,000 / 206,000 = 4.85...%
+                      3% of totalReward: 
+                      1000000 * 0.03
+                      After downloading the reward:
+                      The reward = 1456 // (1456.31...)
+                      amountStaked = 206,000 - 10,000 = 196,000
+                      totalReward = 1,000,000 - 1456 = 998,543 // (998,543.689...)
+                      
+            Staker 2: After 7 days from the date of deposit
+                      totalReward * 0.03 * (depozit / amountStaked)
+                      reward = 998,543 * 0.03 * (20,000 / 196,000)
+                      After downloading the reward:
+                      amountStaked = 196,000 - 20,000 = 176,000
+                      totalReward = 998,543 - 3,056 = 995,478
+            Staker 3: After 7 days from the date of deposit
+                      totalReward * 0.03 * (depozit / amountStaked)
+                      reward = 995,478 * 0.03 * (150,000 / 176,000)
+                      After downloading the reward:
+                      amountStaked = 176,000 - 150,000 = 26,000
+                      totalReward = 995,478 - 25,452 = 970,026
+            Staker 4: After 7 days from the date of deposit
+                      totalReward * 0.03 * (depozit / amountStaked)
+                      reward = 970,026 * 0.03 * (1,000 / 26,000)
+                      After downloading the reward:
+                      amountStaked = 26,000 - 1,000 = 25,000
+                      totalReward = 970,026 - 1119 = 968,906
+            Staker 5: After 7 days from the date of deposit
+                      totalReward * 0.03 * (depozit / amountStaked)
+                      reward = 968,906 * 0.03 * (25,000 / 25,000)
+                      After downloading the reward:
+                      amountStaked = 25,000 - 25,000 = 0
+                      totalReward = 968,906 - 29,067 = 939,839
 
+    Scenario 2:
+        Stakers:
+            Staker 1: Depozit 50,000 tokens on day 2
+                      amountStaked = 50,000
+                      totalReward = 1,000,000
+            Staker 2: Depozit 100 tokens on day 3
+                      amountStaked = 50,100
+                      totalReward = 1,000,000
+            Staker 3: Depozit 99,999 tokens on day 5
+                      amountStaked = 150,099
+                      totalReward = 1,000,000
 
-
-
-
-
+        Rewards;
+            Staker 1: After 7 days from the date of deposit
+                      totalReward * 0.03 * (depozit / amountStaked)
+                      reward = 1,000,000 * 0.03 * (50,000 / 150,099)
+                      After downloading the reward:
+                      amountStaked = 150,099 - 50,000 = 100,99
+                      totalReward = 1,000,000 - 9,993 = 990,006
+            Staker 2: After 7 days from the date of deposit
+                      totalReward * 0.03 * (depozit / amountStaked)
+                      reward = 990,006 * 0.03 * (100 / 100,099)
+                      After downloading the reward:
+                      amountStaked = 100,099 - 100 = 99,999
+                      totalReward = 990,006 - 29,670 = 960,336
+            Staker 3: After 7 days from the date of deposit
+                      totalReward * 0.03 * (depozit / amountStaked)
+                      reward = 960,336 * 0.03 * (99,999 / 99,999)
+                      After downloading the reward:
+                      amountStaked = 99,999 - 99,999 = 0
+                      totalReward = 960,336 - 28,810 = 931,525
 
 
 Main points:
