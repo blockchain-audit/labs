@@ -17,6 +17,7 @@ contract Staking {
     mapping(address => User) public staker;
 
     constructor(address token) {
+        console.log("address staking",address(this));
         myToken = MyToken(token);
         reward = 1000000 * wad;
         myToken.mint(1000000 * wad);
