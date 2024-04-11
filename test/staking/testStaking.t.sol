@@ -36,7 +36,7 @@ contract testStaking is Test {
         assertEq(staking.reward(), 980000 * 10 ** 18);
     }
 
-    function testWithdraw1() public {
+    function testWithdrawMoreOneStaker() public {
         uint256 totalStaking = myToken.balanceOf(address(staking));
         uint256 wad = 10 ** 18;
         //staker 1 : stake 2 tokens
