@@ -13,8 +13,6 @@ contract stakeTest is Test {
         stake = new Stake(); 
         stake.mint(msg.sender , 1000000);
         stake.mint(address(this),10000000);
-       
- 
     }
     function testStaking() public { 
         vm.warp(1648739200);
@@ -27,7 +25,6 @@ contract stakeTest is Test {
         console.log("bb",block.timestamp);
         assertEq(stake.dates(address(this)),block.timestamp);
         assertEq(stake.stakers(address(this)),amountStaked+amount);
-
     }
 
     function testUnlockAll() public{
