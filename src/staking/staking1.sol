@@ -5,7 +5,7 @@ pragma solidity ^0.8.24;
 /// @auther Yehudis Davis
 import "../../lib/solmate/src/tokens/ERC20.sol";
 
-contract stake is ERC20{
+contract Stake is ERC20{
 ERC20 public token;
 address public owner;
 uint256 public totalReward = 1000000;
@@ -22,6 +22,9 @@ constructor() ERC20("MyToken", "MTK" ,16) {
 
 receive() external payable{}
 
+function mint (address to , uint amount) public{
+    _mint(to,amount);
+}
 /// @dev a function that receives the staked coins and saves the date .
 function stakeing(uint256 value) external payable {
     require(value > 0);
@@ -60,9 +63,14 @@ function unlock(uint amount) external payable{
 }
 
 
-// if the staker addes coins
-// if the staker want to take out his coin before 7 days
+// if the staker addes coins ?
+// the seven days will start again 
+
+// if the staker want to take out his coin before 7 days ?
+// he cannot do it the coins are locked
+
 // if the staker wants to take out only some of his coins
+
 
 
 }
