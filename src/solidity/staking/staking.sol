@@ -4,6 +4,7 @@ pragma solidity 0.8.20;
 // @title Stake
 
 import {ERC20} from "../tokens/ERC20.sol";
+
 import "forge-std/console.sol";
 
 contract Stake {
@@ -58,7 +59,8 @@ contract Stake {
         uint reward = 0;
         //uint rewardPercent = 0;
         //Calculation of the percentage of the award and the amount of the award
-        reward = (totalReward * stakers[msg.sender]) / totalStaking;
+        //reward = (totalReward * stakers[msg.sender]) / totalStaking;
+        reward = totalReward * 0.03 * (stakers[msg.sender] / totalStaking);
         //rewardPercent = (stakers[msg.sender] / (totalStaking / 100));
         //uint reward = (totalReward * reward) / 100;
 
