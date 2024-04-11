@@ -11,11 +11,8 @@ contract stakeTest is Test {
 
    function setUp() public {
         stake = new Staking1();  
-        // stake.mint(address(stake), stake.totalReward());
     }
-    function test_staking() public {
-        console.log("total staking:", stake.totalStaking());
-        console.log("total staking:", stake.totalReward());
-        console.log("balance:", stake.balanceOf(address(stake)));
+    function testsStaking() public {
+
         }
 }

@@ -1,7 +1,7 @@
 
 pragma solidity ^0.8.24;
 
-/// @titel simple stakink
+/// @titel simple staking
 /// @auther Yehudis Davis
 import "../../lib/solmate/src/tokens/ERC20.sol";
 
