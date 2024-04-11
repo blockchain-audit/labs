@@ -60,7 +60,7 @@ contract Stake {
         //uint rewardPercent = 0;
         //Calculation of the percentage of the award and the amount of the award
         //reward = (totalReward * stakers[msg.sender]) / totalStaking;
-        reward = totalReward * 0.03 * (stakers[msg.sender] / totalStaking);
+        reward = totalReward * 3 / 100 * (stakers[msg.sender] / totalStaking);
         //rewardPercent = (stakers[msg.sender] / (totalStaking / 100));
         //uint reward = (totalReward * reward) / 100;
 
