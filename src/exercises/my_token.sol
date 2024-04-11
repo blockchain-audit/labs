@@ -49,17 +49,17 @@ address public owner;
         totalSupply -= amount;
         emit Transfer(msg.sender, address(0), amount);
     }
-    function name() external view returns (string memory){
+    function name() external pure returns (string memory){
         return "ygg";
     }
 
     // / @notice Returns the symbol of the token.
-    function symbol() external view returns (string memory){
+    function symbol() external pure returns (string memory){
         return "Coin";
     }
 
     /// @notice Returns the decimals places of the token.
-    function  decimals() external view returns (uint8){
+    function  decimals() external pure returns (uint8){
         return 7;
     }
 }
