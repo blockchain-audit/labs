@@ -18,8 +18,8 @@ pragma solidity ^0.8.20;
 // @Auther: Chana Cohen
 // @title Collectors
 
-// The contract named Collectores
-contract Collectores {
+// The contract named Collectors
+contract Collectors {
     // A public variable that represents the owner of the contract
     address public owner;
     //Mapping that maps a collector's address to whether it belongs to one of three collectors or not
@@ -98,8 +98,7 @@ contract Collectores {
     }
 
     /// @dev shows the balance in the contract
-    function getBalance() public view returns(uint)
-    {
+    function getBalance() public view returns(uint){
     return address(this).balance;
     }
 }
