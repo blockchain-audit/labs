@@ -12,49 +12,52 @@ import "@hack/wallet/walletCollectors.sol";
 
 contract CollectorsTest is Test{
    Collectors public c;
-
+   address public sender;
 function setUp() public {
    c = new Collectors();
 }
-function test_changeLimit(){
-    uint limit = 5;
-  Collectors.changeLimit(limit);
+
+receive() external payable{}
+
+function test_changeLimit () public{
+ //   uint limit = 5;
+ // Collectors.changeLimit(limit);
 }
 
-function test_addCollector(){
-
+function test_addCollector() public{
+Collectors.addCollector(address(0x123));
 }
 
-function testFail_addCollector(){
-
-}
-
-function test_removeCollector(){
-
-}
-
-function testFail_removeCollector(){
+/*function testFail_addCollector() public{
 
 }
 
-function test_changeCollector(){
+function test_removeCollector() public{
 
 }
 
-function testFail_changeCollector(){
+function testFail_removeCollector() public{
 
 }
 
-function test_withdraw(){
+function test_changeCollector() public{
 
 }
 
-function testFail_withdraw(){
+function testFail_changeCollector() public{
 
 }
 
-function test_getBalance(){
+function test_withdraw() public{
 
 }
 
+function testFail_withdraw() public{
+
+}
+
+function test_getBalance() public{
+
+}
+*/
 }
