@@ -25,7 +25,7 @@ contract Collectors {
     //Mapping that maps a collector's address to whether it belongs to one of three collectors or not
     mapping(address => bool) public collectors;
     //The limit of number of collector can to be in this contract
-    uint limitCollectors;
+    uint public limitCollectors;
     //Num of the collectors and owner
     uint numAuthorized;
     // Constructor function that builds the contract
