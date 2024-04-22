@@ -1,18 +1,16 @@
-// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.20;
 
-//import {Test} from "forge-std/Test.sol";
-//import {console} from "forge-std/console.sol";
-import "forge-std/StdAssertions.sol";
+import "forge-std/StdAssertion.sol";
 import "foundry-huff/HuffDeployer.sol";
 import "forge-std/Test.sol";
 import "forge-std/console.sol";
 import "forge-std/Vm.sol";
 import "@hack/wallet/walletCollectors.sol";
 
-contract CollectorsTest is Test{
-   Collectors public c;
+contract CollectorsFuzzTest is Test{
+
+  Collectors public c;
    address public sender;
 
 function setUp() public {
@@ -23,16 +21,14 @@ function setUp() public {
 
 receive() external payable{}
 
-function test_changeLimit () public{
-   uint limit = 5;
+function testFuzz_changeLimit (uint limit) public{
    c.changeLimit(limit);
-   assertEq.equal(c.limitCollectors, 5, "Limit collectors should be update to 5");
+   assertEq.equal(c.limitCollectors, limit, "Limit collectors should be update to 5");
    uint currentLimit = c.limitCollectors;
    assertEq(currentLimit == limit, "Change limit function not working correctly.");
 }
 
-function test_addCollector() public{
-    address newCollector = address(0x123);
+function testFuzz_addCollector(address newCollector) public{
     c.addCollector(newCollector);
     bool isCollectorAdded = c.collectors[newCollector];
     assertEq(isCollectorAdded == true, "Add collector function not working correctly.");
@@ -42,8 +38,7 @@ function test_addCollector() public{
 
 //}
 
-function test_removeCollector() public{
-    address collectorToRemove = address(0x123);
+function testFuzz_removeCollector(address collectorToRemove) public{
     c.removeCollector(collectorToRemove);
     bool isCollectorRemoved = c.collectors[collectorToRemove];
     assertEq(isCollectorRemoved == false, "Remove collector function not working correctly.");
@@ -53,9 +48,7 @@ function test_removeCollector() public{
 
 //}
 
-function test_changeCollector() public{
-    address collectorToChange = address(0x123);
-    address newCollector = address(0x456);
+function testFuzz_changeCollector(address collectorToChange, address newCollector) public{
     c.changeCollector(collectorToChange, newCollector);
     bool isCollectorChanged = c.collectors[newCollector];
     assertEq(isCollectorChanged == true,"Change collector function not working correctly.");
@@ -65,8 +58,7 @@ function test_changeCollector() public{
 
 //}
 
-function test_withdraw() public{
-uint amount = 1 ether;
+function testFuzz_withdraw(uint amount) public{
 uint initialBalance = address(this).balance;
 c.withdraw(amoun);
 uint fianlBalance = address(c).balance;
@@ -77,8 +69,9 @@ assertEq(fianlBalance == initialBalance - amount, "Withdrawal amount incorrect."
 
 //}
 
-function test_getBalance() public{
+function testFuzz_getBalance() public{
     assertEq(address(c).balance == c.getBalance, "Contract balance does not match expected balance.");
     //address(c) is same address(this)
 }
+
 }
