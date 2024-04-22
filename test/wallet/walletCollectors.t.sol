@@ -27,10 +27,9 @@ receive() external payable{}
 function test_changeLimit () public{
    uint limit = 5;
    c.changeLimit(limit);
-   // assertEq.equal(c.limitCollectors, 5, "Limit collectors should be update to 5");
+   assertEq.equal(c.limitCollectors, 5, "Limit collectors should be update to 5");
    uint currentLimit = c.limitCollectors;
-   //assert(currentLimit == limit, "Change limit function not working correctly.");
-   //assert(7 == limit, "dfghjk");
+   assertEq(currentLimit == limit, "Change limit function not working correctly.");
 }
 
 function test_addCollector() public{
