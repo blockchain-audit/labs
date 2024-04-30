@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 
 //import {Test} from "forge-std/Test.sol";
 //import {console} from "forge-std/console.sol";
-import "forge-std/StdAssertions.sol";
+//import "forge-std/StdAssertions.sol";
 import "foundry-huff/HuffDeployer.sol";
 import "forge-std/Test.sol";
 import "forge-std/console.sol";
@@ -24,10 +24,10 @@ function setUp() public {
 receive() external payable{}
 
 function test_changeLimit () public{
-   uint limit = 5;
+   uint256 limit = 5;
    c.changeLimit(limit);
-   assertEq.equal(c.limitCollectors, 5, "Limit collectors should be update to 5");
-   uint currentLimit = c.limitCollectors;
+   assertEq(c.limitCollectors, 5, "Limit collectors should be update to 5");
+   uint256 currentLimit = c.limitCollectors;
    assertEq(currentLimit == limit, "Change limit function not working correctly.");
 }
 
@@ -66,10 +66,10 @@ function test_changeCollector() public{
 //}
 
 function test_withdraw() public{
-uint amount = 1 ether;
-uint initialBalance = address(this).balance;
-c.withdraw(amoun);
-uint fianlBalance = address(c).balance;
+uint256 amount = 1 ether;
+uint256 initialBalance = address(this).balance;
+c.withdraw(amount);
+uint256 fianlBalance = address(c).balance;
 assertEq(fianlBalance == initialBalance - amount, "Withdrawal amount incorrect.");
 }
 

@@ -1,7 +1,6 @@
 
 pragma solidity ^0.8.20;
 
-import "forge-std/StdAssertion.sol";
 import "foundry-huff/HuffDeployer.sol";
 import "forge-std/Test.sol";
 import "forge-std/console.sol";
@@ -23,7 +22,7 @@ receive() external payable{}
 
 function testFuzz_changeLimit (uint limit) public{
    c.changeLimit(limit);
-   assertEq.equal(c.limitCollectors, limit, "Limit collectors should be update to 5");
+   assertEq(c.limitCollectors, limit, "Limit collectors should be update to 5");
    uint currentLimit = c.limitCollectors;
    assertEq(currentLimit == limit, "Change limit function not working correctly.");
 }
@@ -60,7 +59,7 @@ function testFuzz_changeCollector(address collectorToChange, address newCollecto
 
 function testFuzz_withdraw(uint amount) public{
 uint initialBalance = address(this).balance;
-c.withdraw(amoun);
+c.withdraw(amount);
 uint fianlBalance = address(c).balance;
 assertEq(fianlBalance == initialBalance - amount, "Withdrawal amount incorrect.");
 }
