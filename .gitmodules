@@ -13,3 +13,6 @@
 [submodule "src/new-project/lib/openzeppelin-contracts"]
 	path = src/new-project/lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "lib/openzeppelin-contracts"]
+	path = lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
