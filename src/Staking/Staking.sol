@@ -1,87 +1,84 @@
 // SPDX-License-Identifier: MIT
-
-pragma solidity >=0.6.12 <0.9.0;
+pragma solidity ^0.8.24;
 import "forge-std/console.sol";
-// import "../audit/approve.sol";
-import "../new_project/src/MyToken.sol";
+import "../audit/approve.sol";
+import "../Staking/MyToken.sol";
 
 contract Staking {
-
-    struct User {        
+    
+    struct User {
         uint256 date;
         uint256 sum;
-    } 
+    }
 
-    mapping(address=> User[]) public database;
-    uint256 date;
-    uint256 public poolBalance ;
-    uint256 poolsRich;
-    uint256 percent;
-    address owner;
-    MyToken myToken;
-    address rich;
-
-    constructor(){
+    mapping(address => User[]) public database;
+    uint256 public date;
+    uint256 public stakingPool;
+    uint256 public percent;
+    address public owner;
+    MyToken public myToken;
+    uint256 wad = 10 ** 18;
+    constructor() {
+       
         date = block.timestamp;
-        poolBalance = 0;
-        // poolsRich = 1000000000;
-        percent = 1000;
+        stakingPool = 0;
+        percent = 100;
         owner = payable(msg.sender);
-        rich = 0x7a3b914a1f0bD991BAf826F4fE9a47Bb9880d25f;
         myToken = new MyToken();
-        myToken.mint(10**6);
+        myToken.mint(wad);
     }
 
-    modifier onlyOwner(){
-        require(
-            owner == msg.sender 
-            );
-            _;
+    modifier onlyOwner() {
+        require(owner == msg.sender);
+        _;
     }
-    //function
-    function deposit(uint256 amount) external payable{
-        for(uint256 i = 0; i < database[msg.sender].length; i++)
-        {
-            if(database[msg.sender][i].date == block.timestamp){
-                database[msg.sender][i].sum += amount;
-            }
-            else{
-                database[msg.sender].push(User({ date: block.timestamp, sum: amount }));
-            }
-        }
-        myToken.transferFrom();
-        poolBalance += amount;
+    function pushDatabase(uint256 _date,uint256 _sum,address userAdress) public{
+        database[userAdress].push(User({date:_date,sum:_sum}));
     }
 
-    // receive() external payable deposit{} 
+    function deposit(uint256 amount) external payable {
+        myToken.approve(msg.sender, amount);
+        myToken.transferFrom(address(this), msg.sender, amount);
+        database[msg.sender].push(User({date: block.timestamp, sum: amount}));
+        stakingPool += amount;
+    }
 
-    function withdraw(uint256 amount) external{
+    // receive() external payable deposit{}
+
+    function withdraw(uint256 amount) external {
         uint256 sum = 0;
         uint256 bonus;
         sum = calculateDays(amount);
-        require(sum != 0,"you can withdraw your money");
+        require(sum > 0, "You can't withdraw your money or You don't have enough money");
         bonus = calculateSum(sum);
-        myToken.transferFrom(rich,msg.sender,bonus);
-        myToken.transfer(msg.sender,amount);
-        poolBalance -= amount; 
+        myToken.transferFrom(address(this), msg.sender, bonus);
+        myToken.transfer(msg.sender, amount);
+        stakingPool -= amount;
     }
 
-    function calculateDays(uint256 amount)public returns ( uint256){
+    function calculateDays(uint256 amount) public returns (uint256) {
         uint256 sum = 0;
-        for(uint256 i = 0; i<database[msg.sender].length; i++)
-        {
-            if(date - 604800 >= database[msg.sender][i].date) //time of 7 days in seconds
+        for (uint256 i = 0; i < database[msg.sender].length && sum < amount; i++) {
+            if (
+                block.timestamp - 604800 >= database[msg.sender][i].date) //time of 7 days in seconds
             {
-                sum += database[msg.sender][i].sum;
+                    sum += database[msg.sender][i].sum;
+                    database[msg.sender][i].sum = 0;
+                    database[msg.sender][i].date = 0;
             }
         }
-        if(sum < amount)
-            return 0;
+        if (sum < amount) return 0; // lock or you dont have enough money to withDraw
         return amount;
     }
 
-    function calculateSum(uint256 sum) public returns (uint256){
-        uint256 rate = sum / poolBalance;
-        return rate * (percent * poolsRich);
+    function calculateSum(uint256 sum) public view returns  (uint256) {
+        uint256 rate = sum / stakingPool;
+        return rate * (percent * myToken.totalSupply());
+    }
+    function print(address userAddress) public view{
+        for(uint256 i=0;i<database[userAddress].length;i++){
+            console.log(database[userAddress][i].date," date");
+            console.log(database[userAddress][i].sum," sum");
+            }
     }
 }
