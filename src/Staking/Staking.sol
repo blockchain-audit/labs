@@ -2,8 +2,7 @@
 pragma solidity ^0.8.24;
 import "forge-std/console.sol";
 import "../audit/approve.sol";
-import "../Staking/MyToken.sol";
-
+import "../like/MyToken.sol";
 contract Staking {
     
     struct User {
@@ -17,6 +16,8 @@ contract Staking {
     uint256 public percent;
     address public owner;
     MyToken public myToken;
+    IERC20 public stakingToken;
+   
     uint256 wad = 10 ** 18;
     constructor() {
        
@@ -37,7 +38,7 @@ contract Staking {
     }
 
     function deposit(uint256 amount) external payable {
-        myToken.approve(msg.sender, amount);
+        stakingToken.approve(msg.sender, amount);
         myToken.transferFrom(address(this), msg.sender, amount);
         database[msg.sender].push(User({date: block.timestamp, sum: amount}));
         stakingPool += amount;
@@ -52,7 +53,7 @@ contract Staking {
         require(sum > 0, "You can't withdraw your money or You don't have enough money");
         bonus = calculateSum(sum);
         myToken.transferFrom(address(this), msg.sender, bonus);
-        myToken.transfer(msg.sender, amount);
+        //myToken.transfer(msg.sender, amount);זה כתוב בתוך mint ולכן לא צריך
         stakingPool -= amount;
     }
 
