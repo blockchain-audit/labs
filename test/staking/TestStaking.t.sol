@@ -5,7 +5,7 @@ import "@labs/staking/MyToken.sol";
 import "@labs/staking/Staking.sol";
 import "forge-std/Test.sol";
 
-contract testStaking is Test {
+contract TestStaking is Test {
     Staking staking;
     MyToken myToken;
 

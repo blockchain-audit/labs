@@ -38,7 +38,7 @@ contract Staking {
         totalStaking -= amount;
     }
 
-    function calcReward(uint256 amount, uint256 staking, uint256 balanceReward) public view returns (uint256) {
+    function calcReward(uint256 amount, uint256 staking, uint256 balanceReward) public pure returns (uint256) {
         uint256 CountReward = (balanceReward / 100 * 2 * 1e18 / ((staking * 1e18 / amount)));
         return CountReward;
     }

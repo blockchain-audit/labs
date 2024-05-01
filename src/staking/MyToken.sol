@@ -9,6 +9,7 @@ contract MyToken is IERC20 {
     mapping(address => mapping(address => uint256)) public allowance;
     string public name = "MyToken";
     string public symbol = "MTK";
+    uint8 public decimals = 18;
 
     //withdraw
     function transfer(address to, uint256 amount) external returns (bool) {
@@ -25,7 +26,6 @@ contract MyToken is IERC20 {
     }
 
     function transferFrom(address from, address to, uint256 amount) external returns (bool) {
-        console.log("transferFrom" , msg.sender);
         allowance[from][msg.sender] -= amount;
         balanceOf[from] -= amount;
         balanceOf[to] += amount;
@@ -43,10 +43,5 @@ contract MyToken is IERC20 {
         balanceOf[msg.sender] -= amount;
         totalSupply -= amount;
         emit Transfer(msg.sender, address(0), amount);
-    }
-
-    /// @notice Returns the decimals places of the token.
-    function decimals() external view returns (uint8) {
-        return 7;
     }
 }
