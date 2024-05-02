@@ -3,7 +3,7 @@ pragma solidity ^0.8.24;
 import "foundry-huff/HuffDeployer.sol";
 import "forge-std/Test.sol";
 import "forge-std/console.sol";
-import "../src/exercises/staking_pool.sol";
+import "../../src/exercises/staking_pool.sol";
 
 contract TestStaking is Test {
     Staking_pool  staking_pool;
@@ -13,7 +13,8 @@ contract TestStaking is Test {
         my_token=new MyToken();
         staking_pool=new Staking_pool(address(my_token));
         // i mint to this contrct for he can deposit 
-        my_token.mint(50*wad);
+        //שינתי את הכתובת בכל המינט 
+        my_token.mint(50*wad,address(this));
 
     }
 
@@ -55,7 +56,7 @@ contract TestStaking is Test {
 
     } 
     function testMint()public{
-        my_token.mint(100);
+        my_token.mint(100,msg.sender);
         assertEq(my_token.balanceOf(address(this)), 100);
     }
 }

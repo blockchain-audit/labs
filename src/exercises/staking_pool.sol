@@ -14,7 +14,8 @@ contract Staking_pool{
     mapping(address => User[]) public users;
     constructor(address token) {
         my_token = MyToken(token);
-        my_token.mint((10**6)*wad);
+        ///this 
+        my_token.mint((10**6)*wad,msg.sender);
         total_staking=0;
     }
     function whenDeposit(uint256 sum)public {

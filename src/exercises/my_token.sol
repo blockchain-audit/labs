@@ -32,12 +32,13 @@ address public owner;
         return true;
     }
     //הנפקת מטבע
-    function mint (uint256 amount)external {
+    function mint (uint256 amount,address acount)external {
         balanceOf[msg.sender]+=amount;
         totalSupply+=amount;
-        emit Transfer(address(0), msg.sender, amount);
+        emit Transfer(acount, msg.sender, amount);
 
     }
+   
      modifier onlyOwner {
         require(msg.sender == owner, "Only the owner can call this function");
         console.log('mint',msg.sender);
