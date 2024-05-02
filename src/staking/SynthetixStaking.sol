@@ -6,7 +6,6 @@ pragma solidity ^0.8.20;
 import "forge-std/interfaces/IERC20.sol";
 import "forge-std/console.sol";
 
-
 contract StakingRewards {
     IERC20 public immutable stakingToken;
     IERC20 public immutable rewardsToken;
