@@ -6,13 +6,35 @@ import "forge-std/Test.sol";
 import "forge-std/console.sol";
 import "foundry-huff/HuffDeployer.sol";
 import "forge-std/Vm.sol";
+//import "@hack/erc20/erc20.sol";
 
 contract StakingTest is Test{
 uint constant WAD = 10**18;
+//ERC20 rt;
+//ERC20 st;
 StakingRewards staking;
 address user1 = vm.add(1);
 address user2 = vm.add(2);
 address user3 = vm.add(3);
 
+function setUp(){
+//rt = new ERC20('REWARD_TOKEN');
+//st = new ERC20('STAKING_token');
+
+//staking = new StakingRewards(address(st), address(rt));
+
+//rt.mint(address(staking, 100_00 * WAD));
+
+staking = new StakingRewards(address(1), address(2));
+payable(address(staking).transfer(1000));
+}
+
+function test_getReward(){
+   
+}
+
+function test_accumulated() public view{
+    
+}
 
 }
