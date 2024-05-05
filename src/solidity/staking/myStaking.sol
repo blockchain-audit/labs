@@ -8,7 +8,7 @@ pragma solidity 0.8.20;
 //import {ERC20} from "../tokens/ERC20.sol";
 
 import "forge-std/console.sol";
-import "./myERC20.sol";
+//import "./myERC20.sol";
 
 contract Stake {
     //struct Staker{

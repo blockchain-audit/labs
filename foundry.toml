@@ -12,6 +12,7 @@ remappings = [
     "foundry-huff=lib/foundry-huff/src/",
     "@hack/=src/",
     "solmate/=lib/solmate/src/",
+    "@openzeppelin/=lib/openzeppelin-contracts/contracts/token/",
     
 ]
 fs_permissions = [
