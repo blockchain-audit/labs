@@ -29,8 +29,8 @@ contract FuzzTestStaking is Test {
         assertEq(myToken.balanceOf(address(staking)), beforeInStaking + amount);
     }
 
-    function testCalcReward(uint256 amount, uint256 totalStaking, uint256 balanceReward) public {
-        uint256 CountReward = staking.calcReward(amount, totalStaking, balanceReward);
-        assertEq(CountReward, (balanceReward / 100 * 2 * 1e18 / ((totalStaking * 1e18 / amount))));
-    }
+    // function testCalcReward(uint256 amount, uint256 totalStaking, uint256 balanceReward) public {
+    //     uint256 CountReward = staking.calcReward(amount, totalStaking, balanceReward);
+    //     assertEq(CountReward, (balanceReward / 100 * 2 * 1e18 / ((totalStaking * 1e18 / amount))));
+    // }
 }

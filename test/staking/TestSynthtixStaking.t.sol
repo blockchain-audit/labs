@@ -85,21 +85,21 @@ contract TestSynthtixStaking is Test {
         stakingToken.approve(address(staking), 10 * wad);
         staking.stake(10 * wad);
         uint256 countTokens = stakingToken.balanceOf(user1);
-        staking.withdraw(11 * wad);
+        staking.withdraw(10 * wad);
         assertEq(stakingToken.balanceOf(user1), countTokens + 10 * wad);
     }
 
-    function testStake()public{
+    function testStake() public {
         vm.startPrank(user1);
         uint256 BeforeStakeStaking = stakingToken.balanceOf(address(staking));
-        uint supply = staking.totalSupply();
+        uint256 supply = staking.totalSupply();
         stakingToken.mint(10 * wad);
         uint256 BeforeStakeUser1 = stakingToken.balanceOf(user1);
         stakingToken.approve(address(staking), 10 * wad);
         staking.stake(10 * wad);
         console.log(stakingToken.balanceOf(user1));
-        assertEq(stakingToken.balanceOf(user1), BeforeStakeUser1 - 10* wad);
-        assertEq(staking.totalSupply(), supply + 10*wad);
-        assertEq(stakingToken.balanceOf(address(staking)), BeforeStakeStaking + 10*wad);
+        assertEq(stakingToken.balanceOf(user1), BeforeStakeUser1 - 10 * wad);
+        assertEq(staking.totalSupply(), supply + 10 * wad);
+        assertEq(stakingToken.balanceOf(address(staking)), BeforeStakeStaking + 10 * wad);
     }
 }
