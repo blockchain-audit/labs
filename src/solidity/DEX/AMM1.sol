@@ -14,9 +14,9 @@ contract AMM1{
     uint kFactors;
     //אחוז הנזילות שכתובת ארנק סיפקה
     mapping(address=>uint) public liquidityProviders;
-    uint WAD constant = 10**18;
+    uint constant WAD= 10**18;
 
-    constractor public(IERC20 tA, IERC20 tB, uint256 aA, uint256 aB){
+    constructor(IERC20 tA, IERC20 tB, uint256 aA, uint256 aB){
         owner = msg.sender;
         tokenA = IERC20(tA);
         tokenB = IERC20(tB);
@@ -28,7 +28,7 @@ contract AMM1{
         require(isInitialized == false, "");
         amountA = initializeA;
         amountB = initializeB;
-         = initializeA;
+        kFactors = initializeA;
         isInitialized = true;
     } 
 
@@ -56,7 +56,7 @@ contract AMM1{
         liquidityProviders[msg.sender] = value;
         amountA += amountTA;
         amountB += amountTB;
-         += value;
+        kFactors += value;
      }
 
      function removeLiquidity(uint value) public{
@@ -74,6 +74,7 @@ contract AMM1{
 
      //ערך למטבע
      //יש הכפלה בWAD
-     function price(IERC20 token) public returns(uint){
+     function price(IERC20 token) public view returns(uint){
        return WAD * kFactors / token.balanceOf(address(this)); 
-} 
+    } 
+}
