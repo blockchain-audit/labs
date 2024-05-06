@@ -25,7 +25,7 @@ contract AMM1{
 
     function initialize(uint256 initializeA, uint256 initializeB ) private{
         require(initializeA > 0 && initializeB > 0 && initializeA == initializeB, "InitialA and initialB must be greater than zero.");
-        require(isInitialized == false, "");
+        require(isInitialized == false, "The initialization is already done.");
         amountA = initializeA;
         amountB = initializeB;
         kFactors = initializeA;
@@ -33,40 +33,48 @@ contract AMM1{
     } 
 
     modifier onlyOwner() {
-        require(msg.sender == owner, "not authorized");
+        require(msg.sender == owner, "Not authorized.");
         _;
     }
    
-     function tradeAToB() public payable{
-     
+     function tradeAToB(uint amont) public payable{
+        require(amont > 0, "The amount can not be zero");
+        require(tokenA.balanceOf(msg.sender) >= amount, "You don't have enough tokens to deposit.");
+        uint sunToTransfer = amountB - (WAD * kFactors ** 2) / amountA);
+        require(tokenB.balanceOf(address(this)) > sunToTransfer, "Sorry, there are not enough token to withdraw.");
+        tokenA.transferFrom(msg.sender, address(this), amount);
+        tokenB.transfer(msg.sender, sunToTransfer);
+        amountB =- (WAD * kFactors) / amountA;
+        amountA += amount;
      }
 
-     function tradeBToA() public payable{
+     function tradeBToA(uint amont) public payable{     
 
      }
 
      //הפונקציה מקבלת ערך של נזילות שמעוניינים להכניס לברכה
      function addLiquidity(uint value) public payable{
-        require(value > 0, "The sum of the coins must be bigger than zero");
-        uint amountTA = value / price(tokenA);
-        uint amountTB = value / price(tokenA);
-        require(tokenA.balanceOf(msg.sender) >= amountTA && tokenB.balanceOf(msg.sender) >= amountTB, "You don't have enough coins");
+        require(value > 0, "The sum of the coins must be bigger than zero.");
+        uint amountTA = ((WAD * value) / price(tokenA));
+        uint amountTB = ((WAD * value) / price(tokenA));
+        require(tokenA.balanceOf(msg.sender) >= amountTA && tokenB.balanceOf(msg.sender) >= amountTB, "You don't have enough coins.");
         tokenA.transferFrom(msg.sender, address(this), amountTA);
         tokenB.transferFrom(msg.sender, address(this), amountTB);
-        liquidityProviders[msg.sender] = value;
+        liquidityProviders[msg.sender] += value;
         amountA += amountTA;
         amountB += amountTB;
         kFactors += value;
      }
 
      function removeLiquidity(uint value) public{
-        require(value > 0, "The sum of the coins must be bigger than zero");
-        require(liquidityProviders[msg.sender] >= value, "You don't have enough liquidity to withdraw");
-        uint amountTA = value / price(tokenA);
-        uint amountTB = value / price(tokenA);
+        require(value > 0, "The sum of the coins must be bigger than zero.");
+        require(liquidityProviders[msg.sender] >= value, "You don't have enough liquidity to withdraw.");
+        uint amountTA = ((WAD *  value) / price(tokenA));
+        uint amountTB = ((WAD * value) / price(tokenA));
         //uint percent = WAD * liquidityProviders[msg.sender] / KFactors**2;
         tokenA.transfer(msg.sender, amountTA);
         tokenB.transfer(msg.sender, amountTB);
+        liquidityProviders[msg.sender] -= value;
         amountA -= amountTA;
         amountB -= amountTB;
         kFactors -= value;
