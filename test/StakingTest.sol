@@ -38,7 +38,7 @@ contract StakingTest is Test {
         staking.print(userAddress);
         uint256 finalPoolBalance = staking.stakingPool();
         assertEq(initialPoolBalance - 500, finalPoolBalance);
-        uint256 finalUserBalance = staking.myToken().balanceOf(userAddress);
+        //uint256 finalUserBalance = staking.myToken().balanceOf(userAddress);
         assertEq(initalUserBalance - 500, finalPoolBalance - staking.calculateSum(500));  
     }
 }

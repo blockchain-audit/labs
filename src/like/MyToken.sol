@@ -1,11 +1,10 @@
+// SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.20;
-
 import "forge-std/console.sol";
-import "forge-std/interfaces/IERC20.sol";
-import "../like/IERC20.sol" as IERC20Like;
+import "./IERC20.sol";
 
 
-contract MyToken is IERC20Like {
+contract MyToken is IERC20 {
     uint256 public totalSupply;
     mapping(address => uint256) public balanceOf;
     mapping(address => mapping(address => uint256)) public allowance;
@@ -48,7 +47,7 @@ contract MyToken is IERC20Like {
     }
 
     /// @notice Returns the decimals places of the token.
-    function decimals() external view returns (uint8) {
+    function decimals() external pure returns (uint8) {
         return 7;
     }
 }

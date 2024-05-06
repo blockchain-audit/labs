@@ -1,8 +1,11 @@
 // SPDX-License-Identifier: MIT
 // https://solidity-by-example.org/defi/staking-rewards/
 // Code is a stripped down version of Synthetix
+
 pragma solidity ^0.8.20;
 import "@hack/like/IERC20.sol";
+import "forge-std/console.sol";
+
 
 contract StakingRewards {
     IERC20 public immutable stakingToken;
@@ -10,10 +13,10 @@ contract StakingRewards {
     address public owner;
     uint256 public duration = 7 days;   // [sec] reward duration
     uint256 public finish   = 0;        // [sec] finish reward time
-    uint256 public updated;             // [sec] last time rate updated הזמן הקודם שעודכן
-    uint256 public rate = 0;            // [per] reward rate per sec 
-    uint256 public reward;              // reward per token stored 
-    uint256 public staked;              // total staked- in pool
+    uint256 public updated;             // [sec] last time rate updated
+    uint256 public rate = 0;            // [per] reward rate per sec
+    uint256 public reward;              // reward per token stored
+    uint256 public staked;              // total staked
     mapping(address => uint256) public paid;    // user reward per token paid
     mapping(address => uint256) public rewards; // reward to be claimed
     mapping(address => uint256) public balances;// staked per user
@@ -21,6 +24,7 @@ contract StakingRewards {
         owner = msg.sender;
         stakingToken = IERC20(st);
         rewardsToken = IERC20(rt);
+        console.log(address(this), "address of staking");
     }
     modifier onlyOwner() {
         require(msg.sender == owner, "not authorized");
@@ -35,15 +39,6 @@ contract StakingRewards {
             return reward;
         }
         return reward + (rate * (lastTime() - updated) * 1e18) / staked;
-        //reward-till now, 
-        //rate-
-        //staked-in pool
-        //lastTIme-הזמן שעבר
-        //updated-הזמן הקודם שעודכן
-        //1e18-wad
-        // לא עשיתי חלוקה רק ל 100 הראשונים אלא לכולם
-
-        
     }
     function earned(address guy) public view returns (uint256) {
         return ((balances[guy] * (accumulated() - paid[guy])) / 1e18)
