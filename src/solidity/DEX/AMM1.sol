@@ -23,6 +23,7 @@ contract AMM1{
         initialize(aA, aB);
     }
 
+    //לכתוב ולתקן שהערך שזהה ולא מספר המטבעות ולחשב את ולחשב את הנזילות בפעם הראשונה
     function initialize(uint256 initializeA, uint256 initializeB ) private{
         require(initializeA > 0 && initializeB > 0 && initializeA == initializeB, "InitialA and initialB must be greater than zero.");
         require(isInitialized == false, "The initialization is already done.");
@@ -37,19 +38,26 @@ contract AMM1{
         _;
     }
    
-     function tradeAToB(uint amont) public payable{
-        require(amont > 0, "The amount can not be zero");
+     function tradeAToB(uint amount) public payable{
+        require(amount > 0, "The amount can not be zero");
         require(tokenA.balanceOf(msg.sender) >= amount, "You don't have enough tokens to deposit.");
-        uint sunToTransfer = amountB - (WAD * kFactors ** 2) / amountA);
-        require(tokenB.balanceOf(address(this)) > sunToTransfer, "Sorry, there are not enough token to withdraw.");
+        uint sunToTransfer = amountB - (WAD * kFactors ** 2) / amountA;
+        require(tokenB.balanceOf(address(this)) >= sunToTransfer, "Sorry, there are not enough token to withdraw.");
         tokenA.transferFrom(msg.sender, address(this), amount);
         tokenB.transfer(msg.sender, sunToTransfer);
-        amountB =- (WAD * kFactors) / amountA;
+        amountB -= (WAD * kFactors) / amountA;
         amountA += amount;
      }
 
-     function tradeBToA(uint amont) public payable{     
-
+     function tradeBToA(uint amount) public payable{     
+        require(amount > 0, "The amount can not be zero");
+        require(tokenB.balanceOf(msg.sender) >= amount, "You don't have enough tokens to deposit.");
+        uint sunToTransfer = amountA - (WAD * kFactors ** 2) / amountB;
+        require(tokenA.balanceOf(address(this)) >= sunToTransfer, "Sorry, there are not enough token to withdraw.");
+        tokenB.transferFrom(msg.sender, address(this), amount);
+        tokenA.transfer(msg.sender, sunToTransfer);
+        amountA -= (WAD * kFactors) / amountB;
+        amountB += amount;
      }
 
      //הפונקציה מקבלת ערך של נזילות שמעוניינים להכניס לברכה
