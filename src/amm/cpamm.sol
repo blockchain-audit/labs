@@ -56,7 +56,7 @@ contract CPAMM {
         //calculating the token to give to the sender accordding to the formula x*y=k
         amountOut = (reserveOut * amountInWithFee) / (reserveIn + amountInWithFee);
         
-        //tresferint to the sender rthe amount that was calculated
+        //transfering to the sender the amount that was calculated
         tokenOut.transfer(msg.sender, amountOut);
 
         reserve0 = token0.balanceOf(address(this));
