@@ -76,6 +76,6 @@ contract Auction {
         returnMoney(seller);
 
     }
-
+//להוסיף RECIVE ולהתקן SELLER
 
 }
