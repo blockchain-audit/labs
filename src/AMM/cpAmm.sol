@@ -3,9 +3,9 @@
 // Code is a stripped down version of Synthetix
 
 pragma solidity ^0.8.20;
-import "../../like/IERC20.sol";
+import "../like/IERC20.sol";
 import "forge-std/console.sol";
-import "../../audit/approve.sol";
+import "../audit/approve.sol";
 
 contract CpAmm{
 
@@ -21,7 +21,7 @@ contract CpAmm{
 
     constructor(address tA, address tB) {
         tokenA = IERC20(tA);
-        tokenB = IERC20(tB1);
+        tokenB = IERC20(tB);
     }
 
     function mint(address to, uint amount) private {
@@ -49,7 +49,7 @@ contract CpAmm{
             : (tokenB, tokenA, reserveB, reserveA);
 
 
-        tokenIn.transferFrom(msg.sender, addresss(this), amountIn); // transfer the tokens (user want to swap) from user to poll
+        tokenIn.transferFrom(msg.sender, address(this), amountIn); // transfer the tokens (user want to swap) from user to poll
 
         // 0.3% fee for swaping
         uint amountInWithFee = (amountIn * 997) / 1000;
@@ -67,7 +67,7 @@ contract CpAmm{
         tokenB.transferFrom(msg.sender, address(this), amountB);
 
         // when reserveA and reserveB equal 0 (in the first time - empty pool) we will not check the rate - no rate
-        if (reserveA > 0 || reserve1 > 0){ // reserve - before the change, amount - dx, dy
+        if (reserveA > 0 || reserveB > 0){ // reserve - before the change, amount - dx, dy
             require(reserveA * amountA == reserveB * amountB, "x/y !=dx/dy"); // check the rate of the pool
         }
 
@@ -82,8 +82,8 @@ contract CpAmm{
         require(shares > 0 , "shares = 0");
         mint(msg.sender, shares);
 
-        reserveA = tokanA.balanceOf(address(this)); // update amount of tokenA
-        reserveB = tokanB.balanceOf(address(this)); // update amount of tokenB
+        reserveA = tokenA.balanceOf(address(this)); // update amount of tokenA
+        reserveB = tokenB.balanceOf(address(this)); // update amount of tokenB
     }
 
     function removeLiquidity( uint _shares) external returns (uint amountA, uint amountB){
