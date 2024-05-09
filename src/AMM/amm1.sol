@@ -25,7 +25,7 @@ contract Amm1{
     
     uint WAD;
 
-    mapping(address => tokens) public users; 
+    mapping(address => tokens) public balances; 
 
     constructor(address _tokenX, address _tokenY){
         x = IERC20(_tokenX);
@@ -34,21 +34,32 @@ contract Amm1{
         x.approve(address(this),100); 
         y.approve(address(this),100);
 
-        _mint(100,100);
         WAD = 10**18;
+        
+        x.approve(msg.sender, 100); 
+        y.approve(msg.sender, 100); 
+        initialize(msg.sender,100, 100);
     }
- 
-    function _mint(uint256 amountX, uint256 amountY) private {
+
+    function initialize(address from,uint amountX, uint amountY) private {
+        x.transferFrom(address(from),address(this),amountX);
         balanceX += amountX;
+        y.transferFrom(address(from),address(this),amountY);
         balanceY += amountY;
         totalSupply = balanceX + balanceY;
     }
-
-    function _burn(uint256 amountX, uint256 amountY) private {
-        balanceX -= amountX;
-        balanceY -= amountY;
-        totalSupply = balanceX + balanceY;
+ 
+    function mint(address to, uint amount) private {
+        balances[to].tX += amount;
+        balances[to].tY += amount;
+        totalSupply   += amount;
     }
+
+    function burn(address from, uint amount) private {
+        balances[from].tX -= amount;
+        totalSupply     -= amount;
+    }
+
     function price() public view returns(uint){
         return balanceX > balanceY ? (balanceX * WAD / balanceY) : (balanceY * WAD /balanceX);
     }
@@ -92,8 +103,8 @@ contract Amm1{
         y.transferFrom(address(msg.sender),address(this),amountY);
         balanceY += amountY;
         totalSupply = balanceX + balanceY;
-        users[msg.sender].tX += amountX;
-        users[msg.sender].tY += amountY;
+        balances[msg.sender].tX += amountX;
+        balances[msg.sender].tY += amountY;
     }
 
     function removeLiquidity(uint amountX, uint amountY) public { //->amount
@@ -101,14 +112,14 @@ contract Amm1{
         require(rate == price(), "rate not equal");
         require(amountX <= balanceX, "There is no enough token X");
         require(amountY <= balanceY, "There is no enough token Y");
-        require(amountX <= users[msg.sender].tX, "You don't have enough token Y");
-        require(amountY <= users[msg.sender].tY, "You don't have enough token Y");
+        require(amountX <= balances[msg.sender].tX, "You don't have enough token Y");
+        require(amountY <= balances[msg.sender].tY, "You don't have enough token Y");
         x.transfer(address(msg.sender),amountX);
         balanceX -= amountX;
         y.transfer(address(msg.sender),amountY);
         balanceY -= amountY;
         totalSupply = balanceX + balanceY;
-        users[msg.sender].tX -= amountX;
-        users[msg.sender].tY -= amountY;
+        balances[msg.sender].tX -= amountX;
+        balances[msg.sender].tY -= amountY;
     }
 }
