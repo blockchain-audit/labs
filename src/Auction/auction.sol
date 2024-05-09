@@ -16,7 +16,7 @@ contract Auction{
     }
 
     struct Bidder{
-
+        uint price;
     }
 
     Seller seller;
@@ -24,10 +24,10 @@ contract Auction{
     constructor() {
     }
 
-    function initialize(uint preDate, uint duration, uint price) public{
+    function initialize(uint preDate, uint duration/*, uint price*/) public{
         seller.addrSel = msg.sender;
         seller.started = true;
-        seller.startDate = block.timestamp;
-        seller.endDate = block.timestamp + duration;
+        seller.startDate = preDate;
+        seller.endDate = preDate + duration;
     }
 }
