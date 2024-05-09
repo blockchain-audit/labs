@@ -1,0 +1,30 @@
+// SPDX-License-Identifier: MIT
+//I copy the CP.sol
+pragma solidity ^0.8.20;
+
+//import "@hack/like/IERC20.sol";
+import "@openzeppelin/ERC20/IERC20.sol";
+
+//constact product
+
+contract CP{
+    IERC20 public immutable token0;
+    IERC20 public immutable token1;
+
+    uint public reserve0;
+    uint public reserve1;
+
+    uint public totalSupply;
+    
+    mapping(address => uint) public balances;
+
+    constructor(address t0, address t1){
+        token0 = IREC20(t0);
+        token1 = IERC20(t1);
+    }
+
+    function swap(address addIn, uint amountIn) external returns (uint amountOut){
+        require(addIn == address(token0) || addIn == address(token1), "AMM3-invalid-token");
+        
+    }
+}

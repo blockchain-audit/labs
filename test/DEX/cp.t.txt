@@ -1,0 +1,16 @@
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.20;
+
+uint constant WAD = 10**18;
+CP cp;
+IERC20 tA;
+IERC20 tB;
+contract CPTest is TEST{
+function setUp() public{
+    tA = new IERC20('token_a');
+    aB = new IERC20('token_b');
+    cp = new CP(address(tA), address(tB));
+    
+}
+}

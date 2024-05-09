@@ -45,7 +45,7 @@ function test_removeCollector() public{
     address collectorToRemove = address(0x123);
     c.removeCollector(collectorToRemove);
     bool isCollectorRemoved = c.collectors(collectorToRemove);
-    assertEq(isCollectorRemoved , false, "Remove collector function not working correctly.");
+    assertEq(isCollectorRemoved, false, "Remove collector function not working correctly.");
 }
 
 //function testFail_removeCollector() public{
