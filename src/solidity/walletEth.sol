@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
- 
+// @Auther: Chana Cohen
 pragma solidity ^0.8.20;
 
     error InsufficientFunds(string message);
@@ -78,7 +78,6 @@ pragma solidity ^0.8.20;
             if(address(this).balance < _amount){
                 revert InsufficientFunds("It is not possible to withdraw funds beyond the balance.");
             }
-
             payable(msg.sender).transfer(_amount);
         }
         
