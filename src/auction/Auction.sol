@@ -16,6 +16,7 @@ contract Auction {
     address public maxBidder;
     uint ended;
     constructor(address _NFTtoken,uint _NFTtokenId,address _token, uint _startPrice, uint duration){
+        require(NFTtoken.ownerOf(NFTtokenId)== msg.sender,"the token not valid");
         NFTtoken = ERC721(_NFTtoken);
         token = ERC20(_token);
         maxPrice = _startPrice;
