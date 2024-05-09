@@ -11,6 +11,6 @@ function setUp() public{
     tA = new IERC20('token_a');
     aB = new IERC20('token_b');
     cp = new CP(address(tA), address(tB));
-    
+
 }
 }
