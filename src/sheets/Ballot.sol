@@ -5,7 +5,7 @@ contract Ballot {
     struct Voter {
         //count of delegate have to this user
         uint256 weight;
-        bool voted; //if user already choose
+        bool voted; //auctionif user already choose
         //possible to give the other voter to choose instead of me
         address delegate;
         uint256 vote; //index of voted
