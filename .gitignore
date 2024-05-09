@@ -1,0 +1,25 @@
+# Any Node Modules
+node_modules/
+
+# Environment Variables
+.env
+.env.prod
+
+# Cached Build
+cache/
+out/
+
+# Vscode
+.vscode/
+
+# huffc artifacts
+artifacts
+
+# Ignore flattened files
+flattened.txt
+
+# Ignore Broadcasts
+broadcast
+
+# Dafny output
+bin

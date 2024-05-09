@@ -1,0 +1,79 @@
+
+//Alice->Lido Finance: Sends ETH
+//Lido Finance->Ethereum Network: Stakes Alice's ETH
+//Ethereum Network-->Alice: Receives stETH
+//Alice->Lido Finance: Transfers, trades, or lends stETH
+
+
+// בוב הפקיד אצל אווהDAI
+Bob->Aave: Deposits DAI
+//אצל אווה הDAI של בוב הופקד
+Aave->Aave: Bob's DAI deposited
+//צארלס לווה מאווה USDC, מציע DAI כבטחון
+Charles->Aave: Borrows USDC, offers DAI as collateral
+//Aave->Aave: צ'ארלס לווה USDC
+Aave->Aave: Charles borrows USDC
+//Bob->Aave: מרוויח ריבית על DAI
+Bob->Aave: Earns interest on DAI
+//Charles->Aave: משלם ריבית על USDC
+Charles->Aave: Pays interest on USDC
+
+//דיאנה רוצה להחליף את ETH ב-LINK.
+Diana->Uniswap: Provides ETH to liquidity pool
+//דיאנה מקיימת אינטראקציה עם Uniswap, ומספקת ETH למאגר נזילות המכיל ETH ו-LINK.
+Uniswap->Blockchain: Executes swap transaction on the blockchain
+//המאגר מחליף אוטומטית את ה-ETH של דיאנה ל-LINK על סמך יחס המאגר הנוכחי.
+Blockchain-->Uniswap: Confirms transaction
+//דיאנה מקבלת LINK, 
+Uniswap-->Diana: Sends LINK to Diana's wallet
+
+Arik ->Ren Protocol: Locks BTC on Bitcoin network
+Ren Protocol->Bitcoin Network: Locks BTC
+Bitcoin Network-->Ren Protocol: Confirms locking
+Ren Protocol->Ethereum Network: Mints renBTC
+Ethereum Network-->Ren Protocol: Confirms minting
+Ren Protocol-->Eric: Provides renBTC
+
+
+Arik->Ren Protocol: Initiates BTC lock on Bitcoin network
+Ren Protocol->Bitcoin Network: Locks BTC
+Bitcoin Network-->Ren Protocol: Confirms BTC lock
+Ren Protocol->Ethereum Network: Mints renBTC
+Ethereum Network-->Ren Protocol: Confirms renBTC minting
+Ren Protocol-->Arik: Provides renBTC
+
+
+Sarah->MakerDAO: Deposits ETH
+MakerDAO->Sarah: Locks ETH
+MakerDAO->Sarah: Mints DAI
+Sarah->Sarah: Receives DAI based on locked ETH value
+Sarah->Others: Uses DAI like any other stablecoin
+//If the value of Sarah's ETH falls
+//Sarah may need to add more ETH to maintain her CDP or face liquidation
+
+
+David->Real World Finance: Tokenizes house
+Real World Finance->Investors: Sells RWF tokens representing ownership fractions
+Investors->Real World Finance: Purchase RWF tokens
+Real World Finance->David: Provides funding from token sale
+Investors->Real World Finance: Receives rental income
+Real World Finance->Investors: Distributes rental income proportionally to token holdings
+
+
+Developers->The Graph: Integrates indexing protocol into DeFi app
+The Graph->DeFi App: Indexes on-chain data for searchability and analysis
+Developers->The Graph: Pays in tokens for indexing services
+Users->DeFi App: Experience smoother and more efficient DeFi interactions
+
+
+
+Emily -> Yearn Finance: Deposits tokens
+Yearn Finance: Automatically allocates Emily's tokens across various lending protocols
+Emily: Receives a single yield stream from combined earnings
+Yearn Finance: Charges a small fee for management services
+
+
+
+
+
+
