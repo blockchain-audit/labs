@@ -9,7 +9,7 @@ pragma solidity ^0.8.20;
         
         address payable public owner;
         //mapping(address => uint) balances;
-        address [30] public wallets =  [
+        address [30] public wallets = [
             0x7a3b914a1f0bD991BAf826F4fE9a47Bb9880d25f,
             0x057bB196e8f0326AFc453d2bcd1fCfCb4F879AfA,
             0x21D665Ed3E95a19a19DCaf330e2d12bE0f43144f,
