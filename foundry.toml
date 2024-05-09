@@ -12,6 +12,7 @@ remappings = [
     "foundry-huff=lib/foundry-huff/src/",
     "@hack/=src/",
     "solmate/=lib/solmate/src/",
+    "openzeppelin-tokens=lib/openzeppelin-contracts/contracts/token",
 ]
 fs_permissions = [
     { access = "read", path = "./test/erc721/wrapper.huff" }
@@ -19,3 +20,4 @@ fs_permissions = [
 
 [profile.default.fuzz]
 runs = 1000
+

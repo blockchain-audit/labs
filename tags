@@ -7,7 +7,7 @@
 AMM1	src/amm1/amm1.sol	/^contract AMM1 {$/;"	c
 AMM2	src/amm2/amm2.sol	/^contract AMM2 {$/;"	c
 AMM3	src/amm3/amm3.sol	/^contract AMM3 {$/;"	c
-Add	src/add/add.sol	/^contract Add {$/;"	c
+Add	src/add/add.sIERC20ol	/^contract Add {$/;"	c
 AdvTestBase	doc/reference/sheet.sol	/^contract AdvTestBase is TestBase, TestBase2 {$/;"	c
 Approval	lib/solmate/src/test/utils/weird-tokens/MissingReturnToken.sol	/^    event Approval(address indexed owner, address indexed spender, uint256 amount);$/;"	e
 Approval	lib/solmate/src/test/utils/weird-tokens/ReturnsFalseToken.sol	/^    event Approval(address indexed owner, address indexed spender, uint256 amount);$/;"	e

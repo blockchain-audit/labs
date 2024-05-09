@@ -6,7 +6,7 @@
 // import "../../src/wallet/SmartWallet.sol";
 
 // contract FuzzTestWallet is Test {
-    
+
 //     SmartWallet public s;
 
 //     receive() external payable {}
@@ -42,29 +42,26 @@
 //         wallet = new SmartWallet ();
 //         payable(address(wallet)).transfer(100);
 //     }
-    
+
 //     //  It checks that upon initialization, the contract is initialized with three owners,
 //     //and each of them is the contract itself.
 //     //הוא בודק שעם האתחול החוזה מאותחל עם שלושה בעלים, וכל אחד מהם הוא החוזה עצמו.
 
-
 //     function testInitialOwners() public {
-        
-//          address[] memory initialOwners = wallet.getOwners(); 
+
+//          address[] memory initialOwners = wallet.getOwners();
 //          assert(initialOwners.length == 3);
 //          assert(initialOwners[0] == 0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B);
 //          assert(initialOwners[1] == 0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c);
 //          assert(initialOwners[2] == 0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db);
-//     } 
-
-
+//     }
 
 //     //the function checks that after calling the withdraw function, the balance of the contract's account decreases as expected.
 //     //הפונקציה בודקת כי לאחר קריאה לפונקציית המשיכה יתרת חשבון החוזה יורדת כצפוי.
 //     function testAllowedWithdraw(uint256 amount) public payable {
 //         //uint256 amount =50;
 //         bool withdrawalStatus;
-//         console.log(amount);
+//         console.log(a mount);
 //         uint256 initialBalance = address(wallet).balance;
 //         address userAdress = 0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B;
 //         vm.startPrank(userAdress);
@@ -78,7 +75,6 @@
 
 //         vm.stopPrank();
 //     }
-
 
 //     function testnotAllowedWithdraw(uint256 amount,address otherAdress) public payable {
 //         if(otherAdress != wallet.owners(0) &&
@@ -98,10 +94,9 @@
 //             //תחזור לכתובת חכם שלך
 //             vm.stopPrank();
 //         }
-        
+
 //     }
 
-    
 //     //get&set
 //     function testGetBalance(uint256 amount) public {
 //         wallet.getBalance();
@@ -110,7 +105,6 @@
 //         if(wallet.getBalance() == amount)
 //             console.log("same");
 //     }
-
 
 //      function testAddOwner(address newOwner) public {
 
@@ -121,10 +115,8 @@
 
 //         wallet.AddOwner(newOwner, oldOwner);
 
-
-    
 //         address[] memory owners = wallet.getOwners();
-        
+
 //         // //Search loop, checks if the new one is in the list, if so it will return true
 
 //         bool newOwnerAdded;
@@ -134,7 +126,7 @@
 //                 newOwnerAdded = true;
 //                 break;
 //             }
-        
+
 //         }
 //         // //תפסיק להתיחס כאילו אני הבעלים
 //          vm.stopPrank();

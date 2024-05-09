@@ -21,21 +21,16 @@ contract Wallet {
     }
 
     //2
-    function abc(uint256 amount)public{
-        require(msg.sender == owner,"WALLET-not-owner");
+    function abc(uint256 amount) public {
+        require(msg.sender == owner, "WALLET-not-owner");
         require(address(this).balance >= amount);
         payable(owner).transfer(amount);
-
     }
     //  event Output(string message, uint256 value);
 
-
     //3
 
-     function getBalance() external view returns (uint256) {
+    function getBalance() external view returns (uint256) {
         return address(this).balance;
     }
-
-    
 }
-
