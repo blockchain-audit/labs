@@ -2,6 +2,7 @@
 pragma solidity ^0.8.15;
 
 import "@labs/staking/MyToken.sol";
+import "forge-std/console.sol";
 
 contract Amm {
     MyToken tokenA;
@@ -18,6 +19,7 @@ contract Amm {
     }
 
     function tradeAToB(uint256 amountA) public {
+        require(totalLiquidity > 0, "the liquidity is empty");
         require(amountA != 0, "amount = 0");
         tokenA.transferFrom(msg.sender, address(this), amountA);
         balanceA += amountA;
@@ -28,6 +30,7 @@ contract Amm {
     }
 
     function tradeBToA(uint256 amountB) public {
+        require(totalLiquidity > 0, "the liquidity is empty");
         require(amountB != 0, "amount = 0");
         tokenB.transferFrom(msg.sender, address(this), amountB);
         balanceB += amountB;
@@ -38,16 +41,29 @@ contract Amm {
     }
 
     function addLiquidity(uint256 amountA, uint256 amountB) public {
-        require(amountA * getValueOfAPer1Token() == amountB * getValueOfBPer1Token());
+        if (totalLiquidity == 0) {
+            liquidity[msg.sender] = (amountA + amountB) / 2;
+        } else {
+            console.log(
+                amountA * getValueOfAPer1Token() / wad + amountB * getValueOfBPer1Token() / wad,
+                totalLiquidity,
+                "]]]]]]]]]]}}"
+            );
+            console.log(getValueOfAPer1Token(), getValueOfBPer1Token(), "00000000000000");
+            console.log(amountA, amountB, "----------------");
+            console.log(amountA * getValueOfAPer1Token(), "===================", amountB * getValueOfBPer1Token());
+            require(amountA * getValueOfAPer1Token() == amountB * getValueOfBPer1Token(), "not equals value");
+            liquidity[msg.sender] = amountA * getValueOfAPer1Token();
+        }
         tokenA.transferFrom(msg.sender, address(this), amountA);
         tokenB.transferFrom(msg.sender, address(this), amountB);
         balanceA += amountA;
         balanceB += amountB;
-        liquidity[msg.sender] = amountA * getValueOfAPer1Token();
-        totalLiquidity += amountA + amountB;
+        totalLiquidity = balanceA + balanceB;
     }
 
     function removeAllLiquidity() public {
+        console.log(totalLiquidity, balanceA, "--------------");
         uint256 countA = liquidity[msg.sender] / getValueOfAPer1Token();
         uint256 countB = liquidity[msg.sender] / getValueOfBPer1Token();
         tokenA.transfer(msg.sender, countA);
@@ -69,11 +85,21 @@ contract Amm {
         return (_balanceA * 1e18 / _balanceB) * amount / 1e18;
     }
 
-    function getValueOfAPer1Token() public returns (uint256) {
-        return totalLiquidity / 2 / balanceA;
+    function calcCountB(uint256 amount) public view returns (uint256) {
+        uint256 value = amount * getValueOfAPer1Token() / wad;
+        return value * wad / getValueOfBPer1Token();
     }
 
-    function getValueOfBPer1Token() public returns (uint256) {
-        return totalLiquidity / 2 / balanceB;
+    function calcCountA(uint256 amount) public view returns (uint256) {
+        uint256 value = amount * getValueOfBPer1Token() / wad;
+        return value * wad / getValueOfAPer1Token();
+    }
+
+    function getValueOfAPer1Token() public view returns (uint256) {
+        return (totalLiquidity / 2) * wad / balanceA;
+    }
+
+    function getValueOfBPer1Token() public view returns (uint256) {
+        return (totalLiquidity / 2) * wad / balanceB;
     }
 }
