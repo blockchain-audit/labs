@@ -22,14 +22,9 @@
         mapping(address => uint) public biddes;
         address [] public biddesArr;
         
-        constructor() {
-            
+        constructor(address tokenNft) {
+            NFT = IERC721(tokenNft);
         }
-        
-        // function initialize(Seller seller) private{
-        //     require(isInitialized == false, "The initialization is already done.");
-        //     //require(_NFT.tokenURI, "It is not sellers token");
-        // } 
 
         modifier onlySeller(Seller memory seller) {
         require(
