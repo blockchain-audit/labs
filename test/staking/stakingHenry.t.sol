@@ -16,7 +16,7 @@
 //         stakingToken=new IERC20();
 //         rewardsToken=new IERC20();
 //         s=new StakingRewards(address(stakingToken));
-        
+
 //      }
 
 //      }

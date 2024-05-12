@@ -1,36 +1,42 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "../../new-project/lib/openzeppelin-contracts/contracts/token/ERC721/IERC721.sol";
+// import "../../new-project/lib/openzeppelin-contracts/contracts/token/ERC721/IERC721.sol";
+import "../../new-project/src/MyToken.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@hack/Auction/MyNft.sol";
 
 contract Auction {
-    IERC721 nft;
-    mapping(address  => uint256) bidders;
+    MyToken public immutable _token;
+    MyNft public nft;
+    mapping(address => uint256) bidders;
     mapping(uint256 => address) indexes;
     uint256 counter;
     uint256 duration = 7 days;
     address public max;
     address payable public owner;
+    uint256 private id;
 
-    constructor(address Nft,uint amount) {
+    constructor(address Nft, uint256 amount, address tok, uint256 id) {
+        _token = MyToken(tok);
         address owner = msg.sender;
         counter = 1;
-        nft = IERC721(Nft);
+        nft = MyNft(Nft);
         bidders[owner] = amount;
         max = owner;
+        nft.transferFrom(owner, address(this), id);
     }
 
-    function addBidder(uint amount) private {
-        require(amount > 0, "amount is zero");
+    function addBidder(uint256 amount) private {
         require(amount > bidders[max], "The value is less than the initial value");
         max = msg.sender;
-        nft.transferFrom(msg.sender, address(this), amount);
+        _token.transferFrom(msg.sender, address(this), amount);
         bidders[msg.sender] = amount;
         counter += 1;
         indexes[counter] = msg.sender;
     }
 
-    function AddBid(uint amount) external {
+    function AddBid(uint256 amount) external {
         if (block.timestamp >= duration) {
             endAuction();
         } else {
@@ -49,10 +55,12 @@ contract Auction {
     }
 
     function endAuction() private {
+        bidders[max] = 0;
         while (counter > 0) {
             address bidder = indexes[counter];
-            nft.transferFrom(address(this),bidder, bidders[bidder]);
+            _token.transferFrom(address(this), bidder, bidders[bidder]);
             counter = counter - 1;
         }
+        nft.transferFrom(address(this), address(max), id);
     }
 }

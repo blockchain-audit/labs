@@ -17,7 +17,6 @@
 //     mapping(address =>uint) public startDate;
 //     mapping(address =>uint) public rewards;
 //     uint public immutable WAD=10**18;
-    
 
 //     constructor(address _rewardsToken) {
 //         user = msg.sender;
@@ -42,7 +41,6 @@
 //         rewardsToken.mint(msg.sender,_amount);
 //     }
 
-   
 //     modifier isSevenDays(){
 //         uint today=block.timestamp;
 //         require(today-startDate[msg.sender]>=7,"the reward duration is not finished yet");
