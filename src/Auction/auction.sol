@@ -3,7 +3,7 @@
 // Code is a stripped down version of Synthetix
 pragma solidity ^0.8.24;
 
-import "oz-contracts/token/ERC721/IERC721.sol";
+import "../Auction/ERC721.sol";
 
 contract Auction{
 
@@ -29,13 +29,10 @@ contract Auction{
     mapping(address => BiddersPerAuction) public auctions;
 
     event start(uint startDate, uint endAt);
-    constructor() {
-        
-    }
 
     receive() external payable {}
 
-    function initAuction(uint duration, IERC721 nft, uint tokenId, uint prePrice) public {
+    function initAuction(uint duration, IERC721 nft, uint tokenId, uint prePrice) external {
         Seller memory seller;
         seller.started = true;
         seller.startDate = block.timestamp;
