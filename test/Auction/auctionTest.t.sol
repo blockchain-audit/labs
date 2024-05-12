@@ -24,10 +24,10 @@ contract auctionTest is Test{
         bidder1 = vm.addr(2);
         bidder2 = vm.addr(3);
 
-        testInitAuction();
+        initAuction();
     }
 
-    function testInitAuction() public {
+    function initAuction() public {
         vm.startPrank(seller);
         uint idToken = 123;
         nftToken.mint(seller, idToken);
@@ -38,8 +38,6 @@ contract auctionTest is Test{
         assertEq(nftToken.ownerOf(idToken),address(auction));  // nft moved to auction
         vm.stopPrank();
     }
-
-    
 
     function testAddBid() public {
         vm.startPrank(bidder1);
@@ -101,16 +99,47 @@ contract auctionTest is Test{
         vm.stopPrank();
     }
 
-
-    function testNotRemoveBid() public {
-        vm.startPrank(bidder1);
-        auction.removeBid(address(this));
-        vm.stopPrank();
-    }
-
     function testRemoveBid() public {
+        testAdd2Bidds();
         vm.startPrank(bidder1);
         auction.removeBid(address(seller));
         vm.stopPrank();
+    }
+
+    function testNotRemoveBid() public {
+        testAdd2Bidds();
+        vm.startPrank(bidder1);
+        vm.expectRevert();
+        auction.removeBid(address(this));
+        vm.stopPrank();
+    }  
+
+    function testEndAuction() public {         
+        testAdd2Bidds();
+        vm.startPrank(seller);
+        vm.warp(block.timestamp + 7 days);
+        auction.endAuction();
+        vm.stopPrank();
+    }
+    function testEndAuctionNoBidds() public {   // the seller is highest bid
+        vm.startPrank(seller);
+        vm.warp(block.timestamp + 7 days);
+        vm.expectRevert();
+        auction.endAuction();
+        vm.stopPrank();
+    }
+
+    function testNotEndAuction() public {  // auction not finished
+        vm.startPrank(seller);
+        vm.warp(block.timestamp + 4 days);
+        vm.expectRevert();
+        auction.endAuction();
+        vm.stopPrank();
+    }
+
+    function testEndAuctionNotExist() public {  // user read function is not the seller
+        vm.warp(block.timestamp + 7 days);
+        vm.expectRevert();
+        auction.endAuction();
     }
 }

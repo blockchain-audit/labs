@@ -62,14 +62,14 @@ contract Auction{
         auctions[sellerAddr].prevBidder.bidAddr = address(0);
     }
 
-    function endAuction(address sellerAddr) external{
-        require(sellers[sellerAddr].tokenId != 0, "incorrect address of seller"); // seller is exist
-        require(sellers[sellerAddr].endAt <= block.timestamp, "auaction not finished!");        
-        address highestBid = auctions[sellerAddr].currBidder.bidAddr;
-        require(highestBid != sellerAddr, "the highest bid is the seller's bid");
+    function endAuction() external{
+        require(sellers[msg.sender].tokenId != 0, "incorrect address of seller"); // seller is exist
+        require(sellers[msg.sender].endAt <= block.timestamp, "auaction not finished!");        
+        address highestBid = auctions[msg.sender].currBidder.bidAddr;
+        require(highestBid != msg.sender, "the highest bid is the seller's bid");
         // if (auctions[sellerAddr].prevBidder.bidAddr != address(0)){
         //     payable(auctions[sellerAddr].prevBidder.bidAddr).transfer(auctions[sellerAddr].prevBidder.price);
         // }
-        sellers[sellerAddr].NFTToken.transferFrom(sellerAddr,highestBid, sellers[sellerAddr].tokenId);
+        sellers[msg.sender].NFTToken.transferFrom(msg.sender,highestBid, sellers[msg.sender].tokenId);
     }
 }

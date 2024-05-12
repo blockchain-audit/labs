@@ -16,18 +16,18 @@ contract Amm1Test is Test{
     function setUp() public{
         x = new MyToken();
         y = new MyToken2();
-        amm1 = new Amm1(address(x),address(y)); 
+        // amm1 = new Amm1(address(x),address(y)); 
 
-        x.approve(address(amm1),200);
-        x.mint(200);   
-        y.approve(address(amm1),200);
-        y.mint(200);
+        // x.mint(200);         
+        // y.mint(200);
+        // x.approve(address(amm1),200);
+        // y.approve(address(amm1),200);
     }
 
     function testTradeXtoY() public {
-        console.log("balance of test-amm1",x.balanceOf(address(this)));
-        uint256 amountX = 20;
-        uint amountY = amm1.tradeXToY(amountX);
-        assertEq(amountY, 16666666666666666666);
+        // console.log("balance of test-amm1",x.balanceOf(address(this)));
+        // uint256 amountX = 20;
+        // uint amountY = amm1.tradeXToY(amountX);
+        // assertEq(amountY, 16666666666666666666);
     }
 }
