@@ -8,12 +8,11 @@
         uint public highestBid;
         bool isInitialized;
         struct Seller{
-            address immutable sellerAddress;
+            address sellerAddress;
             IERC721 NFT;
+            uint tokenId;
             uint startingPrice;
-            bool started;
-            bool ended;
-            uint startDate;
+            uint startTime;
             uint during;
         }
 
@@ -23,65 +22,75 @@
         mapping(address => uint) public biddes;
         address [] public biddesArr;
         
-        constructor(address _NFT, uint _startBig, uint _durintion){
-        initialize(_NFT, _startBig, _durintion);
+        constructor() {
+            
         }
         
-        function initialize(Seller seller) private{
-            require(isInitialized == false, "The initialization is already done.");
-            require(_NFT.tokenURI, "It is not sellers token");
-            seller.started = true;
-            seller.NFT = ERC721(_NFT);
-            biddes[msg.sender] = startBig;
-            biddesArr.push(msg.sender);
-            seller.during = durinion;
-            seller.startingPrice = _startingPrice;
-            seller.startDate = block.timestamp;
-            seller.highestBidderAddress = seller.sellerAddress;
-            seller.highestBid = _startingPrice;
-            isInitialized = true;
-        } 
+        // function initialize(Seller seller) private{
+        //     require(isInitialized == false, "The initialization is already done.");
+        //     //require(_NFT.tokenURI, "It is not sellers token");
+        // } 
 
-        modifier onlySeller(Seller seller) {
+        modifier onlySeller(Seller memory seller) {
         require(
             msg.sender == seller.sellerAddress,
             "Only seller can do it.");
-        _;
+            _;
         }
 
-        //I need to do it
-        modifier checkTime(Seller seller) {
+        modifier checkTime(Seller memory seller) {
         require(
-            msg.sender == seller.sellerAddress,
-            "Only seller can do it.");
-        _;
+            block.timestamp > seller.startTime && block.timestamp < seller.startTime + seller.during,
+            "You can only make offers higher than the current offer.");
+            _;
         }
 
         //The NFT seller transfers the his token NFT to the contract
+        function moveNftToContract(Seller memory seller ) public {
+           require(msg.sender == seller.sellerAddress, "You need to be the owner of the nft.");
+            NFT.seller.transferFrom(msg.sender, address(this), tokenId);
+        }
 
         //Add Bidd for the auction 
-        function addBidd(address _bidder, uint sumBidd) public{
-            require(sumBidd > highestBid, "You can only make offers higher than the current offer.");
-            //require(started == false && ended == false, "Bids can only be made during the auction");
+        function addBidd(uint sumBidd, Seller memory seller) public checkTime(seller){
+            require(sumBidd > highestBid, "Your bid must be greater than the current bid.");
+            highestBidderAddress = msg.sender;
             highestBid = sumBidd;
-            highestBid = highestBid;
-            biddes[_bidder] = sumBidd;
-            biddesArr.push(_bidder);
+            biddes[msg.sender] = sumBidd;
+            biddesArr.push(msg.sender);
         }
 
         //Remove bidd to the bidder if she not the highest bid
+        function removeBidd(address bidd, Seller memory seller) public payable checkTime(seller){
+            require(bidd != highestBidderAddress, "The high bid cannot withdraw itself.");
+            require(bidd != address(0), "You have no offer.");
+            payable(bidd).transfer(biddes[bidd]);
+            delete biddes[bidd];
+        }
 
         //Return the monny to bideres
-        function withdrawMonny(Seller seller) public payable{
-            require(msg.sender != highestBidderAddress, "The highestBidder can not withdraw his dib.");
-            require(msg.sender == seller.sellerAddress, "Only seller can return the monny to bidderes.");
+        function withdrawMonny(Seller memory seller) public payable onlySeller(seller){
+            require(msg.sender != highestBidderAddress, "The highest bidder can not withdraw his dib.");
+            require(block.timestamp > seller.startTime + seller.during, "The money can only be withdrawn after the auction.");
             for(uint i = 0; i < biddesArr.length; i++){
                 payable(biddesArr[i]).transfer(biddes[biddesArr[i]]);
-                delete biddes[biddesArr[i]];
-                biddesArr.pop();
+                if(biddes[biddesArr[i]] != 0){
+                    delete biddes[biddesArr[i]];
+                    biddesArr.pop();
+                }
+                else
+                    biddesArr.pop();
             }
-       
-        //Transfer the NFT to the winner
+        }
 
+        //Transfer the NFT to the winner
+        function transferNftToWinner(Seller memory seller) payable public{
+            require(block.timestamp < seller.startTime + seller.during, "The winner can take the NFT only on the and of the auction.");
+            require(msg.sender == highestBidderAddress, "Only winner can get the NFT.");
+            emit End(highestBidderAddress);
+            seller.NFT.transferFrom(address(this), highestBidderAddress, seller.tokenId);
+            payable(seller.sellerAddress).transfer(highestBid);
+            delete biddes[highestBidderAddress];
+            biddesArr.pop();
         }
     }
