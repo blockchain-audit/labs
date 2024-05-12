@@ -8,7 +8,7 @@ import "forge-std/console.sol";
 
 import "../../src/Auction/auction.sol";
 
-contract auctionTest is Test{
+contract AuctionTest is Test{
 
     Auction auction;
     MyNFT nftToken;
@@ -24,10 +24,9 @@ contract auctionTest is Test{
         bidder1 = vm.addr(2);
         bidder2 = vm.addr(3);
 
-        initAuction();
     }
 
-    function initAuction() public {
+    function testInitAuction() public {
         vm.startPrank(seller);
         uint idToken = 123;
         nftToken.mint(seller, idToken);
@@ -35,7 +34,7 @@ contract auctionTest is Test{
         uint duration = 7 days;
         nftToken.setApprovalForAll(address(auction), true);
         auction.initAuction(duration, nftToken, idToken, prePrice);
-        assertEq(nftToken.ownerOf(idToken),address(auction));  // nft moved to auction
+        assertEq(nftToken.ownerOf(idToken),address(this));  // nft moved to auction
         vm.stopPrank();
     }
 
