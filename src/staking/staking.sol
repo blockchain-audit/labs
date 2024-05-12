@@ -51,7 +51,7 @@ contract Staking
         require(block.timestamp - staker.date > 7 days, "You must wait at least 7 days");
         uint reward = calcReward(staker.amount);
         token.transfer(msg.sender, reward + staker.amount);
-        stakers[msg.sender].amount = 0;
+        stakers[msg.sender].amount = 0; 
 
         return true;
     }
