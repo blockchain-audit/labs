@@ -26,7 +26,6 @@ contract TestAuction is Test {
          _NFTtokenId = 1;     
          nftContract = ERC721(NFTtoken);
          startPrice = 10;
-         ///////////////////
          duration = 7;  
          coin = new MyToken();    
          auction = new Auction(address(nftContract), _NFTtokenId, address(coin), startPrice, duration);
