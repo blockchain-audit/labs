@@ -13,12 +13,14 @@ contract auctionTest is Test{
     function setUp() public{
     token = new Token3("nft" ,"nnn");
     auction = new Auction();
-    token.mint(msg.sender, 10000000);
+    console.log(msg.sender);
+    console.log(address(this));
+    token.mint(address(this), 10000000);
     // token.mint(address(this), 10000000);
     }
 
     function testStartAuction() public{
-        token.ownerOf(10000000);
+        console.log(token.ownerOf(10000000));
         auction.startAuction(10000000,222235);
 
     }

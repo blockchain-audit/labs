@@ -29,8 +29,9 @@ contract Auction{
         
         IERC721 token = IERC721(msg.sender);
          console.log("kkkkkk");
+         console.log(msg.sender);
 
-        // console.log(token.ownerOf(id));
+        console.log(token.ownerOf(id));
 
         // require(token.ownerOf(id) == msg.sender , "sender not owner");
        
