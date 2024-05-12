@@ -22,8 +22,8 @@
         mapping(address => uint) public biddes;
         address [] public biddesArr;
         
-        constructor(address tokenNft) {
-            NFT = IERC721(tokenNft);
+        constructor(address tokenNft, Seller memory seller) {
+           seller.NFT = IERC721(tokenNft);
         }
 
         modifier onlySeller(Seller memory seller) {
@@ -43,7 +43,7 @@
         //The NFT seller transfers the his token NFT to the contract
         function moveNftToContract(Seller memory seller ) public {
            require(msg.sender == seller.sellerAddress, "You need to be the owner of the nft.");
-            NFT.seller.transferFrom(msg.sender, address(this), tokenId);
+            seller.NFT.transferFrom(msg.sender, address(this), seller.tokenId);
         }
 
         //Add Bidd for the auction 
