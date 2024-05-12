@@ -8,13 +8,13 @@
         uint public highestBid;
         bool isInitialized;
         struct Seller{
-            address public  immutable sellerAddress;
-            IERC721 public NFT;
-            uint public startingPrice;
-            bool public started;
-            bool public ended;
-            uint public startDate;
-            uint public during;
+            address immutable sellerAddress;
+            IERC721 NFT;
+            uint startingPrice;
+            bool started;
+            bool ended;
+            uint startDate;
+            uint during;
         }
 
         event bid(address bider, uint amount);
@@ -42,24 +42,17 @@
             isInitialized = true;
         } 
 
-        modifier onlyOwner() {
+        modifier onlySeller(Seller seller) {
         require(
-            msg.sender == owner,
-            "Only owner can do it.");
-        _;
-        }
-
-        modifier onlySeller() {
-        require(
-            msg.sender == sellerAddress,
+            msg.sender == seller.sellerAddress,
             "Only seller can do it.");
         _;
         }
 
         //I need to do it
-        modifier checkTime() {
+        modifier checkTime(Seller seller) {
         require(
-            msg.sender == sellerAddress,
+            msg.sender == seller.sellerAddress,
             "Only seller can do it.");
         _;
         }
@@ -69,7 +62,7 @@
         //Add Bidd for the auction 
         function addBidd(address _bidder, uint sumBidd) public{
             require(sumBidd > highestBid, "You can only make offers higher than the current offer.");
-            require(started == false && ended == false, "Bids can only be made during the auction");
+            //require(started == false && ended == false, "Bids can only be made during the auction");
             highestBid = sumBidd;
             highestBid = highestBid;
             biddes[_bidder] = sumBidd;
@@ -79,9 +72,9 @@
         //Remove bidd to the bidder if she not the highest bid
 
         //Return the monny to bideres
-        function withdrawMonny() public payable{
-            require(address != highestBidder, "The highestBidder can not withdraw his dib.");
-            require(msg.sender == Sellr.sellerAddress, "Only seller can return the monny to bidderes.");
+        function withdrawMonny(Seller seller) public payable{
+            require(msg.sender != highestBidderAddress, "The highestBidder can not withdraw his dib.");
+            require(msg.sender == seller.sellerAddress, "Only seller can return the monny to bidderes.");
             for(uint i = 0; i < biddesArr.length; i++){
                 payable(biddesArr[i]).transfer(biddes[biddesArr[i]]);
                 delete biddes[biddesArr[i]];
