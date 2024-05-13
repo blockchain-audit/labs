@@ -2,7 +2,7 @@
 // https://solidity-by-example.org/defi/staking-rewards/
 // Code is a stripped down version of Synthetix
 pragma solidity ^0.8.24;
-
+יעל רק רגע תנסי בינתיים אחותי קונה בלונים מתלבטת איזה
 import "../Auction/ERC721.sol";
 //your code is comlete!!!!
 contract Auction{
