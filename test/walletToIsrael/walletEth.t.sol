@@ -2,7 +2,7 @@
 
     pragma solidity ^0.8.20;
 
-    import "@hack/solidity/walletToIsrael/walletEth.sol";
+    import "@hack/walletToIsrael/walletEth.sol";
     import "foundry-huff/HuffDeployer.sol";
     import "forge-std/Test.sol";
     import "forge-std/console.sol";
