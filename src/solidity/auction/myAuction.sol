@@ -22,11 +22,11 @@
         event bid(address bider, uint amount);
         event End(address winner);
 
-        mapping(address => uint) public biddes;
+        //mapping(address => uint) public biddes;
         address [] public biddesArr;
         
         constructor() {
-            
+
         }
 
         //The NFT seller transfers the his token NFT to the contract
@@ -60,19 +60,20 @@
 
         //Add Bidd for the auction 
         function addBidd(uint sumBidd) internal checkTime(){
-            require(sumBidd > highestBid || biddes[msg.sender] + sumBidd > highestBid, "Your bid must be greater than the current bid.");
+            require(sumBidd > highestBid || address(msg.sender).balance + sumBidd > highestBid, "Your bid must be greater than the current bid.");
             highestBidderAddress = msg.sender;
-            highestBid = sumBidd;
-            biddes[msg.sender] = sumBidd;
-            biddesArr.push(msg.sender);
             payable(msg.sender).transfer(sumBidd);
+            highestBid = sumBidd + address(msg.sender).balance;
+            //address(msg.sender).balance += sumBidd;
+            biddesArr.push(msg.sender);
+            emit bid(msg.sender, address(msg.sender).balance);
         }
 
         //Remove bidd to the bidder if she not the highest bid
         function removeBidd() public payable checkTime(){
             require(msg.sender != highestBidderAddress, "The high bid cannot withdraw itself.");
             require(msg.sender != address(0), "You have no offer.");
-            payable(msg.sender).transfer(biddes[msg.sender]);
+            payable(msg.sender).transfer(address(msg.sender).balance);
             //delete biddes[msg.sender];
             NFT.transferFrom(address(this), msg.sender, address(msg.sender).balance);
         }
@@ -87,8 +88,8 @@
             //delete biddes[highestBidderAddress];
             biddesArr.pop();
             for(uint i = 0; i < biddesArr.length; i++){
-                if(biddes[biddesArr[i]] > 0){
-                payable(biddesArr[i]).transfer(biddes[biddesArr[i]]);
+                if(address(biddesArr[i]).balance > 0){
+                payable(biddesArr[i]).transfer(address(biddesArr[i]).balance);
                 }
                 //delete biddes[biddesArr[i]];
                 biddesArr.pop();
