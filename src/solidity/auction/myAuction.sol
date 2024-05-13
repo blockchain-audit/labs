@@ -26,13 +26,12 @@
         address [] public biddesArr;
         
         constructor() {
-
+            
         }
 
         //The NFT seller transfers the his token NFT to the contract
         function startAuction(uint _during, uint _startingPrice, uint _tokenId, address tokenNft) external onlySeller() {
             require(msg.sender == sellerAddress, "You need to be the owner of the nft.");
-            NFT.transferFrom(msg.sender, address(this), tokenId);
             sellerAddress = msg.sender;
             NFT = MyERC721(tokenNft);
             tokenId = _tokenId;
@@ -40,7 +39,9 @@
             startTime = block.timestamp;
             during = _during;
             isStart = true;    
-
+            highestBidderAddress = address(0);
+            highestBid = _startingPrice;
+            NFT.transferFrom(msg.sender, address(this), _tokenId);
         }
 
         modifier onlySeller() {
