@@ -4,6 +4,7 @@
     import "forge-std/console.sol";
     import "@openzeppelin/ERC721/ERC721.sol";
     import "@hack/solidity/auction/ERC721.sol";
+
     contract Auction{
         address public highestBidderAddress;
         uint public highestBid;
@@ -24,7 +25,7 @@
         address [] public biddesArr;
         
         constructor(address tokenNft, Seller memory seller) {
-           seller.NFT = IERC721(tokenNft);
+           seller.NFT = MyERC721(tokenNft);
         }
 
         modifier onlySeller(Seller memory seller) {
@@ -61,7 +62,7 @@
         function removeBidd(Seller memory seller) public payable checkTime(seller){
             require(msg.sender != highestBidderAddress, "The high bid cannot withdraw itself.");
             require(msg.sender != address(0), "You have no offer.");
-            payable(msg.sender).transfer(biddes[bidd]);
+            payable(msg.sender).transfer(biddes[msg.sender]);
             delete biddes[msg.sender];
             seller.NFT.transferFrom(address(this), msg.sender, address(msg.sender).balance);
         }
