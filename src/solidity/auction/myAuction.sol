@@ -9,7 +9,6 @@
     contract Auction{
         address public highestBidderAddress;
         uint public highestBid;
-        bool isInitialized;
         
             address sellerAddress;
             MyERC721 NFT;
@@ -29,6 +28,7 @@
 
         }
 
+        //Initialize variables
         //The NFT seller transfers the his token NFT to the contract
         function startAuction(uint _during, uint _startingPrice, uint _tokenId, address tokenNft) external onlySeller() {
             require(msg.sender == sellerAddress, "You need to be the owner of the nft.");
