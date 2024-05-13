@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
-import "@labs/staking/MyToken.sol";
-import "@labs/AMM/Amm.sol";
+import "@labs/tokens/MyToken.sol";
+import "@labs/amm/Amm.sol";
 import "forge-std/Test.sol";
 
 contract TestAmm is Test {
@@ -27,10 +27,11 @@ contract TestAmm is Test {
     }
 
     function test() public {
-        add(5 * wad, 5 * wad);
-        tradeAToB(2 * wad);
+        add(100 * wad, 100 * wad);
+        tradeAToB(10 * wad);
         vm.startPrank(user1);
         uint256 amount = amm.calcCountB(2 * wad);
+        console.log("amount",amount);
         add(2 * wad, amount);
         amm.removeAllLiquidity();
         vm.stopPrank();

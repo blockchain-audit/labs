@@ -2,7 +2,7 @@
 pragma solidity >=0.5.11;
 
 import "forge-std/console.sol";
-import "./MyToken.sol";
+import "@labs/tokens/MyToken.sol";
 
 struct User {
     uint256 amount;

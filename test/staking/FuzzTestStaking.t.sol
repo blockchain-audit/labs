@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
-import "@labs/staking/MyToken.sol";
+import "@labs/tokens/MyToken.sol";
 import "@labs/staking/Staking.sol";
 import "forge-std/Test.sol";
 

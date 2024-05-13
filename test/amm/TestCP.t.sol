@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
-import "@labs/staking/MyToken.sol";
-import "@labs/AMM/CP.sol";
+import "@labs/tokens/MyToken.sol";
+import "@labs/amm/CP.sol";
 import "forge-std/Test.sol";
 
 contract TestCP is Test {

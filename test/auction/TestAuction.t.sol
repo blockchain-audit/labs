@@ -3,7 +3,7 @@ pragma solidity ^0.8.2;
 
 import "forge-std/Test.sol";
 import "@labs/tokens/MyNFT.sol";
-import "@labs/staking/MyToken.sol";
+import "@labs/tokens/MyToken.sol";
 import "@labs/auction/Auction.sol";
 
 contract TestAuction is Test {
@@ -57,7 +57,7 @@ contract TestAuction is Test {
         vm.startPrank(user1);
         bid(200 * wad);
         vm.stopPrank();
-        vm.warp(7 days + 1);
+        vm.warp(7 days + 2);
         auction.winner();
         assertEq(NFTtoken.ownerOf(1), user1);
         assertEq(token.balanceOf(address(this)), 200 * wad);

@@ -1,7 +1,7 @@
     //SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.15;
 
-import "@labs/staking/MyToken.sol";
+import "@labs/tokens/MyToken.sol";
 import "forge-std/console.sol";
 
 contract Amm {
@@ -51,8 +51,8 @@ contract Amm {
             );
             console.log(getValueOfAPer1Token(), getValueOfBPer1Token(), "00000000000000");
             console.log(amountA, amountB, "----------------");
-            console.log(amountA * getValueOfAPer1Token(), "===================", amountB * getValueOfBPer1Token());
-            require(amountA * getValueOfAPer1Token() == amountB * getValueOfBPer1Token(), "not equals value");
+            console.log(amountA * getValueOfAPer1Token() / wad, "===================", amountB * getValueOfBPer1Token() / wad);
+            require(amountA * getValueOfAPer1Token() / wad == amountB * getValueOfBPer1Token() / wad, "not equals value");
             liquidity[msg.sender] = amountA * getValueOfAPer1Token();
         }
         tokenA.transferFrom(msg.sender, address(this), amountA);

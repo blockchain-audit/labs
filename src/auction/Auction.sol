@@ -9,13 +9,13 @@ contract Auction {
     address ownerOfNFT;
     ERC721 NFTtoken;
     uint256 NFTtokenId;
-    IERC20 token;
+    IERC20 erc20Token;
     uint256 public maxPrice;
     address public maxBidder;
     uint256 ended;
     bool makeWinner = false;
 
-    function start(address _NFTtoken, uint256 _NFTtokenId, address _token, uint256 _startPrice, uint256 duration)
+    function start(address _NFTtoken, uint256 _NFTtokenId, address _erc20Token, uint256 _startPrice, uint256 duration)
         public
     {
         require(ended < block.timestamp, "already there is auction");
@@ -24,7 +24,7 @@ contract Auction {
         }
         NFTtoken = ERC721(_NFTtoken);
         require(NFTtoken.ownerOf(_NFTtokenId) == msg.sender, "the token not valid");
-        token = IERC20(_token);
+        erc20Token = IERC20(_erc20Token);
         maxPrice = _startPrice;
         NFTtokenId = _NFTtokenId;
         ended = block.timestamp + duration;
@@ -36,21 +36,23 @@ contract Auction {
     function bid(uint256 amount) public {
         require(amount > maxPrice, "amount <= max");
         require(block.timestamp < ended, "time over");
-        require(token.balanceOf(msg.sender) >= amount, "Not Enough Money");
         if (maxBidder != address(0)) {
-            token.transfer(maxBidder, maxPrice);
+            erc20Token.transfer(maxBidder, maxPrice);
         }
-        token.transferFrom(msg.sender, address(this), amount);
+        erc20Token.transferFrom(msg.sender, address(this), amount);
         maxBidder = msg.sender;
         maxPrice = amount;
     }
 
     function winner() public {
-        require(ended <= block.timestamp, "auction not over");
-        require(maxBidder != address(0), "There were no bids");
-        require(msg.sender == ownerOfNFT || msg.sender == maxBidder, "Not authorized");
-        token.transfer(ownerOfNFT, maxPrice);
-        NFTtoken.transferFrom(address(this), maxBidder, NFTtokenId);
+        require(ended < block.timestamp, "auction not over");
+        if(maxBidder == address(0)){
+            NFTtoken.transferFrom(address(this), ownerOfNFT, NFTtokenId);
+        }
+        else{
+            erc20Token.transfer(ownerOfNFT, maxPrice);
+            NFTtoken.transferFrom(address(this), maxBidder, NFTtokenId);
+        }
         makeWinner = true;
     }
 }
