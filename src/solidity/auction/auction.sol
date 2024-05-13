@@ -50,7 +50,7 @@
 
         //Add Bidd for the auction 
         function addBidd(uint sumBidd, Seller memory seller) public checkTime(seller){
-            require(sumBidd > highestBid, "Your bid must be greater than the current bid.");
+            require(sumBidd > highestBid || biddes[msg.sender] + sumBidd > highestBid, "Your bid must be greater than the current bid.");
             highestBidderAddress = msg.sender;
             highestBid = sumBidd;
             biddes[msg.sender] = sumBidd;
@@ -75,6 +75,7 @@
             seller.NFT.transferFrom(address(this), highestBidderAddress, seller.tokenId);
             payable(seller.sellerAddress).transfer(highestBid);
             //delete biddes[highestBidderAddress];
+            //Remove the highest Bidder Address from array
             biddesArr.pop();
             for(uint i = 0; i < biddesArr.length; i++){
                 if(biddes[biddesArr[i]] > 0){
