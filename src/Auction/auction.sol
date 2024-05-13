@@ -70,6 +70,6 @@ contract Auction{
         // if (auctions[sellerAddr].prevBidder.bidAddr != address(0)){
         //     payable(auctions[sellerAddr].prevBidder.bidAddr).transfer(auctions[sellerAddr].prevBidder.price);
         // }
-        sellers[msg.sender].NFTToken.transferFrom(msg.sender,highestBid, sellers[msg.sender].tokenId);
+        sellers[msg.sender].NFTToken.transferFrom(address(this),highestBid, sellers[msg.sender].tokenId);
     }
 }

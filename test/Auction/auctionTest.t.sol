@@ -15,6 +15,7 @@ contract AuctionTest is Test{
     address seller;
     address bidder1;
     address bidder2;
+    uint idToken;
 
     function setUp() public {
         auction = new Auction();
@@ -24,17 +25,18 @@ contract AuctionTest is Test{
         bidder1 = vm.addr(2);
         bidder2 = vm.addr(3);
 
+        initAuctionTest();
     }
 
-    function testInitAuction() public {
+    function initAuctionTest() public {
         vm.startPrank(seller);
-        uint idToken = 123;
+        idToken = 123;
         nftToken.mint(seller, idToken);
         uint prePrice = 100;
         uint duration = 7 days;
         nftToken.setApprovalForAll(address(auction), true);
         auction.initAuction(duration, nftToken, idToken, prePrice);
-        assertEq(nftToken.ownerOf(idToken),address(this));  // nft moved to auction
+        assertEq(nftToken.ownerOf(idToken),address(auction));  // nft moved to auction
         vm.stopPrank();
     }
 
@@ -116,7 +118,7 @@ contract AuctionTest is Test{
     function testEndAuction() public {         
         testAdd2Bidds();
         vm.startPrank(seller);
-        vm.warp(block.timestamp + 7 days);
+        vm.warp(block.timestamp + 7 days);        
         auction.endAuction();
         vm.stopPrank();
     }

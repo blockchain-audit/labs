@@ -39,10 +39,10 @@ contract Distribute {
         0x28Bd0D57c6C7633592e5d945776a20658022B3f7, //Perry Nusbaum
         0x425a024816fBd7A08c8258357cCfCEB802E2d0cd, //Tova Cohen
         0xF61358d8ACBA31422a1399ED6480BFC834232d9F, //Riki Luz
-        0x1Eb3c3595F52788CBF3F2138652cC36fCb2EB673  //Ruth Klirs - 35
-        //chana carp
-        //sara ovad
-        //Tamar belhadev
+        0x1Eb3c3595F52788CBF3F2138652cC36fCb2EB673, //Ruth Klirs
+        0x0e29EE1287075B6df3378644374A99a8509b6111  //Sara Ovad - 36
+        //Chana Carp
+        //Tamar Belhadev
     ];
 
      fallback() external payable {
