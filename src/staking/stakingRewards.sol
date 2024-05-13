@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 // https://solidity-by-example.org/defi/staking-rewards/
 // Code is a stripped down version of Synthetix
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import "@hack/libs/ierc20.sol";
 
