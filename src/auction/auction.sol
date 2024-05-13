@@ -32,16 +32,7 @@ contract Auction{
     function startAuction( uint256 tokenid, uint256 duration ) external {
         require (auctions[tokenid].seller == address(0) , "auction already exist");
         require (duration > 0 , "there is no time for the auction");
-        
-        // token = IERC721(t);
-        console.log(msg.sender);
-        console.log(token.balanceOf(msg.sender));
-
-        console.log(token.ownerOf(tokenid));
-                console.log("kkkkkk");
-
         require(token.ownerOf(tokenid) == msg.sender , "sender not owner");
-                console.log("kkkkkk");
 
         address[] memory addresses;
         auctions[tokenid] = auction({
@@ -57,14 +48,15 @@ contract Auction{
 
         token.transferFrom(msg.sender, address(this), tokenid);
 
-
         emit Start(tokenid, block.timestamp + duration);
     }
+
     function bid(uint256 tokenid) external payable{ 
         require (auctions[tokenid].seller != address(0) , "auction does not exist");
         require (auctions[tokenid].ended == false , "auction has already ended");
         require (msg.sender.balance >= msg.value , "you do not have this amount");
         require ( bids[tokenid][msg.sender] + msg.value > auctions[tokenid].highestBid);
+
         bids[tokenid][msg.sender] += msg.value;
         auctions[tokenid].highestBid =  bids[tokenid][msg.sender];
         auctions[tokenid].highestBidder = msg.sender;
@@ -76,6 +68,7 @@ contract Auction{
     function withdraw(uint256 tokenid) external {
         require (bids[tokenid][msg.sender] > 0 , " you did not place a bid");
         require (auctions[tokenid].highestBidder != msg.sender , "you are the highestBidder");
+        
         uint256 amount = bids[tokenid][msg.sender];
         payable(msg.sender).transfer(amount);
         delete bids[tokenid][msg.sender];
