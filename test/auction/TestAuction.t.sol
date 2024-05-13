@@ -22,7 +22,7 @@ contract TestAuction is Test {
         user2 = vm.addr(2);
     }
 
-    function testStart()public{
+    function testStart() public {
         start();
         NFTtoken.mint(address(this), 2);
         NFTtoken.approve(address(auction), 2);
@@ -33,7 +33,7 @@ contract TestAuction is Test {
     function testBid() public {
         start();
         vm.startPrank(user1);
-        bid(200*wad);
+        bid(200 * wad);
         vm.stopPrank();
         assertEq(auction.maxBidder(), user1);
         assertEq(auction.maxPrice(), 200 * wad);
@@ -43,35 +43,33 @@ contract TestAuction is Test {
     function testBidNotBigger() public {
         start();
         vm.startPrank(user1);
-        bid(200*wad);
+        bid(200 * wad);
         vm.stopPrank();
         vm.startPrank(user2);
         token.mint(100 * wad);
         token.approve(address(auction), 100 * wad);
         vm.expectRevert("amount <= max");
-        auction.bid(100 * wad);   
+        auction.bid(100 * wad);
     }
 
-    
-
-    function testWinner()public{
+    function testWinner() public {
         start();
         vm.startPrank(user1);
-        bid(200*wad);
+        bid(200 * wad);
         vm.stopPrank();
-        vm.warp(7 days+1);
+        vm.warp(7 days + 1);
         auction.winner();
-        assertEq(NFTtoken.ownerOf(1),user1);
-        assertEq(token.balanceOf(address(this)),200*wad);
+        assertEq(NFTtoken.ownerOf(1), user1);
+        assertEq(token.balanceOf(address(this)), 200 * wad);
     }
 
-    function bid(uint amount)private{
+    function bid(uint256 amount) private {
         token.mint(amount);
         token.approve(address(auction), amount);
         auction.bid(amount);
     }
 
-    function start()public{
+    function start() public {
         NFTtoken.mint(address(this), 1);
         NFTtoken.approve(address(auction), 1);
         auction.start(address(NFTtoken), 1, address(token), 100 * wad, 7 days);

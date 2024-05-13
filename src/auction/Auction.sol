@@ -15,9 +15,11 @@ contract Auction {
     uint256 ended;
     bool makeWinner = false;
 
-    function start(address _NFTtoken, uint256 _NFTtokenId, address _token, uint256 _startPrice, uint256 duration)public{
-        require(ended < block.timestamp,"already there is auction");
-        if(makeWinner == false && ended != 0 ){
+    function start(address _NFTtoken, uint256 _NFTtokenId, address _token, uint256 _startPrice, uint256 duration)
+        public
+    {
+        require(ended < block.timestamp, "already there is auction");
+        if (makeWinner == false && ended != 0) {
             winner();
         }
         NFTtoken = ERC721(_NFTtoken);
