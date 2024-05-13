@@ -3,13 +3,14 @@
     pragma solidity ^0.8.20;
     import "forge-std/console.sol";
     import "@openzeppelin/ERC721/ERC721.sol";
+    import "@hack/solidity/auction/ERC721.sol";
     contract Auction{
         address public highestBidderAddress;
         uint public highestBid;
         bool isInitialized;
         struct Seller{
             address sellerAddress;
-            IERC721 NFT;
+            MyERC721 NFT;
             uint tokenId;
             uint startingPrice;
             uint startTime;
@@ -53,14 +54,16 @@
             highestBid = sumBidd;
             biddes[msg.sender] = sumBidd;
             biddesArr.push(msg.sender);
+            payable(msg.sender).transfer(sumBidd);
         }
 
         //Remove bidd to the bidder if she not the highest bid
-        function removeBidd(address bidd, Seller memory seller) public payable checkTime(seller){
-            require(bidd != highestBidderAddress, "The high bid cannot withdraw itself.");
-            require(bidd != address(0), "You have no offer.");
-            payable(bidd).transfer(biddes[bidd]);
-            delete biddes[bidd];
+        function removeBidd(Seller memory seller) public payable checkTime(seller){
+            require(msg.sender != highestBidderAddress, "The high bid cannot withdraw itself.");
+            require(msg.sender != address(0), "You have no offer.");
+            payable(msg.sender).transfer(biddes[bidd]);
+            delete biddes[msg.sender];
+            seller.NFT.transferFrom(address(this), msg.sender, address(msg.sender).balance);
         }
 
         //Return the monny to bideres

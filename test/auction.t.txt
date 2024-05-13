@@ -11,4 +11,12 @@ pragma solidity ^0.8.20;
 
     contract AuctionTest is Test{
 
+        Auction auction;
+        MyERC721 NFT;
+        Seller s;
+        function setUp() public{
+            s = new Seller(NFT, 0x123, );
+            auction = new Auction(NFT, s, 200, 200000, 259200);
+        }
+         
     }
