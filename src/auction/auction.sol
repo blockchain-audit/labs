@@ -28,12 +28,12 @@ contract Auction{
         require (duration > 0 , "there is no time for the auction");
         
         IERC721 token = IERC721(msg.sender);
-         console.log("kkkkkk");
-         console.log(msg.sender);
+        //  console.log("kkkkkk");
+        //  console.log(msg.sender);
 
-        console.log(token.ownerOf(id));
+        // console.log(token.ownerOf(id));
 
-        // require(token.ownerOf(id) == msg.sender , "sender not owner");
+        require(token.ownerOf(id) == msg.sender , "sender not owner");
        
         address[] memory adr;
         auctions[id] = auction({
@@ -47,7 +47,7 @@ contract Auction{
             adr : adr
         });
 
-        // token.safeTransferFrom(msg.sender, address(this), id);
+        token.safeTransferFrom(msg.sender, address(this), id);
 
 
         emit Start(id, block.timestamp + duration);
