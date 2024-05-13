@@ -67,7 +67,7 @@
             seller.NFT.transferFrom(address(this), msg.sender, address(msg.sender).balance);
         }
 
-        //Return the monny to bideres and Transfer the NFT to the winner
+        //Return the monny to bideres
         function endAuction(Seller memory seller) public payable onlySeller(seller){
             require(msg.sender != highestBidderAddress, "The highest bidder can not withdraw his dib.");
             require(block.timestamp > seller.startTime + seller.during, "The money can only be withdrawn after the auction.");
@@ -84,4 +84,16 @@
                 biddesArr.pop();
             }
         }
+
+        //Transfer the NFT to the winner
+        //It is work good!
+       /* function transferNftToWinner(Seller memory seller) payable public{
+            require(block.timestamp < seller.startTime + seller.during, "The winner can take the NFT only on the and of the auction.");
+            require(msg.sender == highestBidderAddress, "Only winner can get the NFT.");
+            emit End(highestBidderAddress);
+            seller.NFT.transferFrom(address(this), highestBidderAddress, seller.tokenId);
+            payable(seller.sellerAddress).transfer(highestBid);
+            //delete biddes[highestBidderAddress];
+            biddesArr.pop();
+        }*/
     }
