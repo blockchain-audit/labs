@@ -7,7 +7,6 @@ include "util/maps.dfy"
 include "util/tx.dfy"
 
 
-
 // in general, sets can be of almost any type, including objects.
 // Concrete sets can be specified by using display notation
 method simple() {
