@@ -46,10 +46,9 @@ contract Auction {
 
     function winner() public {
         require(ended < block.timestamp, "auction not over");
-        if(maxBidder == address(0)){
+        if (maxBidder == address(0)) {
             NFTtoken.transferFrom(address(this), ownerOfNFT, NFTtokenId);
-        }
-        else{
+        } else {
             erc20Token.transfer(ownerOfNFT, maxPrice);
             NFTtoken.transferFrom(address(this), maxBidder, NFTtokenId);
         }

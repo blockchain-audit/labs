@@ -44,16 +44,17 @@ contract Amm {
         if (totalLiquidity == 0) {
             liquidity[msg.sender] = (amountA + amountB) / 2;
         } else {
-            console.log(
-                amountA * getValueOfAPer1Token() / wad + amountB * getValueOfBPer1Token() / wad,
-                totalLiquidity,
-                "]]]]]]]]]]}}"
-            );
-            console.log(getValueOfAPer1Token(), getValueOfBPer1Token(), "00000000000000");
-            console.log(amountA, amountB, "----------------");
-            console.log(amountA * getValueOfAPer1Token() / wad, "===================", amountB * getValueOfBPer1Token() / wad);
-            require(amountA * getValueOfAPer1Token() / wad == amountB * getValueOfBPer1Token() / wad, "not equals value");
-            liquidity[msg.sender] = amountA * getValueOfAPer1Token();
+            // console.log(
+            //     amountA * getValueOfAPer1Token() / wad + amountB * getValueOfBPer1Token() / wad,
+            //     totalLiquidity,
+            //     "]]]]]]]]]]}}"
+            // );
+            // console.log(getValueOfAPer1Token(), getValueOfBPer1Token(), "00000000000000");
+            // console.log(amountA, amountB, "----------------");
+            // console.log(amountA * getValueOfAPer1Token() / wad, "===================", amountB * getValueOfBPer1Token() / wad);
+            require(balanceA * wad / balanceB == amountA * wad / amountB);
+            // require(amountA * getValueOfAPer1Token() / wad == amountB * getValueOfBPer1Token() / wad, "not equals value");
+            liquidity[msg.sender] = amountA * getValueOfAPer1Token() / wad;
         }
         tokenA.transferFrom(msg.sender, address(this), amountA);
         tokenB.transferFrom(msg.sender, address(this), amountB);
@@ -64,8 +65,8 @@ contract Amm {
 
     function removeAllLiquidity() public {
         console.log(totalLiquidity, balanceA, "--------------");
-        uint256 countA = liquidity[msg.sender] / getValueOfAPer1Token();
-        uint256 countB = liquidity[msg.sender] / getValueOfBPer1Token();
+        uint256 countA = liquidity[msg.sender] *wad/ getValueOfAPer1Token();
+        uint256 countB = liquidity[msg.sender] *wad/ getValueOfBPer1Token();
         tokenA.transfer(msg.sender, countA);
         balanceA -= countA;
         tokenB.transfer(msg.sender, countB);

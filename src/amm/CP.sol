@@ -1,56 +1,11 @@
-// // SPDX-License-Identifier: MIT
-// pragma solidity ^0.8.20;
-
-// import "forge-std/interfaces/IERC20.sol";
-
-// contract CP {
-//     IERC20 public immutable token0;
-//     IERC20 public immutable token1;
-
-//     //balance
-//     uint256 public reserve0;
-//     uint256 public reserve1;
-
-//     uint256 public totalSupply;
-//     mapping(address => uint256) public balances;
-
-//     constructor(address t0, address t1) {
-//         token0 = IERC20(t0);
-//         token1 = IERC20(t1);
-//     }
-
-//     function mint(address to, uint256 amount) private {
-//         balances[to] += amount;
-//         totalSupply += amount;
-//     }
-//     //what is shares?
-
-//     function addLiquidity(uint256 amount0, uint256 amount1) external returns (uint256 shares) {
-//         token0.transferFrom(msg.sender, address(this), amount0);
-//         token1.transferFrom(msg.sender, address(this), amount1);
-
-//         if (reserve0 > 0 || reserve0 > 0) {
-//             require(reserve0 * amount1 == reserve1 * amount, "x/y != dx/dy");
-//         }
-//         if (totalSupply == 0) {
-//             shares = sqrt(amount0 * amount1);
-//         } else {
-//             shares = min((amount0 * totalSupply) / reserve0, (amount1 * totalSupply) / reserve1);
-//         }
-//         require(shares > 0, "shares = 0");
-//         mint(msg.sender, shares);
-
-//         reserve0 = token0.balanceOf(address(this));
-//         reserve1 = token1.balanceOf(address(this));
-//     }
-// }
+// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.20;
 
 import "forge-std/interfaces/IERC20.sol";
 import "forge-std/console.sol";
-// constant product
 
+// constant product
 contract CP {
     IERC20 public immutable token0;
     IERC20 public immutable token1;
@@ -65,7 +20,6 @@ contract CP {
     }
 
     function mint(address to, uint256 amount) private {
-        console.log(msg.sender);
         balances[to] += amount;
         totalSupply += amount;
     }
@@ -78,12 +32,15 @@ contract CP {
     function swap(address addIn, uint256 amountIn) external returns (uint256 amountOut) {
         require(addIn == address(token0) || addIn == address(token1), "AMM3-invalid-token");
         require(amountIn > 0, "AMM3-zero-amount");
+
         bool isToken0 = addIn == address(token0);
         (IERC20 tokenIn, IERC20 tokenOut, uint256 reserveIn, uint256 reserveOut) =
             isToken0 ? (token0, token1, reserve0, reserve1) : (token1, token0, reserve1, reserve0);
         tokenIn.transferFrom(msg.sender, address(this), amountIn);
         uint256 amountInWithFee = (amountIn * 997) / 1000;
+
         amountOut = (reserveOut * amountInWithFee) / (reserveIn + amountInWithFee);
+        
         tokenOut.transfer(msg.sender, amountOut);
         reserve0 = token0.balanceOf(address(this));
         reserve1 = token1.balanceOf(address(this));
