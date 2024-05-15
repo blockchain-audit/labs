@@ -1,6 +1,20 @@
 # Hack
 
-## Methodology
+
+## Cycles
+
+* Tokenomics
+* Finance
+* Modeling
+* Business Requirements
+* Formal Specification
+* Implementation [high level]
+* Optimization [low level]
+* Unit Test
+* Fuzz Test
+* Symbolic Test
+* Security Audit
+* Formal verification [economical vulnerabilities]
 
 ### Explore
 
@@ -105,18 +119,6 @@ When faced with a problem for which you have no idea where to start, here are so
 By following these initial steps and maintaining a proactive and flexible approach, you can effectively navigate complex problems even when you're unsure where to start.
 
 
-## Cycles
-
-* Tokenomics
-* Finance
-* Spécification
-* Modeling
-* Implementation high level
-* Implementation Low level coding
-* Testing
-* Security
-* Formal verification
-* Audit
 
 ## Math
 
