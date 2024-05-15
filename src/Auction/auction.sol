@@ -9,34 +9,35 @@ import "@hack/Auction/MyNft.sol";
 contract Auction {
     MyToken public immutable _token;
     MyNft public nft;
-    mapping(address => uint256) bidders;
-    mapping(uint256 => address) indexes;
+    mapping(address => uint256) public bidders;
+    mapping(uint256 => address) public indexes;
     uint256 counter;
     uint256 duration = 7 days;
     address public max;
     address payable public owner;
     uint256 private id;
+    uint256 immutable wad = 1e18;
 
     constructor(address Nft, uint256 amount, address tok, uint256 id) {
         _token = MyToken(tok);
         address owner = msg.sender;
         counter = 1;
         nft = MyNft(Nft);
-        bidders[owner] = amount;
+        bidders[owner] = amount * wad;
         max = owner;
         nft.transferFrom(owner, address(this), id);
     }
 
     function addBidder(uint256 amount) private {
-        require(amount > bidders[max], "The value is less than the initial value");
+        require(amount * wad > bidders[max], "The value is less than the initial value");
         max = msg.sender;
         _token.transferFrom(msg.sender, address(this), amount);
-        bidders[msg.sender] = amount;
+        bidders[msg.sender] = amount * wad;
         counter += 1;
         indexes[counter] = msg.sender;
     }
 
-    function AddBid(uint256 amount) external {
+    function addBid(uint256 amount) public {
         if (block.timestamp >= duration) {
             endAuction();
         } else {
@@ -49,16 +50,18 @@ contract Auction {
         _;
     }
 
-    function removOffer(address user) external isOwner {
-        require(bidders[user] == bidders[max], "You cannot withdraw the money since you have the higher value");
-        bidders[user] = 0;
+    function removeOffer() external isOwner {
+        require(bidders[msg.sender] != bidders[max], "You cannot withdraw the money because you have the highest value");
+        uint256 money = bidders[msg.sender] / wad;
+        _token.transferFrom(address(this), msg.sender, bidders[msg.sender] / wad);
+        bidders[msg.sender] = 0;
     }
 
     function endAuction() private {
         bidders[max] = 0;
         while (counter > 0) {
             address bidder = indexes[counter];
-            _token.transferFrom(address(this), bidder, bidders[bidder]);
+            _token.transferFrom(address(this), bidder, bidders[bidder] / wad);
             counter = counter - 1;
         }
         nft.transferFrom(address(this), address(max), id);

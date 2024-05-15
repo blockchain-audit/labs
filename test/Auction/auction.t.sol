@@ -14,21 +14,49 @@ contract AuctionTest is Test {
     Auction public a;
     MyNft public nftT;
     MyToken public tokenT;
-    uint256 immutable wad = 10 ** 18;
-    address public myUser = vm.addr(1);
+    uint256 immutable wad = 1e18;
+    address public myUser;
 
     function setUp() public {
         nftT = new MyNft();
         tokenT = new MyToken();
         a = new Auction(address(nftT), 100, address(tokenT), 1);
+        myUser = vm.addr(1);
     }
 
-    // function testAddBidder() public{
-    //    uint amount=150;
-    //    vm.startPrank(myUser);
-    // }
-    //  function testAddBidderTooSmallAmount(80) public{
+    function testAddBidder() public {
+        uint256 amount = 200;
+        vm.startPrank(myUser);
+        tokenT.approve(address(a), amount);
+        tokenT.mint(address(myUser), amount);
+        vm.warp(2 days);
+        a.addBid(amount);
+        assertEq(a.bidders(myUser), amount);
+        vm.stopPrank();
+    }
 
-    // }
+    function testDontAddBidder() public {
+        uint256 amount = 50;
+        vm.startPrank(myUser);
+        tokenT.approve(address(a), amount);
+        tokenT.mint(address(myUser), amount);
+        vm.warp(2 days);
+        vm.expectRevert("The value is less than the initial value");
+        a.addBid(amount);
+        vm.stopPrank();
+    }
 
+    function testRemoveOffer() public {
+        uint256 sum1 = 200;
+        uint256 sum2 = 300;
+        address user1 = vm.addr(1234);
+        address user2 = vm.addr(123);
+        a.addBidders(user1, sum1);
+        a.setBidders(user2, sum2);
+        vm.startPrank(user1);
+        vm.warp(2 days);
+        a.removeOffer();
+        assertEq(a.bidders(user1), 0);
+        vm.stopPrank();
+    }
 }
