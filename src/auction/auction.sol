@@ -16,8 +16,8 @@ contract Auction{
     address[] addresses;
 
     }
-    mapping ( uint256 => mapping( address => uint256 )) bids;
-    mapping ( uint256 => auction) auctions;
+    mapping ( uint256 => mapping( address => uint256 )) public bids;
+    mapping ( uint256 => auction) public auctions;
      IERC721 public token;
     event Start (uint256 indexed tokenId, uint256 endAt);
     event Bid (uint256 indexed tokenId, address indexed bidder, uint256 amount);

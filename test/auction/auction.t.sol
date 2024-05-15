@@ -25,12 +25,33 @@ contract auctionTest is Test{
     function testStartAuction() public{
         // vm.startPrank(adr1);
         console.log(token.ownerOf(10000000));
-        token.approve(address(auction) , 10000000);
-        auction.startAuction(10000000, 222235);
+        // token.approve(address(auction) , 10000000);
+        // auction.startAuction(10000000, 222235);
         token.approve(address(auction) , 123);
         auction.startAuction(123, 222235);
+        (   
+           address seller,
+           uint tokenId,
+           bool started,
+           bool ended,
+           uint256 endAt,
+           address highestBidder,
+           uint256 highestBid 
+        ) = auction.auctions(123);
+        console.log(seller);
 
+        assert(seller == address(this));
+        assert(tokenId == 123);
+        assert(started == true);
+        assert(ended == false);
+        assert(endAt )
+
+
+         
+      
     }
+
+    
 
 
 
