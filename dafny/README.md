@@ -108,6 +108,7 @@ An assertion says that a particular expression always holds when control reaches
 * [dafny-token-mimics](https://github.com/ConsenSys/dafny-sc-fmics)
 * [eth2-dafny](https://github.com/ConsenSys/eth2.0-dafny)
 * [dafny-fsm](https://github.com/microsoft/Ironclad)
+* [dafny-classes](https://www.cse.unsw.edu.au/~anymeyer/2011/lectures/)
 
 
 ## Who
