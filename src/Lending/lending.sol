@@ -8,8 +8,8 @@ import "@hack/libs/ierc20.sol";
 
 contract Lending {
     struct Borrower {
-        uint collateralValue; //ETH //IERC20
-        uint borrowedValue; //DAI //IERC20
+        uint256 collateralValue; //ETH //IERC20
+        uint256 borrowedValue; //DAI //IERC20
         uint256 borrowDate;
     }
 
@@ -61,7 +61,7 @@ contract Lending {
         require(borrowAmount * coletoralRatio <= msg.value, "not enough coletorals");
         require(borrowAmount < totalDeposit, "not enough money to borrow");
         Borrower memory b;
-        b.collateralValue =msg.value;
+        b.collateralValue = msg.value;
         b.borrowedValue = borrowAmount;
         b.borrowDate = block.timestamp;
         borrowers[msg.sender] = b;
