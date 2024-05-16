@@ -1,6 +1,7 @@
 //   // SPDX-License-Identifier: Unlicen
 // pragma solidity ^0.8.24;
 
+// import "/home/user/myToken/new-project/script/myToken.sol";
 // import "../../src/auction/auction.sol";
 // import "openzeppelin-tokens/ERC721/ERC721.sol";
 // import "openzeppelin-tokens/ERC20/ERC20.sol";
@@ -8,8 +9,6 @@
 // import "forge-std/Test.sol";
 // import "forge-std/console.sol";
 // import "@hack/store/store.sol";
-// import "/home/user/myToken/new-project/script/myToken.sol";
-
 
 // contract TestAuction is Test {
 
@@ -17,19 +16,19 @@
 //     address NFTtoken;
 //     address token;
 //     uint _NFTtokenId;
-//     uint startPrice; 
+//     uint startPrice;
 //     uint duration;
 
 //     ERC721 nftContract;
-//     MyToken coin; 
+//     MyToken coin;
 //     function setUp() public {
-//          _NFTtokenId = 1;     
+//          _NFTtokenId = 1;
 //          nftContract = ERC721(NFTtoken);
 //          startPrice = 10;
-//          duration = 7;  
-//          coin = new MyToken();    
+//          duration = 7;
+//          coin = new MyToken();
 //          auction = new Auction(address(nftContract), _NFTtokenId, address(coin), startPrice, duration);
-//     } 
+//     }
 
 //      function testBid() public {
 

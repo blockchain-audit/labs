@@ -43,7 +43,7 @@ contract Staking {
 
     function deposit(uint256 sum) external {
         require(sum > 0, "You cannot deposit less than 0");
-        myCoin.transferFrom(msg.sender, address(this),sum);
+        myCoin.transferFrom(msg.sender, address(this), sum);
         userStake[msg.sender].amount += sum;
         userStake[msg.sender].time = block.timestamp;
         totalSupply += sum; //Total user deposits
@@ -51,9 +51,11 @@ contract Staking {
 
     function withdraw(uint256 sum) external {
         require(userStake[msg.sender].amount >= sum, "You don't have enough money in your account");
-        require( block.timestamp - userStake[msg.sender].time  >= 7 days, "you cant withdraw beacuse you already into week");
+        require(
+            block.timestamp - userStake[msg.sender].time >= 7 days, "you cant withdraw beacuse you already into week"
+        );
         uint256 reward = this.getReward(sum);
-         if (isNewYear()) {
+        if (isNewYear()) {
             allReward = 0;
             lastCheckedTimestamp = block.timestamp;
         }
@@ -61,7 +63,6 @@ contract Staking {
         myCoin.transfer(msg.sender, reward + sum); //102
         totalSupply -= reward + sum;
         userStake[msg.sender].amount -= sum;
-        
     }
 
     function isNewYear() internal view returns (bool) {
@@ -71,8 +72,6 @@ contract Staking {
     function amount() external view returns (uint256) {
         return userStake[msg.sender].amount;
     }
-
-
 
     function changeTime() external returns (uint256) {
         uint256 a = 60 * 60 * 24 * 7;
@@ -92,5 +91,4 @@ contract Staking {
     function getBalance() external view returns (uint256) {
         return myCoin.balanceOf(address(this));
     }
-
 }

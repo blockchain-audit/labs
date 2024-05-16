@@ -6,9 +6,9 @@ import "openzeppelin-tokens/ERC20/ERC20.sol";
 import "forge-std/console.sol";
 
 contract LendingProtocol {
-    // DAI כתובת חוזה חכם של טוקן ה- 
+    // DAI כתובת חוזה חכם של טוקן ה-
     address public daiTokenAddress;
-    
+
     // אג"ח
     mapping(address => uint256) public bondTokens;
 
@@ -23,28 +23,28 @@ contract LendingProtocol {
     constructor(address _daiTokenAddress) {
         daiTokenAddress = _daiTokenAddress;
     }
-    
+
     // Function for users to deposit DAI and receive bond tokens
     function deposit(uint256 daiAmount) external {
         // Transfer DAI tokens from user to this contract
         IERC20 daiToken = IERC20(daiTokenAddress);
         daiToken.transferFrom(msg.sender, address(this), daiAmount);
-        
+
         uint256 received = daiAmount;
-        
+
         bondTokens[msg.sender] += received;
     }
-    
+
     // Function for users to unbond their bond tokens and receive DAI in return
     function withdraw(uint256 burn) external {
         // Ensure user has enough bond tokens
         require(bondTokens[msg.sender] >= burn, "Insufficient bond tokens");
-        
+
         uint256 daiReturned = burn;
-        
+
         IERC20 daiToken = IERC20(daiTokenAddress);
         daiToken.transfer(msg.sender, daiReturned);
-        
+
         bondTokens[msg.sender] -= burn;
     }
 
@@ -109,7 +109,11 @@ contract LendingProtocol {
     }
 
     // Function to calculate the borrow limit
-    function calculateBorrowLimit(uint256 collateralValue, uint256 borrowedValue, uint256 maxLTV) internal pure returns (uint256) {
+    function calculateBorrowLimit(uint256 collateralValue, uint256 borrowedValue, uint256 maxLTV)
+        internal
+        pure
+        returns (uint256)
+    {
         return (collateralValue - borrowedValue) * maxLTV / 100;
     }
 

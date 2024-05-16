@@ -18,7 +18,7 @@
 //     function setUp() public {
 //         myCoin = new MyToken();
 //         stake = new Staking(address(myCoin));
-//     } 
+//     }
 
 //     function testDeposit() public {
 //         uint256 sum = 100 * wad;
@@ -59,4 +59,3 @@
 //     }
 
 // }
-
