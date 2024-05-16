@@ -19,6 +19,3 @@ interface IERC20 {
     event Transfer(address indexed src, address indexed dst, uint256 wad);
     event Approval(address indexed own, address indexed guy, uint256 wad);
 }
-
-
-

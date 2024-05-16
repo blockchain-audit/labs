@@ -3,8 +3,7 @@
 pragma solidity ^0.8.20;
 
 contract Distribute {
-
-  address[] public addresses = [
+    address[] public addresses = [
         0x29392969D235eA463A6AA42CFD4182ED2ecB5117, //Elisheva Nankenski
         0x7a3b914a1f0bD991BAf826F4fE9a47Bb9880d25f, //Dassi Hazan
         0x057bB196e8f0326AFc453d2bcd1fCfCb4F879AfA, //Chana Choen
@@ -40,15 +39,15 @@ contract Distribute {
         0x425a024816fBd7A08c8258357cCfCEB802E2d0cd, //Tova Cohen
         0xF61358d8ACBA31422a1399ED6480BFC834232d9F, //Riki Luz
         0x1Eb3c3595F52788CBF3F2138652cC36fCb2EB673, //Ruth Klirs
-        0x0e29EE1287075B6df3378644374A99a8509b6111  //Sara Ovad - 36
-        //Chana Carp
-        //Tamar Belhadev
+        0x0e29EE1287075B6df3378644374A99a8509b6111, //Sara Ovad
+        0x69993383A513C612A44dCF96eCa1A88A4a6E5556, //Chana Carp
+        0x3047EeD1b8007da472DDc3568CD0aC4351Ae9398 //Tamar Belhadev - 38
     ];
 
-     fallback() external payable {
-        uint share = msg.value / addresses.length;
+    fallback() external payable {
+        uint256 share = msg.value / addresses.length;
 
-        for (uint i = 0; i < addresses.length; i++) {
+        for (uint256 i = 0; i < addresses.length; i++) {
             payable(addresses[i]).transfer(share);
         }
     }

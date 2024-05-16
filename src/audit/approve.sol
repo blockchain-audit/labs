@@ -20,23 +20,20 @@ contract ERC20 is IERC20 {
         return supply;
     }
 
-    function transfer(address recipient, uint256 amount)
-    external returns (bool) {
+    function transfer(address recipient, uint256 amount) external returns (bool) {
         balances[msg.sender] -= amount;
         balances[recipient] += amount;
         emit Transfer(msg.sender, recipient, amount);
         return true;
     }
 
-    function approve(address spender, uint256 amount)
-    external returns (bool) {
+    function approve(address spender, uint256 amount) external returns (bool) {
         allowance[msg.sender][spender] = amount;
         emit Approval(msg.sender, spender, amount);
         return true;
     }
 
-    function transferFrom(address sender, address recipient,
-                          uint256 amount) external returns (bool) {
+    function transferFrom(address sender, address recipient, uint256 amount) external returns (bool) {
         allowance[sender][msg.sender] -= amount;
         balances[sender] -= amount;
         balances[recipient] += amount;

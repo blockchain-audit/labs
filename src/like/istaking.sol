@@ -4,10 +4,9 @@ pragma solidity ^0.8.20;
 import "@hack/libs/ownable.sol";
 
 interface IStaking {
-
-    function getEpochId(uint timestamp) external view returns (uint); // get epoch id
-    function getEpochUserBalance(address user, address token, uint128 epoch) external view returns(uint);
-    function getEpochPoolSize(address token, uint128 epoch) external view returns (uint);
-    function epoch1Start() external view returns (uint);
-    function epochDuration() external view returns (uint);
+    function getEpochId(uint256 timestamp) external view returns (uint256); // get epoch id
+    function getEpochUserBalance(address user, address token, uint128 epoch) external view returns (uint256);
+    function getEpochPoolSize(address token, uint128 epoch) external view returns (uint256);
+    function epoch1Start() external view returns (uint256);
+    function epochDuration() external view returns (uint256);
 }

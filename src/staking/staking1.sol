@@ -10,15 +10,15 @@ contract StakingRewards {
     IERC20 public immutable rewardsToken;
 
     address public owner;
-    uint256 public duration;        // [sec] time for payout
-    uint256 public finish = 0;      // [sec] finish reward time
-    uint256 public updated;         // [sec] last reward update
-    uint256 public rate = 7 days;   // [per] reward rate per sec
-    uint256 public acc;             // sum(reward rate * dt * 1e18 / total supply)
-    uint256 public totalSupply;                  // total staked
-    mapping(address => uint256) public paid;     // user reward per token paid
-    mapping(address => uint256) public rewards;  // reward to be claimed
-    mapping(address => uint256) public balanceOf;// staked per user
+    uint256 public duration; // [sec] time for payout
+    uint256 public finish = 0; // [sec] finish reward time
+    uint256 public updated; // [sec] last reward update
+    uint256 public rate = 7 days; // [per] reward rate per sec
+    uint256 public acc; // sum(reward rate * dt * 1e18 / total supply)
+    uint256 public totalSupply; // total staked
+    mapping(address => uint256) public paid; // user reward per token paid
+    mapping(address => uint256) public rewards; // reward to be claimed
+    mapping(address => uint256) public balanceOf; // staked per user
 
     constructor(address _stakingToken, address _rewardToken) {
         owner = msg.sender;
@@ -93,8 +93,8 @@ contract StakingRewards {
         if (block.timestamp >= finish) {
             rate = amount / duration;
         } else {
-            uint remaining = (finish - block.timestamp);
-            uint leftover = remaining * rate;
+            uint256 remaining = (finish - block.timestamp);
+            uint256 leftover = remaining * rate;
             rate = (amount + leftover) / duration;
         }
 
@@ -102,10 +102,10 @@ contract StakingRewards {
         // This keeps the reward rate in the right range, preventing overflows due to
         // very high values of rewardRate in the earned and rewardsPerToken functions;
         // Reward + leftover must be less than 2^256 / 10^18 to avoid overflow.
-        uint balance = rewardsToken.balanceOf(address(this));
+        uint256 balance = rewardsToken.balanceOf(address(this));
         require(rate <= balance / duration, "provided reward too high");
 
-        finish  = block.timestamp + duration;
+        finish = block.timestamp + duration;
         updated = block.timestamp;
     }
 }

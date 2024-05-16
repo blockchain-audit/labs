@@ -56,12 +56,12 @@ contract CollectorsTest is Test {
         console.log(address(msg.sender));
         walletGabaim.updateCollectors(oldCollector, newCollector);
 
-        // change again the old Address 
+        // change again the old Address
         vm.expectRevert();
         walletGabaim.updateCollectors(oldCollector, newCollector);
 
         assertEq(walletGabaim.collectors(newCollector), 1);
-        assertEq(walletGabaim.owner() , 0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496);
+        assertEq(walletGabaim.owner(), 0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496);
         assertEq(walletGabaim.collectors(oldCollector), 0);
         vm.stopPrank();
     }
@@ -79,8 +79,8 @@ contract CollectorsTest is Test {
         assertEq(walletGabaim.collectors(oldCollector), 1);
         vm.stopPrank();
     }
-    
+
     function testGetBalance() public {
-        assertEq(walletGabaim.getBalance(), 100 , "not equals");
+        assertEq(walletGabaim.getBalance(), 100, "not equals");
     }
 }

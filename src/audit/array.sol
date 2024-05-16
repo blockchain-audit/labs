@@ -4,7 +4,6 @@ pragma solidity ^0.8.18;
 import "forge-std/Test.sol";
 import "@hack/like/IERC20.sol";
 
-
 /*
 Name: Array Deletion Oversight: leading to data inconsistency
 
@@ -24,26 +23,24 @@ https://blog.solidityscan.com/improper-array-deletion-82672eed8e8d
 https://github.com/sherlock-audit/2023-03-teller-judging/issues/88
 */
 
-
 contract ArrayDeletion {
-    uint[] public a = [1, 2, 3, 4, 5];
+    uint256[] public a = [1, 2, 3, 4, 5];
 
-    function deleteElement(uint index) external {
+    function deleteElement(uint256 index) external {
         require(index < a.length, "Invalid index");
         delete a[index];
     }
 
-    function getLength() public view returns (uint) {
+    function getLength() public view returns (uint256) {
         return a.length;
     }
 }
 
-
 contract FixedArrayDeletion {
-    uint[] public a = [1, 2, 3, 4, 5];
+    uint256[] public a = [1, 2, 3, 4, 5];
 
     //Mitigation 1: By copying the last element and placing it in the position to be removed.
-    function deleteElement(uint index) external {
+    function deleteElement(uint256 index) external {
         require(index < a.length, "Invalid index");
 
         // Swap the element to be deleted with the last element
@@ -54,15 +51,16 @@ contract FixedArrayDeletion {
     }
 
     // Mitigation 2: By shifting them from right to left.
-    function deleteElementB(uint index) external {
+    function deleteElementB(uint256 index) external {
         require(index < a.length, "Invalid index");
-        for (uint i = index; i < a.length - 1; i++) {
+        for (uint256 i = index; i < a.length - 1; i++) {
             a[i] = a[i + 1];
         }
         // Delete the last element
         a.pop();
     }
-    function getLength() public view returns (uint) {
+
+    function getLength() public view returns (uint256) {
         return a.length;
     }
 }

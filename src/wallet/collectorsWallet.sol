@@ -4,7 +4,6 @@ pragma solidity ^0.8.24;
 import "forge-std/console.sol";
 
 contract CollectorsWallet {
-    
     address payable public owner;
 
     mapping(address => uint256) public collectors;
@@ -29,18 +28,12 @@ contract CollectorsWallet {
     // }
 
     function withdraw(uint256 wad) external {
-        require(
-            owner == msg.sender || collectors[msg.sender] == 1,
-            "You are not allowed"
-        );
+        require(owner == msg.sender || collectors[msg.sender] == 1, "You are not allowed");
         require(address(this).balance >= wad, "Not Enough Money");
         payable(msg.sender).transfer(wad);
     }
 
-    function updateCollectors(
-        address oldCollector,
-        address newCollector
-    ) external onlyOwner {
+    function updateCollectors(address oldCollector, address newCollector) external onlyOwner {
         require(collectors[oldCollector] == 1, "Old Collector not exist"); // check if collector exist in my hash
         require(collectors[newCollector] == 0, "A Collector exist"); // check if collector exist in my hash
         collectors[newCollector] = 1;

@@ -6,38 +6,27 @@ interface IERC165 {
 }
 
 interface IERC721 is IERC165 {
-    function balanceOf(address owner) external view returns (uint balance);
+    function balanceOf(address owner) external view returns (uint256 balance);
 
-    function ownerOf(uint tokenId) external view returns (address owner);
+    function ownerOf(uint256 tokenId) external view returns (address owner);
 
-    function safeTransferFrom(address src, address dst, uint tokenId) external;
+    function safeTransferFrom(address src, address dst, uint256 tokenId) external;
 
-    function safeTransferFrom(
-        address src,
-        address dst,
-        uint tokenId,
-        bytes calldata data
-    ) external;
+    function safeTransferFrom(address src, address dst, uint256 tokenId, bytes calldata data) external;
 
-    function transferFrom(address src, address dst, uint tokenId) external;
+    function transferFrom(address src, address dst, uint256 tokenId) external;
 
-    function approve(address dst, uint tokenId) external;
+    function approve(address dst, uint256 tokenId) external;
 
-    function getApproved(uint id) external view returns (address operator);
+    function getApproved(uint256 id) external view returns (address operator);
 
     function setApprovalForAll(address operator, bool _approved) external;
 
-    function isApprovedForAll(
-        address owner,
-        address operator
-    ) external view returns (bool);
+    function isApprovedForAll(address owner, address operator) external view returns (bool);
 }
 
 interface IERC721Receiver {
-    function onERC721Received(
-        address operator,
-        address src,
-        uint tokenId,
-        bytes calldata data
-    ) external returns (bytes4);
+    function onERC721Received(address operator, address src, uint256 tokenId, bytes calldata data)
+        external
+        returns (bytes4);
 }

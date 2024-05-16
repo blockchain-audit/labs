@@ -32,7 +32,7 @@ contract collectorsFuzzTest is Test {
         console.log(amount, " with draw amount");
         userAddress = 0x7a3b914a1f0bD991BAf826F4fE9a47Bb9880d25f; // address of allowed user
         vm.startPrank(userAddress); // send from user address
-        vm.deal(userAddress, amount); 
+        vm.deal(userAddress, amount);
         payable(address(walletGabaim)).transfer(amount); // move amount to the contract
         uint256 initialBalance = address(walletGabaim).balance; // the balance in the begining (before transfer)
         walletGabaim.withdraw(amount);
@@ -45,7 +45,7 @@ contract collectorsFuzzTest is Test {
         console.log(amount, " with draw amount");
         userAddress = 0x7a3b914a1f0bD991BAf826F4fE9a47Bb9880d25f; // address of allowed user
         vm.startPrank(userAddress); // send from user address
-        if(amount!= 0){
+        if (amount != 0) {
             vm.expectRevert();
         }
         walletGabaim.withdraw(amount);
@@ -56,7 +56,7 @@ contract collectorsFuzzTest is Test {
         console.log(amount, " with draw amount");
         // console.log(userAddress, " with draw randomAddress");
         vm.startPrank(userAddress); // send from user address
-        vm.deal(userAddress, amount); 
+        vm.deal(userAddress, amount);
         payable(address(walletGabaim)).transfer(amount); // move amount to the contract
         vm.expectRevert();
         walletGabaim.withdraw(amount);
@@ -67,7 +67,7 @@ contract collectorsFuzzTest is Test {
         address ownerAddress = 0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496; // address of owner user
         vm.startPrank(ownerAddress); // send from owner address
         console.log(address(msg.sender));
-        if(walletGabaim.collectors(oldGabai)!=1){
+        if (walletGabaim.collectors(oldGabai) != 1) {
             vm.expectRevert();
         }
         walletGabaim.updateCollectors(oldGabai, newGabai);
