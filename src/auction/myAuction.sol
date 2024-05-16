@@ -3,20 +3,19 @@
 
     pragma solidity ^0.8.20;
     import "forge-std/console.sol";
-    import "@openzeppelin/ERC721/ERC721.sol";
-    import "@hack/auction/ERC721.sol";
+    import "@openzeppelin/ERC721/IERC721.sol";
+    import "@hack/myTokens/ERC721.sol";
 
     contract Auction{
         address public highestBidderAddress;
         uint public highestBid;
-        
-            address sellerAddress;
-            MyERC721 NFT;
-            uint tokenId;
-            uint startingPrice;
-            uint startTime;
-            uint during;
-            bool isStart;        
+        address sellerAddress;
+        MyERC721 NFT;
+        uint tokenId;
+        uint startingPrice;
+        uint startTime;
+        uint during;
+        bool isStart;        
 
         event bid(address bider, uint amount);
         event End(address winner);
