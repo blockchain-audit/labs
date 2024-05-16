@@ -19,16 +19,14 @@ contract auctionTest is Test{
     token.mint(address(this), 10000000);
     token.mint(address(this), 123);
 
-    // token.mint(address(this), 10000000);
     }
 
-    function testStartAuction() public{
-        // vm.startPrank(adr1);
+    function testStartAuction() public {
+
         console.log(token.ownerOf(10000000));
-        // token.approve(address(auction) , 10000000);
-        // auction.startAuction(10000000, 222235);
         token.approve(address(auction) , 123);
         auction.startAuction(123, 222235);
+
         (   
            address seller,
            uint tokenId,
@@ -44,12 +42,19 @@ contract auctionTest is Test{
         assert(tokenId == 123);
         assert(started == true);
         assert(ended == false);
-        assert(endAt )
-
-
-         
-      
+        assert(endAt == block.timestamp + 222235);
+        assert(highestBidder == address(0));
+        assert(highestBid == 0);
     }
+
+    function testBid() public {
+        testStartAuction();
+        
+
+
+    }
+
+
 
     
 
