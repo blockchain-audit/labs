@@ -32,7 +32,7 @@ contract Lending {
 
     function borrow(uint amount)public{
         getLatestPrice();
-    } 
+    } AggregatorV3Interface
 
 
 
