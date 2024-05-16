@@ -27,12 +27,12 @@ pragma solidity ^0.8.20;
         function setUp() public{
             auction = new Auction();
             token = new MyERC721("MyNft", "NFT");
-            token.mint(address(this), 1);
+            token.mint(sellerAddress, tokenId);
         }
 
-        // function testSrartAuction() external{
-
-        // }
+        function testSrartAuction() external{
+            
+        }
 
         // function testAddBidd() internal{
         // }
@@ -41,7 +41,7 @@ pragma solidity ^0.8.20;
 
         // }
 
-        function testEndAction() public{
-            console.log(isStart);
-        } 
+        // function testEndAction() public{
+        //     console.log(isStart);
+        // } 
     }
