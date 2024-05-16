@@ -68,4 +68,15 @@ method ShowAssert() {
 }
 
 
+// notice that the c continues to be the old value, and it not updated
+// by the  `c, d := b, a + b` assignment
+method BeforeAfter(x: int, y: int) returns (c: int, d: int)
+requires x == 1
+requires y == 3
+ensures d == 4
+ensures c == 3 {
+    var a := x;
+    var b := y;
+    c, d := b, a + b;
+}
 
