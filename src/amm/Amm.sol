@@ -51,10 +51,10 @@ contract Amm {
             // );
             // console.log(getValueOfAPer1Token(), getValueOfBPer1Token(), "00000000000000");
             // console.log(amountA, amountB, "----------------");
-            // console.log(amountA * getValueOfAPer1Token() / wad, "===================", amountB * getValueOfBPer1Token() / wad);
+            console.log(amountA * getValueOfAPer1Token() / wad, "===================", amountB * getValueOfBPer1Token() / wad);
             require(balanceA * wad / balanceB == amountA * wad / amountB);
             // require(amountA * getValueOfAPer1Token() / wad == amountB * getValueOfBPer1Token() / wad, "not equals value");
-            liquidity[msg.sender] = amountA * getValueOfAPer1Token() / wad;
+            liquidity[msg.sender] += amountA * getValueOfAPer1Token() / wad;
         }
         tokenA.transferFrom(msg.sender, address(this), amountA);
         tokenB.transferFrom(msg.sender, address(this), amountB);
