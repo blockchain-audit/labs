@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 pragma solidity >=0.8.0;
 
-import "./staking/myToken.sol";
-import "./tokens/myERC721.sol";
+import "@hack/staking/myToken.sol";
+import "@hack/tokens/myERC721.sol";
 
 contract Auction {
     MyERC721Token public tokenNFT;
@@ -39,21 +39,27 @@ contract Auction {
         require(auctionStarted, "auction is not started");
         require(bidAmount > bidders[currentHighestBidder], "current highest bid amount is higher then your bid amount");
 
+        myToken.transfer(currentHighestBidder, bidders[currentHighestBidder]);
+
         currentHighestBidder = msg.sender;
         bidders[msg.sender] = bidAmount;
         myToken.transferFrom(msg.sender, address(this), bidAmount);
 
     }
 
-    function withdrawBid() public {
-        require(bidders[msg.sender], "you dont have a bid to withdraw");
-        require(msg.sender != currentHighestBidder, "you can't withdraw your bid, you are the highest bidder");
+    // function withdrawBid() public {
+    //     require(bidders[msg.sender], "you dont have a bid to withdraw");
+    //     require(msg.sender != currentHighestBidder, "you can't withdraw your bid, you are the highest bidder");
 
-        myToken.transfer(msg.sender, bidders[msg.sender]);
-        delete bidders[msg.sender];
-    }
+    //     myToken.transfer(msg.sender, bidders[msg.sender]);
+    //     delete bidders[msg.sender];
+    // }
 
     function endBid() public {
-        
+        require(auctionStarted, "auction is not started");
+        require(block.timestamp > auctionStartDate + auctionDuration, "auction still did'nt finish the duration time");
+
+        auctionStarted = false;
+        tokenNFT.transferFrom(address(this), currentHighestBidder, tokenId);
     }
 }
