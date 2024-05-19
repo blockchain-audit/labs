@@ -31,7 +31,8 @@ pragma solidity ^0.8.20;
         }
 
         function test_startAuction() public{
-            auction.startAuction(duringT, startingPriceT, tokenIdT, address(token)); 
+            //auction.startAuction(duringT, startingPriceT, tokenIdT, address(token)); 
+            auction.startAuction(duringT, startingPriceT, tokenIdT); 
             assertEq(auction.startingPrice(), startingPriceT);
             assertEq(auction.during(), duringT);
             assertEq(auction.tokenId(), tokenIdT);
@@ -42,9 +43,9 @@ pragma solidity ^0.8.20;
         }
 
         function testAddBidd() internal{
-            auction.startAuction(duringT, startingPriceT, tokenIdT, address(token)); 
+            auction.startAuction(duringT, startingPriceT, tokenIdT); 
             console.log(auction.isStart());
-            
+
         }
 
         // function testRemoveBidd() public payable{

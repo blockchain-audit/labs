@@ -43,10 +43,12 @@
 
         //Initialize variables
         //The NFT seller transfers the his token NFT to the contract
-        function startAuction(uint _during, uint _startingPrice, uint _tokenId, address tokenNft) external  onlySeller(){
+        function startAuction(uint _during, uint _startingPrice, uint _tokenId) external  onlySeller(){
+        //function startAuction(uint _during, uint _startingPrice, uint _tokenId, address tokenNft) external  onlySeller(){
             require(msg.sender == sellerAddress, "You need to be the owner of the nft.");
             //sellerAddress = msg.sender;
-            NFT = MyERC721(tokenNft);
+            //NFT = MyERC721(tokenNft);
+            NFT = MyERC721(NFT.ownerOf(tokenId));
             tokenId = _tokenId;
             startingPrice = _startingPrice;
             startTime = block.timestamp;
