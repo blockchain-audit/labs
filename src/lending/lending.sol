@@ -1,4 +1,5 @@
 pragma solidity ^0.8.24;
+import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "forge-std/console.sol";
 import "../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 import "../../lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
@@ -103,16 +104,14 @@ contract lending is ERC20, Math1 {
         usersBorrowed[msg.sender] -= paid;
         totalBorrowed -= paid;
     }
-    function trigger( address user ) external onlyOwner
+    function triggerLiquidation( address user ) external onlyOwner
     {
         uint256 barrowed = usersBorrowed[msg.sender];
         uint256 collateral = usersCollateral[msg.sender];
         uint256 left = mulExp(collateral, ethPrice) - barrowed;
-        // liquidationThreshold = percentage(left, maxLTV)
 
+          percentage(left, maxLTV);
 
-
-        
     }
     function harvest() external onlyOwner{
         
