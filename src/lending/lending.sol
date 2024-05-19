@@ -1,16 +1,21 @@
 pragma solidity ^0.8.24;
-import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+
+// import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "forge-std/console.sol";
+// /home/user/Documents/yehudis/labs/lib/chainlink/contracts/src/v0.8/
+import "../../lib/chainlink/contracts/src/v0.8/l2ep/dev/arbitrum/ArbitrumSequencerUptimeFeed.sol";
+import "../../lib/chainlink/contracts/src/v0.8/interfaces/FeedRegistryInterface.sol";
 import "../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 import "../../lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
 import "../../lib/openzeppelin-contracts/contracts/utils/math/Math.sol";
 import "../math/Math.sol";
 import "../math/Math.sol";
+import "../interfaces/ISwapRouter.sol";
 
 contract lending is ERC20, Math1 {
     using Math for uint256;
     
-
+    ArbitrumSequencerUptimeFeed internal priceFeed;
     uint256 public maxLTV = 4;
     uint256 public totalDeposit;
     uint256 public totalBorrowed;
@@ -28,6 +33,7 @@ contract lending is ERC20, Math1 {
 
     constructor(address tokenDai) ERC20("bond token" ,"bt"){
         dai = IERC20(tokenDai);
+        priceFeed = ArbitrumSequencerUptimeFeed(tokenDai);
         // owner = msg.sender;
         
     }
@@ -128,6 +134,10 @@ contract lending is ERC20, Math1 {
         uint256 cash = totalDeposit - (totalBorrowed);
         uint256 num = cash + (totalBorrowed) + (totalReserve);
         return getExp(num, totalSupply());
+    }
+      function _getLatestPrice() public view returns (int256) {
+        (, int256 price, , , ) = priceFeed.latestRoundData();
+        return price * 10**10;
     }
 
 
