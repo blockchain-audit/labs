@@ -1,8 +1,6 @@
 
 // SPDX-License-Identifier: MIT
-
 pragma solidity ^0.8.20;
-
     import "forge-std/console.sol";
     import "@openzeppelin/ERC721/IERC721.sol";
     import "@hack/auction/myAuction.sol";
@@ -13,35 +11,47 @@ pragma solidity ^0.8.20;
 
     contract AuctionTest is Test{
 
-        Auction auction;
-        MyERC721 token;
-        address public highestBidderAddress = address(0);
+        Auction public auction;
+        MyERC721 public token;
+        address public sellerAddressT = msg.sender;
         uint public highestBid = 0;
-        address sellerAddress = address(0x123);
-        uint tokenId = 1;
-        uint startingPrice = 100;
-        uint startTime = block.timestamp;
-        uint during = 4;
-        bool isStart = false; 
-
+        uint public tokenIdT = 1;
+        uint public startingPriceT = 100;
+        uint public startTimeT = block.timestamp;
+        uint public duringT = 4 days;
+        //address public sellerAddress = address(0x00);
         function setUp() public{
+            vm.startPrank(sellerAddressT);
             auction = new Auction();
+            //auction.sellerAddress() = address(0x123);
+            //sellerAddressT = auction.sellerAddress();
             token = new MyERC721("MyNft", "NFT");
-            token.mint(sellerAddress, tokenId);
+            token.mint(sellerAddressT, tokenIdT);
+            token.approve(address(auction), tokenIdT);
         }
 
-        function testSrartAuction() external{
+        function test_startAuction() public{
+            auction.startAuction(duringT, startingPriceT, tokenIdT, address(token)); 
+            assertEq(auction.startingPrice(), startingPriceT);
+            assertEq(auction.during(), duringT);
+            assertEq(auction.tokenId(), tokenIdT);
+            assertEq(auction.isStart(), true);
+            assertEq(auction.highestBidderAddress(), address(0));
+            assertEq(auction.highestBid(), startingPriceT);
+            assertEq(token.ownerOf(tokenIdT), address(auction));
+        }
+
+        function testAddBidd() internal{
+            auction.startAuction(duringT, startingPriceT, tokenIdT, address(token)); 
+            console.log(auction.isStart());
             
         }
-
-        // function testAddBidd() internal{
-        // }
 
         // function testRemoveBidd() public payable{
 
         // }
 
         // function testEndAction() public{
-        //     console.log(isStart);
+
         // } 
     }

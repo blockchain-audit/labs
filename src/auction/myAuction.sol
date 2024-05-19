@@ -9,13 +9,13 @@
     contract Auction{
         address public highestBidderAddress;
         uint public highestBid;
-        address sellerAddress;
-        MyERC721 NFT;
-        uint tokenId;
-        uint startingPrice;
-        uint startTime;
-        uint during;
-        bool isStart;        
+        address public sellerAddress;
+        MyERC721 public NFT;
+        uint public tokenId;
+        uint public startingPrice;
+        uint public startTime;
+        uint public during;
+        bool public isStart;        
 
         event bid(address bider, uint amount);
         event End(address winner);
@@ -25,22 +25,6 @@
         
         constructor() {
 
-        }
-
-        //Initialize variables
-        //The NFT seller transfers the his token NFT to the contract
-        function startAuction(uint _during, uint _startingPrice, uint _tokenId, address tokenNft) external onlySeller() {
-            require(msg.sender == sellerAddress, "You need to be the owner of the nft.");
-            sellerAddress = msg.sender;
-            NFT = MyERC721(tokenNft);
-            tokenId = _tokenId;
-            startingPrice = _startingPrice;
-            startTime = block.timestamp;
-            during = _during;
-            isStart = true;    
-            highestBidderAddress = address(0);
-            highestBid = _startingPrice;
-            NFT.transferFrom(msg.sender, address(this), _tokenId);
         }
 
         modifier onlySeller() {
@@ -55,6 +39,22 @@
             block.timestamp > startTime && block.timestamp < startTime + during,
             "You can only make offers higher than the current offer.");
             _;
+        }
+
+        //Initialize variables
+        //The NFT seller transfers the his token NFT to the contract
+        function startAuction(uint _during, uint _startingPrice, uint _tokenId, address tokenNft) external  onlySeller(){
+            require(msg.sender == sellerAddress, "You need to be the owner of the nft.");
+            //sellerAddress = msg.sender;
+            NFT = MyERC721(tokenNft);
+            tokenId = _tokenId;
+            startingPrice = _startingPrice;
+            startTime = block.timestamp;
+            during = _during;
+            isStart = true;    
+            highestBidderAddress = address(0);
+            highestBid = _startingPrice;
+            NFT.transferFrom(msg.sender, address(this), _tokenId);
         }
 
         //Add Bidd for the auction 
