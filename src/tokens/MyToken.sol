@@ -38,17 +38,20 @@ contract MyToken is IERC20 {
         totalSupply += amount;
         emit Transfer(address(0), msg.sender, amount);
     }
-    function mint(address to,uint256 amount) external {
+
+    function mint(address to, uint256 amount) external {
         balanceOf[to] += amount;
         totalSupply += amount;
         emit Transfer(address(0), msg.sender, amount);
     }
+
     function burn(uint256 amount) external {
         balanceOf[msg.sender] -= amount;
         totalSupply -= amount;
         emit Transfer(msg.sender, address(0), amount);
     }
-    function burn(address from,uint256 amount) external {
+
+    function burn(address from, uint256 amount) external {
         balanceOf[from] -= amount;
         totalSupply -= amount;
         emit Transfer(msg.sender, address(0), amount);

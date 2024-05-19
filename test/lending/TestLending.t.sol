@@ -7,19 +7,18 @@ import "@labs/tokens/MyToken.sol";
 import "@labs/lending/Lending.sol";
 import "forge-std/console.sol";
 
-contract TestLending{
-
+contract TestLending {
     IERC20 dai;
     MyToken bonds;
     Lending lending;
-    function setUp()public{
+
+    function setUp() public {
         dai = new MyToken();
         bonds = new MyToken();
-        lending = new Lending(address(bonds),address(dai));
+        lending = new Lending(address(bonds), address(dai));
     }
 
-
-    function test()public{
+    function test() public {
         int256 s = lending.getLatestPrice();
         // console.log();
     }

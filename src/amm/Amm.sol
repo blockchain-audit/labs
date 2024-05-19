@@ -65,8 +65,8 @@ contract Amm {
 
     function removeAllLiquidity() public {
         console.log(totalLiquidity, balanceA, "--------------");
-        uint256 countA = liquidity[msg.sender] *wad/ getValueOfAPer1Token();
-        uint256 countB = liquidity[msg.sender] *wad/ getValueOfBPer1Token();
+        uint256 countA = liquidity[msg.sender] * wad / getValueOfAPer1Token();
+        uint256 countB = liquidity[msg.sender] * wad / getValueOfBPer1Token();
         tokenA.transfer(msg.sender, countA);
         balanceA -= countA;
         tokenB.transfer(msg.sender, countB);
