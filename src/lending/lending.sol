@@ -8,7 +8,6 @@ import "../math/Math.sol";
 
 contract lending is ERC20, Math1 {
     using Math for uint256;
-
     
 
     uint256 public maxLTV = 4;
