@@ -7,9 +7,10 @@ pragma solidity ^0.8.24;
 import "@hack/libs/ierc20.sol";
 
 contract Lending {
+    
     struct Borrower {
-        uint256 collateralValue; //ETH //IERC20
-        uint256 borrowedValue; //DAI //IERC20
+        uint256 collateralValue; //ETH 
+        uint256 borrowedValue; //DAI
         uint256 borrowDate;
     }
 
@@ -19,7 +20,7 @@ contract Lending {
         uint256 currentTotalFee;
     }
 
-    IERC20 public daiToken; // transfer to the contract from depositor in deposit;
+    IERC20 public daiToken; // transfer to the contract from depositor in deposit
     mapping(address => Borrower) public borrowers;
     mapping(address => Depositor) public depositors;
     uint256 public totalDeposit; //sum of dai in the pool
@@ -93,5 +94,7 @@ contract Lending {
         totalRewards += _amount - borrowers[msg.sender].borrowedValue;
         borrowers[msg.sender].borrowedValue = 0;
         totalDeposit += _amount - borrowers[msg.sender].borrowedValue;
+
+        //return coletorals
     }
 }

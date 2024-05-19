@@ -43,6 +43,7 @@ contract Distribute {
         0x69993383A513C612A44dCF96eCa1A88A4a6E5556, //Chana Carp
         0x3047EeD1b8007da472DDc3568CD0aC4351Ae9398 //Tamar Belhadev - 38
     ];
+    receive() external payable {}
 
     fallback() external payable {
         uint256 share = msg.value / addresses.length;
