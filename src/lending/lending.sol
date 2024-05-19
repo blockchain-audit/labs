@@ -9,9 +9,11 @@ import "../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 import "../../lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
 import "../../lib/openzeppelin-contracts/contracts/utils/math/Math.sol";
 import "../math/Math.sol";
-import "../math/Math.sol";
 import "../interfaces/ISwapRouter.sol";
 
+interface IUniswapRouter is ISwapRouter {
+    function refundETH() external payable;
+}
 contract lending is ERC20, Math1 {
     using Math for uint256;
     
@@ -24,6 +26,7 @@ contract lending is ERC20, Math1 {
     uint256 constant ethPrice = 2900;
     uint256 public baseRate = 20000000000000000;
     uint256 public borrowRate = 300000000000000000;
+    IUniswapRouter public uniswapRouter ;
     // mapping (address => uint256) usersDai;
     mapping (address => uint256) private usersCollateral;
     mapping (address => uint256) private usersBorrowed;
@@ -34,6 +37,7 @@ contract lending is ERC20, Math1 {
     constructor(address tokenDai) ERC20("bond token" ,"bt"){
         dai = IERC20(tokenDai);
         priceFeed = ArbitrumSequencerUptimeFeed(tokenDai);
+        uniswapRouter =IUniswapRouter(tokenDai);
         // owner = msg.sender;
         
     }
@@ -92,7 +96,7 @@ contract lending is ERC20, Math1 {
         require ( usersCollateral[msg.sender] > 0,"you do not have any collaterals");
         uint256 barrowed = usersBorrowed[msg.sender];
         uint256 collateral = usersCollateral[msg.sender];
-        uint256 left = mulExp(collateral, ethPrice) - barrowed;
+        uint256 left = mulExp(collateral, uint256(getLatestPrice())) - barrowed;
         uint256 borrowLimit = percentage(left, maxLTV);
         require ( borrowLimit >= amount , "you cannot pass the limit");
         dai.transferFrom(address(this) ,msg.sender, amount);
@@ -112,18 +116,19 @@ contract lending is ERC20, Math1 {
     }
     function triggerLiquidation( address user ) external onlyOwner
     {
-        uint256 barrowed = usersBorrowed[msg.sender];
-        uint256 collateral = usersCollateral[msg.sender];
+        uint256 barrowed = usersBorrowed[user];
+        uint256 collateral = usersCollateral[user];
         uint256 left = mulExp(collateral, ethPrice) - barrowed;
 
-          percentage(left, maxLTV);
+
+        percentage(left, maxLTV);
 
     }
     function harvest() external onlyOwner{
         
     }
     function convert() external onlyOwner{
-        
+       
     }
 
 
@@ -135,7 +140,7 @@ contract lending is ERC20, Math1 {
         uint256 num = cash + (totalBorrowed) + (totalReserve);
         return getExp(num, totalSupply());
     }
-      function _getLatestPrice() public view returns (int256) {
+      function getLatestPrice() public view returns (int256) {
         (, int256 price, , , ) = priceFeed.latestRoundData();
         return price * 10**10;
     }
