@@ -7,10 +7,21 @@ import "@openzeppelin/ERC20/IERC20.sol";
 //import "";
 import "forge-std/console.sol";
 
-mapping(address=>uint) public userBorrowed;
-
 contract BuildLending{
 
+    address public owner;
+
+    mapping(address=>uint) public userBorrowed;
+
+    IERC20 public dai;
+    constructor(){
+
+    }
+
+    modifier onlyOwner(){
+        require(msg.sender == owner, "Only owner can do it.");
+        _;
+    }
     //user
     function deposint() external{
 

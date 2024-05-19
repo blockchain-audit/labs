@@ -33,6 +33,7 @@ pragma solidity ^0.8.20;
         function test_startAuction() public{
             //auction.startAuction(duringT, startingPriceT, tokenIdT, address(token)); 
             auction.startAuction(duringT, startingPriceT, tokenIdT); 
+            //console.log(auction.NFT());
             assertEq(auction.startingPrice(), startingPriceT);
             assertEq(auction.during(), duringT);
             assertEq(auction.tokenId(), tokenIdT);
@@ -45,6 +46,15 @@ pragma solidity ^0.8.20;
         function testAddBidd() internal{
             auction.startAuction(duringT, startingPriceT, tokenIdT); 
             console.log(auction.isStart());
+            //console.log(auction.NFT());
+            address addr = vm.addr(0x11111);
+            vm.startPrank(addr);
+            vm.deal(address(addr), 10000);
+            uint sum = 250;
+            auction.addBidd(sum);
+            assertEq(auction.highestBidderAddress(), address(addr), "Unexpected max Address");
+            //assertEq(auction.highestBid(), sum + auction.Balance(address(addr)));
+            //לבדוק להועבר לחוזה הסכום sum
 
         }
 
