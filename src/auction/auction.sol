@@ -2,10 +2,10 @@
 pragma solidity >=0.8.0;
 
 import "@hack/staking/myToken.sol";
-import "@hack/tokens/myERC721.sol";
+import "@hack/tokens/ERC721.sol";
 
 contract Auction {
-    MyERC721Token public tokenNFT;
+    ERC721 public tokenNFT;
     MyToken public myToken;
 
     bool public auctionStarted;
@@ -18,14 +18,14 @@ contract Auction {
 
     constructor (address _tokenNFT, address _myToken)
     {
-        tokenNFT = MyERC721Token(_tokenNFT);
-        myToken = _myToken;
+        tokenNFT = ERC721(_tokenNFT);
+        myToken = MyToken(_myToken);
     }
 
 
     function startAuction(uint tokenId, uint _auctionDuration) public {
         require(!auctionStarted, "auction already started");
-        require(tokenNFT._ownerOf(tokenId) == msg.sender, "sender is not the owner of the token"); 
+        require(tokenNFT.ownerOf(tokenId) == msg.sender, "sender is not the owner of the token"); 
 
         auctionTokenId = tokenId;
         auctionDuration = _auctionDuration;
