@@ -3,7 +3,7 @@ pragma solidity >=0.8.0;
 
 import "forge-std/interfaces/IERC721.sol";
 
-contract ERC721 is IERC721 {
+contract ERC721Token is IERC721 {
 
     event Transfer (address indexed from, address indexed to, uint indexed id);
 

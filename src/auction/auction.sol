@@ -2,10 +2,10 @@
 pragma solidity >=0.8.0;
 
 import "@hack/staking/myToken.sol";
-import "@hack/tokens/ERC721.sol";
+import "@hack/tokens/ERC721Token.sol";
 
 contract Auction {
-    ERC721 public tokenNFT;
+    ERC721Token public tokenNFT;
     MyToken public myToken;
 
     bool public auctionStarted;
@@ -18,7 +18,7 @@ contract Auction {
 
     constructor (address _tokenNFT, address _myToken)
     {
-        tokenNFT = ERC721(_tokenNFT);
+        tokenNFT = ERC721Token(_tokenNFT);
         myToken = MyToken(_myToken);
     }
 
@@ -60,6 +60,6 @@ contract Auction {
         require(block.timestamp > auctionStartDate + auctionDuration, "auction still did'nt finish the duration time");
 
         auctionStarted = false;
-        tokenNFT.transferFrom(address(this), currentHighestBidder, tokenId);
+        tokenNFT.transferFrom(address(this), currentHighestBidder, auctionTokenId);
     }
 }
