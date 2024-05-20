@@ -51,8 +51,7 @@ class ERC20_1 {
   }
 
   method transfer(msg: Transaction, dst: u160, wad: u256) returns (r: Result<bool>) 
-  modifies this`allowance 
-  modifies this`balances {  // non-payable
+  modifies this`allowance, this`balances {  // non-payable
     r := transferFrom(msg, msg.sender, dst, wad);
   }
 
