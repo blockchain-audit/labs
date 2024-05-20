@@ -76,7 +76,7 @@ contract Lending {
         //     borrowers[msg.sender] = b;
         // } else {}
         borrowers[msg.sender].collateralValue += msg.value;
-        payable(address(this)).transfer(msg.sender, msg.value); // transfer collaterals from user to the contract
+        payable(address(this)).transfer(msg.value); // transfer collaterals from user to the contract
     }
 
     function removeCollaterals() public payable {
@@ -88,14 +88,14 @@ contract Lending {
             "not enough collateral to remove"
         ); // check if there is enough collateral to user
         borrowers[msg.sender].collateralValue -= msg.value;
-        payable(msg.sender).transfer(address(this), msg.value); // transfer collaterals from contract to the user
+        payable(msg.sender).transfer(msg.value); // transfer collaterals from contract to the user
     }
 
     function borrow(uint256 borrowAmount) external payable {
         // receive borrowAmount (DAI)
         require(borrowAmount * collateralRatio <= borrowers[msg.sender].collateralValue, "not enough collaterals");
         require(borrowAmount < totalDeposit, "not enough money to borrow");
-        borrowers[msg.sender].borrowDate = block.timestamp();
+        borrowers[msg.sender].borrowDate = block.timestamp;
         borrowers[msg.sender].borrowedValue += borrowAmount;
         daiToken.transfer(msg.sender, borrowAmount);
         totalDeposit -= borrowAmount;
@@ -125,12 +125,14 @@ contract Lending {
         require(borrowers[msg.sender].borrowedValue > 0, "not borrow");
         require(
             _amount - borrowers[msg.sender].borrowedValue == calculateFee(_amount),
-            "not enough fee" + calculateFee(_amount)
+            "not enough fee {{calculateFee(_amount)}}"
         );
         daiToken.transferFrom(msg.sender, address(this), _amount); //return borrow + fee
         totalRewards += _amount - borrowers[msg.sender].borrowedValue;
         borrowers[msg.sender].borrowedValue -= _amount;
         totalDeposit += _amount - borrowers[msg.sender].borrowedValue;
         //return collaterals
+
+        fee = calculateFee(_amount);
     }
 }
