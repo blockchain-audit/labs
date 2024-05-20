@@ -2,5 +2,8 @@
   "dependencies": {
     "@chainlink/contracts": "^1.1.0",
     "@openzeppelin/test-helpers": "^0.5.16"
+  },
+  "devDependencies": {
+    "solc": "^0.8.25"
   }
 }
