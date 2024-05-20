@@ -20,4 +20,3 @@ fs_permissions = [
 
 [profile.default.fuzz]
 runs = 1000
-
