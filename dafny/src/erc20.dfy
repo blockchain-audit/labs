@@ -65,10 +65,18 @@ class ERC20 {
     requires this.balances.default == 0
     requires msg.sender in balances.Keys()
     requires dst in balances.Keys()
-    requires msg.value == 0 {  // non-payable
+    requires balances.Get(dst) <= (MAX_U256 as u256) - wad
+    requires msg.value == 0
+    requires dst !=0
+    requires balances.Get(msg.sender) >= wad
+
+    {
         r := transferFrom(msg, msg.sender, dst, wad);
     }
 
+
+
+    
 
     // instead of assuming I added a dst_bal require
     // assume (old(balanceOf).Get(dst) as nat) + (wad as nat) <= MAX_U256;
@@ -78,7 +86,15 @@ class ERC20 {
     requires this.balances.default == 0
     requires src in balances.Keys() && dst in balances.Keys()
     requires msg.value == 0
-    ensures r != Revert ==> sum(old(this.balances.Items())) == sum(this.balances.Items()) {
+    requires dst !=0
+    requires balances.Get(src) >= wad
+    requires balances.Get(dst) <= (MAX_U256 as u256) - wad
+    requires msg.sender == src || allowance.Get(src).Get(msg.sender) >= wad
+    ensures r != Revert ==> sum(old(this.balances.Items())) == sum(this.balances.Items()) 
+    ensures src == dst ==> (old(balances).Get(src)) == balances.Get(src) 
+    ensures  src != dst ==> ((old(balances).Get(src) - wad) == balances.Get(src) )
+    ensures  src != dst ==> (old(balances).Get(dst)) + wad == (balances.Get(dst))
+    {
         assume {:axiom} (old(balances).Get(dst) as nat) + (wad as nat) <= MAX_U256;
         if balances.Get(src) < wad { return Revert; }
 

@@ -10,6 +10,7 @@ fuzz_runs = 1_000
 remappings = [
     "forge-std=lib/forge-std/src/",
     "foundry-huff=lib/foundry-huff/src/",
+    "@chainlink=lib/chainlink/",
     "@labs/=src/",
     "solmate/=lib/solmate/src/",
     "openzeppelin-tokens=lib/openzeppelin-contracts/contracts/token",

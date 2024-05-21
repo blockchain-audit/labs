@@ -76,12 +76,8 @@ contract TestAmm is Test {
 
     function test1() public {
         add(10 * wad, 5 * wad);
-        console.log(amm.balanceA());
-        console.log(amm.balanceB());
         uint256 amount = amm.calcCountA(2 * wad);
-        console.log("amount", amount / wad);
         add(amount, 2 * wad);
-        console.log(amm.liquidity(address(this)),"this");
         amm.removeAllLiquidity();
         assertEq(amm.totalLiquidity(), 0);
     }

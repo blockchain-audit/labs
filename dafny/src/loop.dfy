@@ -6,7 +6,7 @@ import opened Number
 
 
 // removing requires and invariant break the prove
-method loop1(n: u256) returns (r: u256)
+method loop(n: u256) returns (r: u256)
 requires n >= 0
 ensures  r == n {
     var i := 0;

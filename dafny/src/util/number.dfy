@@ -79,7 +79,8 @@ module Number {
   newtype u128 = i:int | 0 <= i <= MAX_U128
   newtype u160 = i:int | 0 <= i <= MAX_U160
   newtype u256 = i:int | 0 <= i <= MAX_U256
-
+  // newtype max256 = i: int| i <= MAX_U256
+ 
 
   // Determine maximum of two u256 integers.
   function Max(i1: int, i2: int) : int {

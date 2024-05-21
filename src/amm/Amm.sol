@@ -44,14 +44,6 @@ contract Amm {
         if (totalLiquidity == 0) {
             liquidity[msg.sender] = (amountA + amountB) / 2;
         } else {
-            // console.log(
-            //     amountA * getValueOfAPer1Token() / wad + amountB * getValueOfBPer1Token() / wad,
-            //     totalLiquidity,
-            //     "]]]]]]]]]]}}"
-            // );
-            // console.log(getValueOfAPer1Token(), getValueOfBPer1Token(), "00000000000000");
-            // console.log(amountA, amountB, "----------------");
-            // console.log(balanceA * wad / balanceB, "===================", amountA * wad / amountB);
             require(balanceA * wad / balanceB == amountA * wad / amountB,"not");
             // require(amountA * getValueOfAPer1Token() / wad == amountB * getValueOfBPer1Token() / wad, "not equals value");
             liquidity[msg.sender] += amountA * getValueOfAPer1Token() / wad;
@@ -64,10 +56,8 @@ contract Amm {
     }
 
     function removeAllLiquidity() public {
-        console.log(totalLiquidity,  liquidity[msg.sender], "--------------");
         uint256 countA = liquidity[msg.sender] *wad/ getValueOfAPer1Token();
         uint256 countB = liquidity[msg.sender] *wad/ getValueOfBPer1Token();
-        console.log(countA *getValueOfAPer1Token()/wad ,"))))))))))))))))",countB*getValueOfBPer1Token()/wad);
         tokenA.transfer(msg.sender, countA);
         balanceA -= countA;
         tokenB.transfer(msg.sender, countB);
