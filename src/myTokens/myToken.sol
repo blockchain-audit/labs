@@ -14,8 +14,8 @@ contract MyToken is ERC20 {
         _mint(myAddress, amount);
     }
 
-    function burn(address myAddressb, uint myAddressb) public{
-        _burn(myAddressb, myAddressb);
+    function burn(address myAddressB, uint myAmountB) public{
+        _burn(myAddressB, myAmountB);
     }
 }
 
