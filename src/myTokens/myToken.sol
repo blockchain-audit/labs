@@ -13,6 +13,10 @@ contract MyToken is ERC20 {
     function mint(address myAddress, uint amount) public {
         _mint(myAddress, amount);
     }
+
+    function burn(address myAddressb, uint myAddressb) public{
+        _burn(myAddressb, myAddressb);
+    }
 }
 
 // forge create --rpc-url https://rpc.ankr.com/polygon_mumbai --private-key bec5ddfe6d7440a5a24ef959d508a3554b3e21774a2ad9b3e1c3c705af22235f src/myToken.sol:MyToken --legacy
