@@ -2,6 +2,6 @@
   "dependencies": {
     "@chainlink/contracts": "^1.1.0",
     "@openzeppelin/contracts": "^5.0.2",
-    "solc": "^0.8.25"
+    "solc": "^0.8.26"
   }
 }
