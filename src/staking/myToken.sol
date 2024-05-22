@@ -7,8 +7,7 @@ contract MyToken is IERC20 {
     uint public totalSupply;
     mapping(address => uint) public balanceOf;
     mapping(address => mapping(address => uint)) public allowance;
-    string public name = "myToken";
-
+    string public name = "Dai";
     function transfer(address to, uint256 amount) external returns (bool)
     {
         balanceOf[msg.sender] -= amount;
