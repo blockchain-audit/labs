@@ -4,6 +4,8 @@ pragma solidity ^0.8.20;
 
 import "@openzeppelin/ERC20/ERC20.sol";
 import "@openzeppelin/ERC20/IERC20.sol";
+
+import "@hack/myTokens/myToken.sol";
 //import "";
 import "forge-std/console.sol";
 
@@ -17,9 +19,9 @@ contract BuildLending{
 
 
     IERC20 public dai;
-    //IERC20 public ETH;
+    myToken public bond;
     constructor(address _dai){
-       // DAI = IERC20(_dai);
+       DAI = IERC20(_dai);
     }
 
     modifier onlyOwner(){
@@ -27,8 +29,9 @@ contract BuildLending{
         _;
     }
     //user
-    function deposint() external{
-
+    function deposint(uint amount) external{
+        require((amount > 0, "Amount be bigger than zero."));
+        
     }
 
     //user
