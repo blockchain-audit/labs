@@ -46,7 +46,7 @@ contract Auction {
     }
 
     function withdrawBid() public {
-        require(bidders[msg.sender], "you dont have a bid to withdraw");
+        require(bidders[msg.sender] > 0, "you dont have a bid to withdraw");
         require(msg.sender != currentHighestBidder, "you can't withdraw your bid, you are the highest bidder");
 
         myToken.transfer(msg.sender, bidders[msg.sender]);
