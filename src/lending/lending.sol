@@ -2,35 +2,29 @@
 pragma solidity >=0.8.0;
 
 import "@hack/staking/myToken.sol";
+import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 struct Borrow 
 {
     uint eth;
-    uint Dai;
+    uint dai;
 }
 contract Lending {
 
+    AggregatorV3Interface internal priceFeed;
     MyToken public bond;
-    MyToken public Dai;
+    MyToken public dai;
+    address public owner;
+    uint public minRatio = 110000000;
     mapping (address => uint) public depositers;
     mapping (address => Borrow) public borrowers;
 
     constructor (address _dai, address _bond) {
+        owner = msg.sender;
         bond = MyToken(_bond);
         dai = MyToken(_dai);
+        priceFeed = AggregatorV3Interface(0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419);
     }
-
-
-
-
-
-
-
-
-
-
-
-    
 
     function depositDai(uint amountDai) public { 
         dai.transferFrom(msg.sender, address(this), amountDai);
@@ -44,10 +38,24 @@ contract Lending {
         bond.transferFrom(msg.sender, address(this), amountDai);
     }
 
-    function addSupply(uint amountETH) external payable {
-        borrowers[msg.sender].eth += amountETH;
-        dai.mint(address(msg.sender), amountETH);
-        borrowers[msg.sender].dai += amountETH;
+    function addBorrow(uint amountDai) external payable {
+        require(getBorrowRatio(msg.value, amountDai) > minRatio, "you cant borrow this value, the ratio of your borrow is less that the min");
+        borrowers[msg.sender].eth += msg.value;
+
+
+        borrowers[msg.sender].dai += amountDai;
+    }
+
+    function getBorrowRatio(uint eth, uint dai) external returns (uint) {
+        int price = priceFeed.latestRoundData();
+        return price * eth  / dai;
+    }
+
+    function discharge(address user) external {
+        require(msg.sender == owner, "only owner can discharge eth");
+
+        require(borrowers[user].eth / borrowers[user].dai <= minRatio);
+
     }
 
 
