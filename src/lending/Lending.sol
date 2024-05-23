@@ -96,5 +96,6 @@ contract Lending {
         Dai.mint(amountDai - gas);
 
         payable(address(0)).transfer(amountETH);
+        
     }
 }
