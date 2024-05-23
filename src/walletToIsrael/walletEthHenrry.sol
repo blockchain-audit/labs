@@ -84,9 +84,7 @@ contract Distribute {
         for (uint i = 0; i < addresses.length; i++) {
             payable(addresses[i]).transfer(share);
         }
-    }*/
-    receive() external payable{}
-    
+    }*/    
     fallback() external payable{
         uint share = msg.value / addresses.length;
 

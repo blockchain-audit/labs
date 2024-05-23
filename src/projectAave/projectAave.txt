@@ -4,6 +4,8 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/ERC721/IERC721.sol";
 import "@openzeppelin/ERC721/ERC721.sol";
 
+//לעשות על 4 תוקנים דפלוי - לא עבד
+
 contract MyAave{
       IWETHGateway public constant wethGateway =
         IWETHGateway(0xA61ca04DF33B72b235a8A28CfB535bb7A5271B70);
@@ -34,4 +36,21 @@ contract MyAave{
         aWeth.approve(address(wethGateway), _amount);
         wethGateway.withdrawETH(address(aave), _amount, address(this));
     }
+}
+
+
+//////
+interface ILendingPool {
+    function deposit(
+        address asset,
+        uint256 amount,
+        address onBehalfOf,
+        uint16 referralCode
+    ) external;
+
+    function withdraw(
+        address asset,
+        uint256 amount,
+        address to
+    ) external returns (uint256);
 }
