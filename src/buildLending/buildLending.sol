@@ -19,9 +19,9 @@ contract BuildLending{
 
 
     IERC20 public dai;
-    myToken public bond;
+    MyToken public bond;
     constructor(address _dai){
-       DAI = IERC20(_dai);
+       dai = IERC20(_dai);
     }
 
     modifier onlyOwner(){
@@ -30,7 +30,7 @@ contract BuildLending{
     }
     //user
     function deposint(uint amount) external{
-        require((amount > 0, "Amount be bigger than zero."));
+        require(amount > 0, "Amount be bigger than zero.");
         
     }
 

@@ -1,7 +1,6 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.7;
-import "@openzeppelin-math/math/Math.sol";
-
+import "@openzeppelinMath/math/Math.sol";
 contract Mathematics {
     using Math for uint256;
     uint256 private constant EXP_SCALE = 1e18;
