@@ -33,9 +33,11 @@ contract lending is ERC20, Math1 {
 
     // address public owner;
     IERC20 public dai ;
+    IERC20 public bond ;
 
-    constructor(address tokenDai) ERC20("bond token" ,"bt"){
+    constructor(address tokenDai, address tokenBond) ERC20("bond token" ,"bt"){
         dai = IERC20(tokenDai);
+        bond = IERC20(tokenBond);
         priceFeed = ArbitrumSequencerUptimeFeed(tokenDai);
         uniswapRouter =IUniswapRouter(tokenDai);
         // owner = msg.sender;
@@ -60,7 +62,7 @@ contract lending is ERC20, Math1 {
         totalDeposit += amount;
        
         uint256 bondAmount = getExp(amount ,getExchangeRate() );
-        _mint(msg.sender, bondAmount);
+        bond.mint(msg.sender, bondAmount);
        
     }
 
@@ -69,7 +71,7 @@ contract lending is ERC20, Math1 {
         require(balanceOf(msg.sender) >= amount, "you do not have enough tokens");
         dai.transferFrom(address(this), msg.sender, amount);
         uint256 daiToReceive = mulExp(amount ,getExchangeRate() );
-        _burn(msg.sender, daiToReceive);
+        bond.burn(msg.sender, daiToReceive);
         totalDeposit -= amount;
         
     }
