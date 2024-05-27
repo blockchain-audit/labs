@@ -30,8 +30,8 @@ import "@hack/math/math.sol";
     ) external returns (uint256);
 }
 
-contract Lend is {
-    using DSMath for uint;
+contract Lend is Mathematics, DSMath{
+    //using DSMath for uint256;
     address public owner;
 
     mapping(address=>uint) public userBorrowed;
@@ -66,7 +66,7 @@ contract Lend is {
         dai.transferFrom(msg.sender,address(this), _amount);
         totalDeposit += _amount;
         _sendDaiToAave(_amount);
-        uint bondsToMint = getExp(_amount, getExchangeRate());
+        //uint bondsToMint = getExp(_amount, getExchangeRate());
 
     } 
 
@@ -76,13 +76,13 @@ contract Lend is {
         aave.deposit(address(dai), _amount, address(this), 0);
     }
 
-    function getExchangeRate() public view returns (uint256) {
-        if (totalSupply() == 0) {
-            return 1000000000000000000;
-        }
-        uint256 cash = getCash();
-        uint256 num = cash.add(totalBorrowed).add(totalReserve);
-        return getExp(num, totalSupply());
-    }
+    // function getExchangeRate() public view returns (uint256) {
+    //     if (totalSupply() == 0) {
+    //         return 1000000000000000000;
+    //     }
+    //     uint256 cash = getCash();
+    //     uint256 num = cash.add(totalBorrowed).add(totalReserve);
+    //     return getExp(num, totalSupply());
+    // }
 
 }

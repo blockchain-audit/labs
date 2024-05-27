@@ -1,12 +1,44 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "@openzeppelin/ERC721/IERC721.sol";
-import "@openzeppelin/ERC721/ERC721.sol";
+import "@openzeppelin/ERC20/IERC20.sol";
+import "@openzeppelin/ERC20/ERC20.sol";
 
 //לעשות על 4 תוקנים דפלוי - לא עבד
+interface ILendingPool {
+    function deposit(
+        address asset,
+        uint256 amount,
+        address onBehalfOf,
+        uint16 referralCode
+    ) external;
+
+    function withdraw(
+        address asset,
+        uint256 amount,
+        address to
+    ) external returns (uint256);
+}
+
+interface IWETHGateway {
+    function depositETH(
+        address lendingPool,
+        address onBehalfOf,
+        uint16 referralCode
+    ) external payable;
+
+    function withdrawETH(
+        address lendingPool,
+        uint256 amount,
+        address onBehalfOf
+    ) external;
+}
+
 
 contract MyAave{
+
+    ILendingPool public constant aave = ILendingPool(0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD);
+
       IWETHGateway public constant wethGateway =
         IWETHGateway(0xA61ca04DF33B72b235a8A28CfB535bb7A5271B70);
     IERC20 public constant dai =
@@ -36,21 +68,4 @@ contract MyAave{
         aWeth.approve(address(wethGateway), _amount);
         wethGateway.withdrawETH(address(aave), _amount, address(this));
     }
-}
-
-
-//////
-interface ILendingPool {
-    function deposit(
-        address asset,
-        uint256 amount,
-        address onBehalfOf,
-        uint16 referralCode
-    ) external;
-
-    function withdraw(
-        address asset,
-        uint256 amount,
-        address to
-    ) external returns (uint256);
 }
