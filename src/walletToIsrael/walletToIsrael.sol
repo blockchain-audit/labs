@@ -2,7 +2,7 @@
 // https://medium.com/@marketing.blockchain/how-to-create-a-multisig-wallet-in-solidity-cfb759dbdb35
 pragma solidity ^0.8.20;
 
-contract Distribute {
+contract Divide {
     address[] public addresses = [
         0x29392969D235eA463A6AA42CFD4182ED2ecB5117, //Elisheva Nankenski
         0x7a3b914a1f0bD991BAf826F4fE9a47Bb9880d25f, //Dassi Hazan
