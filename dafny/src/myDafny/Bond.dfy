@@ -16,7 +16,7 @@ class Bond {
     const baseRate: u256 := 20_000_000_000_000_000
     const annuRate: u256 := 300_000_000_000_000_000
 
-    var balances:   mapping<u160,u256>
+    var balances:   mapping<u160, u256>
     var collateral: mapping<u160, u256>
     var borrowed:   mapping<u160, u256>
 

@@ -9,9 +9,9 @@ library MathLib {
     uint256 private constant HALF_EXP_SCALE = EXP_SCALE / 2;
 
     function getExp(uint256 num, uint256 denom) internal pure returns (uint256) {
-        (bool successMul, uint256 scaledNumber) = num.tryMul(EXP_SCALE);
+        (bool successMul, uint256 scaledNumber) = num.tryMul(EXP_SCALE); // mult in DAI
         if (!successMul) return 0;
-        (bool successDiv, uint256 rational) = scaledNumber.tryDiv(denom);
+        (bool successDiv, uint256 rational) = scaledNumber.tryDiv(denom); // divide the numbers: num / denom
         if (!successDiv) return 0;
         return rational;
     }
