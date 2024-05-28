@@ -81,7 +81,7 @@ contract Auction{
         require (auctions[tokenid].endAt <= block.timestamp ,"the end time is not yet" );
         auctions[tokenid].ended = false;
         
-        IERC721 token = IERC721(address(this));
+        // IERC721 token = IERC721(address(this));
         if(auctions[tokenid].highestBidder != address(0)){
         token.safeTransferFrom(address(this), auctions[tokenid].highestBidder, tokenid);
         payable(auctions[tokenid].seller).transfer(auctions[tokenid].highestBid);
