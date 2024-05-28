@@ -66,7 +66,7 @@ contract BondToken is Ownable {
     function bondAsset(uint256 _amount) external { // deposit - depositBond
         dai.transferFrom(msg.sender, address(this), _amount);
         totalDeposit += _amount;
-        _sendDaiToAave(_amount); //to get fee from AAVE
+        _sendDaiToAave(_amount); // to get fee from AAVE
         uint256 bondsToMint = MathLib.getExp(_amount, getExchangeRate());
         myToken.mint(msg.sender, bondsToMint);
     }
