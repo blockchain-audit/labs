@@ -1,7 +1,7 @@
-include "../util/number.dfy"
-include "../util/maps.dfy"
-include "../util/tx.dfy"
-include "../erc20/erc20.dfy"
+include "util/number.dfy"
+include "util/maps.dfy"
+include "util/tx.dfy"
+include "erc20.dfy"
 
 
 import opened Number
@@ -49,6 +49,4 @@ class Bond {
         collateral := balances.Set(msg.sender, collateral.Get(msg.sender) - amount);
         return Ok(());
     }
-
-
 }
