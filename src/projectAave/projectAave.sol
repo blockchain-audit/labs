@@ -37,9 +37,9 @@ interface IWETHGateway {
 
 contract MyAave{
 
-    ILendingPool public constant aave = ILendingPool(0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD);
+    ILendingPool public aave; // = ILendingPool(0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD);
 
-      IWETHGateway public constant wethGateway =
+    IWETHGateway public constant wethGateway =
         IWETHGateway(0xA61ca04DF33B72b235a8A28CfB535bb7A5271B70);
     IERC20 public constant dai =
         IERC20(0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD);

@@ -40,5 +40,4 @@ import opened Tx
         assume (m as nat) + (w as nat) <= MAX_U256 as nat;
         Add(m , w)/ WAD
     }
-
 }
