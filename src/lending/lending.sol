@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-pragma solidity >=0.8.0;
+pragma solidity >=0.8.24;
 
 import "@hack/staking/myToken.sol";
-import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+import "chain-link/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 struct Borrow 
 {
@@ -16,8 +16,9 @@ contract Lending {
     MyToken public dai;
     address public owner;
     uint public minRatio = 110000000;
-    mapping (address => uint) public depositers;
-    mapping (address => Borrow) public borrowers;
+    uint public totalCollateral;
+    mapping (address => uint) public usersCollaterals;
+    mapping (address => uint) public usersBorrowed;
 
     constructor (address _dai, address _bond) {
         owner = msg.sender;
@@ -38,26 +39,29 @@ contract Lending {
         bond.transferFrom(msg.sender, address(this), amountDai);
     }
 
-    function addBorrow(uint amountDai) external payable {
-        require(getBorrowRatio(msg.value, amountDai) > minRatio, "you cant borrow this value, the ratio of your borrow is less that the min");
-        borrowers[msg.sender].eth += msg.value;
-
-
-        borrowers[msg.sender].dai += amountDai;
+    function getBorrowRatio(uint _dai) public returns (uint) {
+                (
+            , // uint80 roundID
+            int price,
+            , // uint startedAt
+            , // uint timeStamp
+            // uint80 answeredInRound
+        ) = priceFeed.latestRoundData();
+        return price;
+        // return price * msg.value / _dai;
     }
 
-    function getBorrowRatio(uint eth, uint dai) external returns (uint) {
-        int price = priceFeed.latestRoundData();
-        return price * eth  / dai;
-    }
+    function addCollateral() external payable {
+        require(getBorrowRatio(amountDai) > minRatio, "you cant borrow this value, the ratio of your borrow is less that the min");
+        usersCollaterals[msg.sender] += msg.value;
+        totalCollateral += msg.value;
 
+    }
+ 
     function discharge(address user) external {
         require(msg.sender == owner, "only owner can discharge eth");
 
         require(borrowers[user].eth / borrowers[user].dai <= minRatio);
 
     }
-
-
-
 }

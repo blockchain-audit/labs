@@ -11,6 +11,7 @@ remappings = [
     "forge-std=lib/forge-std/src/",
     "foundry-huff=lib/foundry-huff/src/",
     "@hack/=src/",
+    "chain-link=node_modules/@chainlink/contracts",
     "solmate/=lib/solmate/src/",
 ]
 fs_permissions = [
