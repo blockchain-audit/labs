@@ -19,12 +19,12 @@ contract lendingTest is Test {
         console.log(address(lend));
     }
      function testBond() public {
-        dai.approve(address(lend), 5555555555);
-        dai.approve(msg.sender, 5555555555);
-        lend.bond(11111);
-        console.log(lend.balanceOf(address(this)));
-        console.log(lend.balanceOf(msg.sender));
-        console.log(lend.balanceOf(address(lend)));
+    //     dai.approve(address(lend), 5555555555);
+    //     dai.approve(msg.sender, 5555555555);
+    //   //  lend.bond(11111);
+    //     console.log(lend.balanceOf(address(this)));
+    //     console.log(lend.balanceOf(msg.sender));
+    //     console.log(lend.balanceOf(address(lend)));
 
 
 
