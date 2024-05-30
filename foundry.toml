@@ -14,7 +14,7 @@ remappings = [
     "solmate/=lib/solmate/src/",
     "@openzeppelin/=lib/openzeppelin-contracts/contracts/token/",
     "@openzeppelinMath/=lib/openzeppelin-contracts/contracts/utils/",
-    
+  
 ]
 fs_permissions = [
     { access = "read", path = "./test/erc721/wrapper.huff" }
