@@ -2,7 +2,7 @@
 pragma solidity ^0.8.20;
 
 // import "../../new-project/lib/openzeppelin-contracts/contracts/token/ERC721/IERC721.sol";
-import "../../new-project/src/MyToken.sol";
+import "../MyToken.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@hack/Auction/MyNft.sol";
 

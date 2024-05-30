@@ -8,7 +8,7 @@ import "forge-std/console.sol";
 import "@hack/store/store.sol";
 import "@hack/Auction/auction.sol";
 import "@hack/Auction/MyNft.sol";
-import "../../new-project/src/MyToken.sol";
+import "../../src/MyToken.sol";
 
 contract AuctionTest is Test {
     Auction public a;

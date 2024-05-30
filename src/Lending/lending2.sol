@@ -2,7 +2,7 @@
 pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "../../new-project/src/MyToken.sol";
+import "../../src/MyToken.sol";
 
 contract lending2 {
     MyToken public immutable bDAI;
