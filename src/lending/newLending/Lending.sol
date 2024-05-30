@@ -54,6 +54,8 @@ contract Lending {
         fantomGateway.depositETH{value: amount}(address(aave), address(this), 0);
     }
 
+    
+
     function addDaiLiquidity(uint amount) external{
         require(amount != 0,"the amount is zero");
         dai.transferFrom(msg.sender,address(this),amount);
