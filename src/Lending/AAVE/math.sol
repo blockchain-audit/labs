@@ -5,23 +5,23 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 library MathLib {
     using SafeMath for uint256;
 
-    uint256 private constant EXP_SCALE = 1e18;
-    uint256 private constant HALF_EXP_SCALE = EXP_SCALE / 2;
+    uint256 private constant WAD = 1e18;
+    uint256 private constant HALF_WAD = WAD / 2;
 
-    function getExp(uint256 num, uint256 denom) internal pure returns (uint256) {
-        (bool successMul, uint256 scaledNumber) = num.tryMul(EXP_SCALE); // mult in DAI
+    function wDiv(uint256 num, uint256 denom) internal pure returns (uint256) {
+        (bool successMul, uint256 scaledNumber) = num.tryMul(WAD);
         if (!successMul) return 0;
         (bool successDiv, uint256 rational) = scaledNumber.tryDiv(denom); // divide the numbers: num / denom
         if (!successDiv) return 0;
-        return rational;
+        return rational; // num / denom (in WAD)
     }
 
     function mulExp(uint256 a, uint256 b) internal pure returns (uint256) {
         (bool successMul, uint256 doubleScaledProduct) = a.tryMul(b);
         if (!successMul) return 0;
-        (bool successAdd, uint256 doubleScaledProductWithHalfScale) = HALF_EXP_SCALE.tryAdd(doubleScaledProduct);
+        (bool successAdd, uint256 doubleScaledProductWithHalfScale) = HALF_WAD.tryAdd(doubleScaledProduct);
         if (!successAdd) return 0;
-        (bool successDiv, uint256 product) = doubleScaledProductWithHalfScale.tryDiv(EXP_SCALE);
+        (bool successDiv, uint256 product) = doubleScaledProductWithHalfScale.tryDiv(WAD);
         assert(successDiv == true);
         return product;
     }

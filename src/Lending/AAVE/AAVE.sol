@@ -2,7 +2,7 @@
 pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+// import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./interfaces/AggregatorV3Interface.sol";
 
@@ -32,8 +32,8 @@ contract BondToken is Ownable {
     using SafeMath for uint256;
 
     uint256 public totalBorrowed; // all user borrowed
-    uint256 public totalReserve; // all fees from borrowers and whts left from colletoral that swap to DAI (what bigger from the borrow)
-    uint256 public totalDeposit; // all money of owner (deposits and borrowed)
+    uint256 public totalReserve; // all fees from borrowers and whats left from colletoral that swap to DAI (what bigger from the borrow)
+    uint256 public totalDeposit; // all money in the pool (DAI) (deposits and borrowed)
     uint256 public maxLTV = 4; // 1 = 20%
     uint256 public ethTreasury;
     uint256 public totalCollateral; // all Collateral deposit
@@ -57,25 +57,25 @@ contract BondToken is Ownable {
     mapping(address => uint256) private usersCollateral; // all Collateral deposit per user
     mapping(address => uint256) private usersBorrowed; // all Borrowed users per user
 
-    ERC20Token public myToken;
+    ERC20Token public bDAI;
 
     constructor() {
-        myToken = ERC20Token("Bond DAI", "bDAI");
+        bDAI = ERC20Token("Bond DAI", "bDAI");
     }
 
-    function bondAsset(uint256 _amount) external { // deposit - depositBond
+    function deposit(uint256 _amount) external { // deposit - depositBond
         dai.transferFrom(msg.sender, address(this), _amount);
         totalDeposit += _amount;
         _sendDaiToAave(_amount); // to get fee from AAVE
-        uint256 bondsToMint = MathLib.getExp(_amount, getExchangeRate());
-        myToken.mint(msg.sender, bondsToMint);
+        uint256 bondsToMint = _amount.wDiv(getExchangeRate());
+        bDAI.mint(msg.sender, bondsToMint);
     }
 
-    function unbondAsset(uint256 _amount) external { // withDraw
-        require(_amount <= myToken.balanceOf(msg.sender), "Not enough bonds!");
-        uint256 daiToReceive = MathLib.mulExp(_amount, getExchangeRate());
+    function withDraw(uint256 _amount) external { // withDraw
+        require(_amount <= bDAI.balanceOf(msg.sender), "Not enough bonds!");
+        uint256 daiToReceive = _amount.mulExp(getExchangeRate());
         totalDeposit -= daiToReceive;
-        myToken.burn(_amount);
+        bDAI.burn(_amount);
         _withdrawDaiFromAave(daiToReceive);
     }
 
@@ -91,8 +91,8 @@ contract BondToken is Ownable {
         uint256 collateral = usersCollateral[msg.sender];
         require(collateral > 0, "Dont have any collateral");
         uint256 borrowed = usersBorrowed[msg.sender];
-        uint256 amountLeft = mulExp(collateral, wethPrice).sub(borrowed);
-        uint256 amountToRemove = mulExp(_amount, wethPrice);
+        uint256 amountLeft = collateral.mulExp(wethPrice).sub(borrowed);
+        uint256 amountToRemove = _amount.mulExp(wethPrice);
         require(amountToRemove < amountLeft, "Not enough collateral to remove");
         usersCollateral[msg.sender] -= _amount;
         totalCollateral -= _amount;
@@ -119,7 +119,7 @@ contract BondToken is Ownable {
 
     function calculateBorrowFee(uint256 _amount) public view returns (uint256, uint256) {
         uint256 borrowRate = _borrowRate();
-        uint256 fee = mulExp(_amount, borrowRate);
+        uint256 fee = _amount.mulExp(borrowRate);
         uint256 paid = _amount.sub(fee);
         return (fee, paid);
     }
@@ -128,8 +128,8 @@ contract BondToken is Ownable {
         uint256 wethPrice = uint256(_getLatestPrice());
         uint256 collateral = usersCollateral[_user];
         uint256 borrowed = usersBorrowed[_user];
-        uint256 collateralToUsd = mulExp(wethPrice, collateral);
-        if (borrowed > percentage(collateralToUsd, maxLTV)) {
+        uint256 collateralToUsd = wethPrice.mulExp(collateral);
+        if (borrowed > MathLib.percentage(collateralToUsd, maxLTV)) {
             _withdrawWethFromAave(collateral);
             uint256 amountDai = _convertEthToDai(collateral);
             if (amountDai > borrowed) {
@@ -163,8 +163,8 @@ contract BondToken is Ownable {
         require(amountLocked > 0, "No collateral found");
         uint256 amountBorrowed = usersBorrowed[msg.sender];
         uint256 wethPrice = uint256(_getLatestPrice());
-        uint256 amountLeft = mulExp(amountLocked, wethPrice).sub(amountBorrowed);
-        return percentage(amountLeft, maxLTV);
+        uint256 amountLeft = amountLocked.mulExp(wethPrice).sub(amountBorrowed);
+        return amountLeft.percentage(maxLTV);
     }
 
     function _sendDaiToAave(uint256 _amount) internal {
@@ -203,12 +203,12 @@ contract BondToken is Ownable {
     }
 
     function getExchangeRate() public view returns (uint256) {
-        if (myToken.totalSupply() == 0) {
-            return 1000000000000000000;
+        if (bDAI.totalSupply() == 0) {
+            return 1000000000000000000; // WAD - 1e18 - 10**18
         }
-        uint256 cash = getCash(); // the cash in the pool (without totalBorrowed)
-        uint256 num = cash.add(totalBorrowed).add(totalReserve);
-        return MathLib.getExp(num, myToken.totalSupply());
+        // uint256 cash = getCash(); // the cash in the pool (without totalBorrowed)
+        uint256 num = totalDeposit.add(totalReserve); // all the money in the contract (deposit, reserved)
+        return num.wDiv(bDAI.totalSupply()); // all money in the contract / bDAI (totalSupply)
     }
 
     function getCash() public view returns (uint256) {
@@ -216,26 +216,26 @@ contract BondToken is Ownable {
     }
 
     function _utilizationRatio() public view returns (uint256) {
-        return getExp(totalBorrowed, totalDeposit);
+        return totalBorrowed.wDiv(totalDeposit);
     }
 
     function _interestMultiplier() public view returns (uint256) {
         uint256 uRatio = _utilizationRatio();
         uint256 num = fixedAnnuBorrowRate.sub(baseRate);
-        return getExp(num, uRatio);
+        return num.wDiv(uRatio);
     }
 
     function _borrowRate() public view returns (uint256) {
         uint256 uRatio = _utilizationRatio();
         uint256 interestMul = _interestMultiplier();
-        uint256 product = mulExp(uRatio, interestMul);
+        uint256 product = uRatio.mulExp(interestMul);
         return product.add(baseRate);
     }
 
     function _depositRate() public view returns (uint256) {
         uint256 uRatio = _utilizationRatio();
         uint256 bRate = _borrowRate();
-        return mulExp(uRatio, bRate);
+        return uRatio.mulExp(bRate);
     }
 
     function _convertEthToDai(uint256 _amount) internal returns (uint256) {
