@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright (C) 2015, 2016, 2017  DappHub, LLC
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import "@hack/math/math.sol";
 import "@hack/auth/auth.sol";

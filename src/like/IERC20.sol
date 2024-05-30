@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: private
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 interface IERC20 {
     function symbol() external view returns (string memory);
     function totalSupply() external view returns (uint256);

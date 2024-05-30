@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Unlicense
 
-pragma solidity 0.8.20;
+pragma solidity 0.8.24;
 
 // @author: Chana Cohen
 // @title Stake

@@ -1,4 +1,4 @@
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 // def WAD : N := 10 ^ 18
 uint WAD = 10 ^18;
