@@ -4,28 +4,30 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "../../new-project/src/MyToken.sol";
 
-contract Lending {
-    MyToken public immutable _token;
+contract lending2 {
+    MyToken public immutable bDAI;
     MyToken public immutable Dai;
     mapping(address => uint256) public borrowers;
     mapping(address => uint256) public collaterals;
     mapping(address => uint256) public depositTime;
-    mapping(address => uint256) public deposits;
+    mapping(address => uint256) deposits;
     address public owner;
+    uint256 public immutable WAD = 1e18;
     uint256 public ratePerWeek;
-    uint256 immutable wad = 1e18;
 
-    constructor(address tok, uint256 _rate) {
-        _token = MyToken(tok);
-        Dai = MyToken(0x6B175474E89094C44Da98b954EedeAC495271d0F);
+    constructor(address tok) {
         address owner = msg.sender;
-        ratePerWeek = _rate;
+        Dai = MyToken(0x6B175474E89094C44Da98b954EedeAC495271d0F);
+        bDAI = MyToken(tok);
     }
 
     function deposit(uint256 amount) public {
-        require(depositTime[msg.sender] == 0, "You already have Dai here");
+        require(
+            depositTime[msg.sender] == 0,
+            "You have already deposited Dai. withdraw your Dai before depositing more Dai."
+        );
         Dai.transferFrom(msg.sender, address(this), amount);
-        _token.mint(msg.sender, amount);
+        bDAI.mint(msg.sender, amount);
         depositTime[msg.sender] = block.timestamp;
         deposits[msg.sender] = amount;
     }
@@ -43,9 +45,9 @@ contract Lending {
     }
 
     function unbond(uint256 amount) public {
-        require(amount > 0, "invalid amount");
-        uint256 reward = calculateReward(msg.sender, amount);
+        require(amount > 0, "Invalid amount");
         _token.burn(msg.sender, amount);
+        uint256 reward = calculateReward(msg.sender, amount);
         Dai.transferFrom(address(this), msg.sender, amount + reward);
     }
 
@@ -60,7 +62,7 @@ contract Lending {
 
     function borrow(uint256 amount) public {
         uint256 limit = ETHValue() * collaterals[msg.sender] - borrowers[msg.sender];
-        require(limit >= amount, "you don't have enough collaterals");
+        require(limit >= amount, "You don't have enough collaterals");
         borrowers[msg.sender] += amount;
         Dai.transferFrom(address(this), msg.sender, amount);
     }
@@ -68,6 +70,6 @@ contract Lending {
     function calculateCommission() private returns (uint256) {}
 
     function repayBorrow(uint256 amount) external {
-        require(amount > 0, "you can't repay this amount");
+        require(amount > 0, "You can't repay this amount");
     }
 }
