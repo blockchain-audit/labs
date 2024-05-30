@@ -83,26 +83,26 @@ contract BondToken is ERC20Burnable, Ownable, Math {
     //     _sendWethToAave(msg.value);
     // }
 
-    function removeCollateral(uint256 _amount) external {
-        uint256 wethPrice = uint256(_getLatestPrice());
-        uint256 collateral = usersCollateral[msg.sender];
-        require(collateral > 0, "Dont have any collateral");
-        uint256 borrowed = usersBorrowed[msg.sender];
-        uint256 amountLeft = mulExp(collateral, wethPrice).sub(borrowed);
-        uint256 amountToRemove = mulExp(_amount, wethPrice);
-        require(amountToRemove < amountLeft, "Not enough collateral to remove");
-        usersCollateral[msg.sender] -= _amount;
-        totalCollateral -= _amount;
-        _withdrawWethFromAave(_amount);
-        payable(address(this)).transfer(_amount);
-    }
+    // function removeCollateral(uint256 _amount) external {
+    //     uint256 wethPrice = uint256(_getLatestPrice());
+    //     uint256 collateral = usersCollateral[msg.sender];
+    //     require(collateral > 0, "Dont have any collateral");
+    //     uint256 borrowed = usersBorrowed[msg.sender];
+    //     uint256 amountLeft = mulExp(collateral, wethPrice).sub(borrowed);
+    //     uint256 amountToRemove = mulExp(_amount, wethPrice);
+    //     require(amountToRemove < amountLeft, "Not enough collateral to remove");
+    //     usersCollateral[msg.sender] -= _amount;
+    //     totalCollateral -= _amount;
+    //     _withdrawWethFromAave(_amount);
+    //     payable(address(this)).transfer(_amount);
+    // }
 
-    function borrow(uint256 _amount) external {
-        require(_amount <= _borrowLimit(), "No collateral enough");
-        usersBorrowed[msg.sender] += _amount;
-        totalBorrowed += _amount;
-        _withdrawDaiFromAave(_amount);
-    }
+    // function borrow(uint256 _amount) external {
+    //     require(_amount <= _borrowLimit(), "No collateral enough");
+    //     usersBorrowed[msg.sender] += _amount;
+    //     totalBorrowed += _amount;
+    //     _withdrawDaiFromAave(_amount);
+    // }
 
     function repay(uint256 _amount) external {
         require(usersBorrowed[msg.sender] > 0, "Doesnt have a debt to pay");
@@ -150,10 +150,7 @@ contract BondToken is ERC20Burnable, Ownable, Math {
     // }
 
     function harvestRewards() external onlyOwner {
-        uint256 aWethBalance = aWeth.balanceOf(address(this));
-        if (aWethBalance > totalCollateral) {
-            uint256 rewards = aWethBalance.sub(totalCollateral);
-            _withdrawWethFromAave(rewards);
+        uint2 address(this)_withdrawWethFromAave(rewards);
             ethTreasury += rewards;
         }
     }

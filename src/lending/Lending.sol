@@ -56,7 +56,8 @@ contract Lending {
 
     function returnBorrow() public {
         uint countEth = borrowers[msg.sender].eth;
-        uint countDai = borrowers[msg.sender].dai;
+        uint countDaiimport "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+ = borrowers[msg.sender].dai;
         Dai.transferFrom(msg.sender, address(this), countDai);
         payable(msg.sender).transfer(countEth);
     }

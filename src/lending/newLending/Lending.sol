@@ -3,6 +3,8 @@ pragma solidity >=0.5.11;
 
 import "@labs/tokens/Erc20.sol";
 import "./Aave.sol";
+import "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
+
 
 contract Lending {
 
@@ -35,10 +37,10 @@ contract Lending {
     // Aave public aave;
 
     mapping(address => uint256) private usersCollateral;
-    mapping(address => uint256) private usrsBorrowd;
+    mapping(address => uint256) private usersBorrowed;
 
     IERC20 public constant dai = IERC20(0x77FDe93fEe5fe272dC17d799cb61447431E6Eba2);
-    Ipool public constant aave = Ipool(0x685b86a6659a1CbcfE168304386e1b54C543Ce16);
+    Ipool public constant aave = Ipool(0x56Ab717d882F7A8d4a3C2b191707322c5Cc70db8);
     IWETHGateway public constant fantomGateway = IWETHGateway(0xd2B0C9778d088Fc79C28Da719bC02158E64796bD);
 
     constructor() {
@@ -54,7 +56,15 @@ contract Lending {
         fantomGateway.depositETH{value: amount}(address(aave), address(this), 0);
     }
 
-    
+    function removeCollateral(uint amount) external {
+        uint countBorrow = usersBorrowed[msg.sender];
+        require(usersCollateral[msg.sender] >= amount ,"No enough collateral");
+        uint remainingCollateral = usersCollateral[msg.sender] - amount;
+        require(remainingCollateral * uint(getPriceFTMMainnet()) >= minCollateralFromAmount(countBorrow) ,"Not enough collateral left");
+        usersCollateral[msg.sender]-= amount;
+        totalCollateral -=amount;
+        fantomGateway.withdrawETH(address(aave), amount, msg.sender);
+    }
 
     function addDaiLiquidity(uint amount) external{
         require(amount != 0,"the amount is zero");
@@ -74,6 +84,17 @@ contract Lending {
         aave.withdraw(address(dai), amount, msg.sender);
     }
 
+    function borrow(uint amount) external {
+        require(userCollateral[msg.sender] >= minCollateralFromAmount(amount),"not enough collateral");
+        usersBorrowed[msg.sender]+=amount;
+        totalBorrowed +=amount;
+        aave.withdraw(address(dai), amount, msg.sender);
+    }
+
+    function repay(uint amount) external{
+        
+    }
+
     function ratioBetweenDaiAndBond(uint amount) public{
         if(BondToken.totalSupply() == 0){
             return WAD;
@@ -82,4 +103,17 @@ contract Lending {
         return countDai * WAD / BondToken.totalSupply();
     }
 
+
+    function minCollateralFromAmount(uint amount) public {
+        // amount <= collateral * 4/5
+        return (amount / (maxLTV / 5) uint(getPriceFTMMainnet()));
+    }
+
+
+    function getPriceFTMMainnet()public{
+        AggregatorV3Interface internal constant priceFeed =
+            AggregatorV3Interface(0xf4766552D15AE4d256Ad41B6cf2933482B0680dc);
+            (,int price,,,) = priceFeed.latestRoundData();
+            return uint(price *10**10);
+    }
 }   
