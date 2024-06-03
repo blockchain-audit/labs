@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // @Auther: Chana Cohen
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
     error InsufficientFunds(string message);
     error NotAuthorized(string message);

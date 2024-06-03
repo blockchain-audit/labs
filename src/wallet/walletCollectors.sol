@@ -13,7 +13,7 @@ give a thumb here also
 // Setting the Solidity version in which the contract can run
 
 // Setting the Solidity version in which the contract can run
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 // @Auther: Chana Cohen
 // @title Collectors

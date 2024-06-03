@@ -7,7 +7,7 @@
  */
 
 //Specifies the version of the Solidity compiler to use to compile the contract
- pragma solidity ^0.8.20;
+ pragma solidity ^0.8.24;
 
 //The definition contract named Strong
  contract Strong{

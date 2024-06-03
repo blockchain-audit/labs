@@ -2,7 +2,7 @@
 
 //Solidity: A programming language used to write smart contracts on the Ethereum blockchain
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 /// @title owner
 /// @dev Set & chanעק owner
