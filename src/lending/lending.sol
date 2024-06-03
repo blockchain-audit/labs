@@ -4,6 +4,21 @@ pragma solidity >=0.8.24;
 import "@hack/staking/myToken.sol";
 import "chain-link/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
+interface ILendingPool {
+    function deposit(
+        address asset,
+        uint256 amount,
+        address onBehalfOf,
+        uint16 referralCode
+    ) external;
+
+    function withdraw(
+        address asset,
+        uint256 amount,
+        address to
+    ) external returns (uint256);
+}
+
 struct Borrow 
 {
     uint eth;
@@ -50,30 +65,15 @@ contract Lending {
         return answer * int(amountEth  / amountDai);
     }
 
-
-    function getBorrowRatio(uint _dai) public returns (uint) {
-                (
-            , // uint80 roundID
-            int price,
-            , // uint startedAt
-            , // uint timeStamp
-            // uint80 answeredInRound
-        ) = priceFeed.latestRoundData();
-        return price;
-        // return price * msg.value / _dai;
-    }
-
     function addCollateral() external payable {
         require(getBorrowRatio(amountDai) > minRatio, "you cant borrow this value, the ratio of your borrow is less that the min");
         usersCollaterals[msg.sender] += msg.value;
         totalCollateral += msg.value;
-
     }
  
     function discharge(address user) external {
         require(msg.sender == owner, "only owner can discharge eth");
 
         require(borrowers[user].eth / borrowers[user].dai <= minRatio);
-
     }
 }
