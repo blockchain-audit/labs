@@ -63,7 +63,8 @@ contract BondToken is Ownable {
         bDAI = ERC20Token("Bond DAI", "bDAI");
     }
 
-    function deposit(uint256 _amount) external { // deposit - depositBond
+    function deposit(uint256 _amount) external {
+        // deposit - depositBond
         dai.transferFrom(msg.sender, address(this), _amount);
         totalDeposit += _amount;
         _sendDaiToAave(_amount); // to get fee from AAVE
@@ -71,7 +72,8 @@ contract BondToken is Ownable {
         bDAI.mint(msg.sender, bondsToMint);
     }
 
-    function withDraw(uint256 _amount) external { // withDraw
+    function withDraw(uint256 _amount) external {
+        // withDraw
         require(_amount <= bDAI.balanceOf(msg.sender), "Not enough bonds!");
         uint256 daiToReceive = _amount.mulExp(getExchangeRate());
         totalDeposit -= daiToReceive;
