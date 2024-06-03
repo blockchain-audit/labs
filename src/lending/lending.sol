@@ -136,9 +136,9 @@ contract lending is Math1 {
         sendDaiToAave(amount);
     }
     function triggerLiquidation(address user) external onlyOwner {
-        uint256 barrowed = usersBorrowed[user];
+        uint256 borrowed = usersBorrowed[user];
         uint256 collateral = usersCollateral[user];
-        uint256 left = mulExp(collateral, ethPrice) - barrowed;
+        uint256 left = mulExp(collateral, ethPrice) - borrowed;
          if (borrowed > percentage(left, maxLTV)) {
             withdrawWethFromAave(collateral);
             uint256 amountDai = convertEthToDai(collateral);
