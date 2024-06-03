@@ -8,17 +8,19 @@ import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 import "./interfaces/ISwapRouter.sol";
 import "./Math.sol";
+.
 
+//ממשק ל
 interface ILendingPool {
     function deposit(
-        address asset,
+        address asset,//נכס
         uint256 amount,
-        address onBehalfOf,
-        uint16 referralCode
+        address onBehalfOf,//בשם
+        uint16 referralCode//קוד הפניה
     ) external;
 
     function withdraw(
-        address asset,
+        address asset,//נכס
         uint256 amount,
         address to
     ) external returns (uint256);
