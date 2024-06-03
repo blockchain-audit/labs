@@ -21,7 +21,6 @@ contract counterV2 {
     }
 }
 
-
 contract Dev {
     function selectors() external view returns (bytes4, bytes4, bytes4) {
         return (
@@ -31,6 +30,7 @@ contract Dev {
         )
     }
 }
+
 contract Proxy {
 
     bytes32 private constant IMPLEMENTATION_SLOT =
@@ -135,6 +135,21 @@ library StorageSlot {
         }
     }
 }
+
+contract TestSlot {
+    bytes32 public constant slot = keccak256("TestSlot");
+
+    function getSlot() external view returns (address){
+        return StorageSlot.getAddressSlot(slot).value;
+    }
+
+    function writeSlot(address _addr) external {
+        StorageSlot.getAddressSlot(slot).value = _addr;
+    }
+}
+
+
+
 
 
 
