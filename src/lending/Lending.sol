@@ -56,8 +56,7 @@ contract Lending {
 
     function returnBorrow() public {
         uint countEth = borrowers[msg.sender].eth;
-        uint countDaiimport "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
- = borrowers[msg.sender].dai;
+        uint countDai = borrowers[msg.sender].dai;
         Dai.transferFrom(msg.sender, address(this), countDai);
         payable(msg.sender).transfer(countEth);
     }
@@ -90,6 +89,8 @@ contract Lending {
 
 
     function swapEthToDai(uint amountETH)private{
+
+        //mock swap eth to dai
         uint amountDai = getETHPrice() * amountETH / wad ;
 
         uint gas = amountDai * 995 / 1000;

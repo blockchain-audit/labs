@@ -50,8 +50,8 @@ contract BondToken is ERC20Burnable, Ownable, Math {
     // IERC20 public constant dai = IERC20(0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD);
     // IERC20 public constant aDai = IERC20(0xdCf0aF9e59C002FA3AA091a46196b37530FD48a8);
     // IERC20 public constant aWeth = IERC20(0x87b1f4cf9BD63f7BBD3eE1aD04E8F52540349347);
-    AggregatorV3Interface internal constant priceFeed =
-        AggregatorV3Interface(0x9326BFA02ADD2366b30bacB125260Af641031331);
+    // AggregatorV3Interface internal constant priceFeed =
+    //     AggregatorV3Interface(0x9326BFA02ADD2366b30bacB125260Af641031331);
     IUniswapRouter public constant uniswapRouter = IUniswapRouter(0xE592427A0AEce92De3Edee1F18E0157C05861564);
     IERC20 private constant weth = IERC20(0xd0A1E359811322d97991E03f863a0C30C2cF029C);
 
@@ -200,10 +200,10 @@ contract BondToken is ERC20Burnable, Ownable, Math {
     //     return aDai.balanceOf(address(this));
     // }
 
-    function _getLatestPrice() public view returns (int256) {
-        (, int256 price,,,) = priceFeed.latestRoundData();
-        return price * 10 ** 10;
-    }
+    // function _getLatestPrice() public view returns (int256) {
+    //     (, int256 price,,,) = priceFeed.latestRoundData();
+    //     return price * 10 ** 10;
+    // }
 
     function _utilizationRatio() public view returns (uint256) {
         return getExp(totalBorrowed, totalDeposit);

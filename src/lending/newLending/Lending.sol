@@ -106,7 +106,7 @@ contract Lending {
 
     function minCollateralFromAmount(uint amount) public {
         // amount <= collateral * 4/5
-        return (amount / (maxLTV / 5) uint(getPriceFTMMainnet()));
+        return (amount / (maxLTV / 5) * WAD / uint(getPriceFTMMainnet()));
     }
 
 
@@ -114,6 +114,7 @@ contract Lending {
         AggregatorV3Interface internal constant priceFeed =
             AggregatorV3Interface(0xf4766552D15AE4d256Ad41B6cf2933482B0680dc);
             (,int price,,,) = priceFeed.latestRoundData();
-            return uint(price *10**10);
+            return uint(price * 10 ** 10);
     }
 }   
+ 
