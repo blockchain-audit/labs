@@ -38,18 +38,27 @@ contract Lending {
         bond.transferFrom(msg.sender, address(this), amountDai);
     }
 
+    function getBorrowRatio(uint amountEth, uint amountDai) public view returns (int) {
+        (
+            /* uint80 roundID */,
+            int answer,
+            /*uint startedAt*/,
+            /*uint timeStamp*/,
+            /*uint80 answeredInRound*/
+        ) = priceFeed.latestRoundData();
+        return answer * int(amountEth  / amountDai);
+    }
+
+
     function addBorrow(uint amountDai) external payable {
-        require(getBorrowRatio(msg.value, amountDai) > minRatio, "you cant borrow this value, the ratio of your borrow is less that the min");
+        require(getBorrowRatio(msg.value, amountDai) > int(minRatio), "you cant borrow this value, the ratio of your borrow is less that the min");
+        //int i = getBorrowRatio(msg.value, amountDai);
         borrowers[msg.sender].eth += msg.value;
 
 
         borrowers[msg.sender].dai += amountDai;
     }
 
-    function getBorrowRatio(uint eth, uint dai) external returns (uint) {
-        int price = priceFeed.latestRoundData();
-        return price * eth  / dai;
-    }
 
     function discharge(address user) external {
         require(msg.sender == owner, "only owner can discharge eth");
