@@ -34,7 +34,7 @@ contract BuggyProxy{
     }
 
     function _delegate() private{
-        (bool ok,) = implementation.delegatecall(msg.sender);
+        (bool ok,) = implementation.delegatecall(msg.data);
         require(ok, "delegatecall failed.");
     }
 
@@ -62,10 +62,10 @@ contract Dev{
 }
 
 contract Proxy{
-    bytes32 private constant IMPLEMENTATION_SOLT = 
+    bytes32 private constant IMPLEMENTATION_SLOT = 
         bytes32(uint256(keccak256("eip1967.proxy.implementation")) - 1);
-    bytes32 private constant ADMIN_SOLT = 
-        bytes(uint256(keccak256("eip1967.proxy.admin")) - 1);
+    bytes32 private constant ADMIN_SLOT = 
+        bytes32(uint256(keccak256("eip1967.proxy.admin")) - 1);
     
     constructor(){
         _setAdmin(msg.sender);
@@ -89,12 +89,16 @@ contract Proxy{
     }
 
     function _getImplementation() private view returns(address){
-        return StorageSlot.getAddressSlot(implementation_SOLT).value;
+        return StorageSlot.getAddressSlot(IMPLEMENTATION_SLOT).value;
     }
 
-    function setImplementation(address _implementation) private{
-        require(_implementation.code.length >> 0, "implementation is not contract");
-        StorageSlot.getAddressSlot(IMPLEMENTATION_SOLT).value = _implementation;
+    function _setImplementation(address _implementation) private{
+        require(_implementation.code.length > 0, "implementation is not contract");
+        StorageSlot.getAddressSlot(IMPLEMENTATION_SLOT).value = _implementation;
+    }
+
+    function changeAdmin(address _admin) external ifAdmin {
+        _setAdmin(_admin);
     }
 
     function upgradeTo(address _implementation) external ifAdmin{
@@ -106,7 +110,7 @@ contract Proxy{
     }
 
     function implementation() external ifAdmin returns(address){
-        return _getImplementatin();
+        return _getImplementation();
     }
 
     function _delegate(address _implementation) internal virtual{
@@ -142,7 +146,6 @@ contract Proxy{
     }
 }
 
-///
 contract ProxyAdmin {
     address public owner;
 
@@ -151,58 +154,43 @@ contract ProxyAdmin {
     }
 
     modifier onlyOwner() {
-        require(msg.sender == owner, "not owner");
+        require(msg.sender == owner, "not owner.");
         _;
     }
 
     function getProxyAdmin(address proxy) external view returns (address) {
-        (bool ok, bytes memory res) =
-            proxy.staticcall(abi.encodeCall(Proxy.admin, ()));
+        (bool ok, bytes memory res) = proxy.staticcall(abi.encodeCall(Proxy.admin, ()));
         require(ok, "call failed");
         return abi.decode(res, (address));
     }
 
-    function getProxyImplementation(address proxy)
-        external
-        view
-        returns (address)
-    {
-        (bool ok, bytes memory res) =
-            proxy.staticcall(abi.encodeCall(Proxy.implementation, ()));
+    function getProxyImplementation(address proxy) external view returns (address) {
+        (bool ok, bytes memory res) = proxy.staticcall(abi.encodeCall(Proxy.implementation, ()));
         require(ok, "call failed");
         return abi.decode(res, (address));
     }
 
-    function changeProxyAdmin(address payable proxy, address admin)
-        external
-        onlyOwner
-    {
+    function changeProxyAdmin(address payable proxy, address admin) external onlyOwner {
         Proxy(proxy).changeAdmin(admin);
     }
 
-    function upgrade(address payable proxy, address implementation)
-        external
-        onlyOwner
-    {
+    function upgrade(address payable proxy, address implementation) external onlyOwner {
         Proxy(proxy).upgradeTo(implementation);
     }
 }
 
 library StorageSlot {
-    struct AddressSlot {
+    struct AddressSlot{
         address value;
     }
 
-    function getAddressSlot(bytes32 slot)
-        internal
-        pure
-        returns (AddressSlot storage r)
-    {
+    function getAddressSlot(bytes32 slot) internal pure returns (AddressSlot storage r) {
         assembly {
             r.slot := slot
         }
     }
 }
+
 
 contract TestSlot {
     bytes32 public constant slot = keccak256("TEST_SLOT");
