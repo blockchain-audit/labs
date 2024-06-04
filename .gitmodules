@@ -17,3 +17,6 @@
 [submodule "src/solidity/new-project/lib/openzeppelin-contracts"]
 	path = src/solidity/new-project/lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "lib/lib/openzeppelin-contract"]
+	path = lib/lib/openzeppelin-contract
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
