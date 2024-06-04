@@ -36,3 +36,11 @@ contract arrey {
     }
 }
 
+contract arreyRemove {
+    
+
+}
+
+contract arreyReplace {
+
+}
