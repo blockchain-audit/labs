@@ -8,7 +8,7 @@ import "../MyToken/MyToken.sol";
 
 contract WinnerCoin {
     address public owner;
-    myToken public myCoin;
+    MyToken public myCoin;
     mapping(address => bool) public winners;
     uint256 public numberWin;
     uint256 public endDate;
@@ -17,7 +17,7 @@ contract WinnerCoin {
     uint public priceToWinner;
 
     constructor() {
-        myCoin = myToken();
+        myCoin = MyToken();
         owner = msg.sender;
         endDate = block.timestamp;
     }

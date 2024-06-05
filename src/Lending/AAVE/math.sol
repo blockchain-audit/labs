@@ -27,7 +27,7 @@ library MathLib {
     }
 
     function percentage(uint256 _num, uint256 _percentage) internal pure returns (uint256) {
-        uint256 rational = getExp(_num, 5);
+        uint256 rational = wDiv(_num, 5);
         return mulExp(rational, _percentage);
     }
 }

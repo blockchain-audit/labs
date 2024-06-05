@@ -49,11 +49,11 @@ contract Proxy {
     }
 
     function _setAdmin(address _admin) private {
-        require(_admin != adddress(0), "admin = zero address");
+        require(_admin != address(0), "admin = zero address");
         StorageSlot.getAddressSlot(ADMIN_SLOT).value = _admin;
     }
 
-    function _getImplemention() private view returns (address) {
+    function _getImplementation() private view returns (address) {
         return StorageSlot.getAddressSlot(IMPLEMENTATION_SLOT).value;
     }
 
