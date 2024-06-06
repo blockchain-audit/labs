@@ -1,0 +1,41 @@
+type [1] = felt252 [storable: true, drop: true, dup: true, zero_sized: false];
+type [2] = Array<[1]> [storable: true, drop: true, dup: false, zero_sized: false];
+type [0] = Struct<ut@Tuple> [storable: true, drop: true, dup: true, zero_sized: true];
+
+libfunc [11] = felt252_const<5735816763073854953388147237921>;
+libfunc [10] = store_temp<[1]>;
+libfunc [1] = function_call<user@[0]>;
+libfunc [9] = drop<[0]>;
+libfunc [0] = struct_construct<[0]>;
+libfunc [8] = store_temp<[0]>;
+libfunc [2] = function_call<user@[1]>;
+libfunc [5] = array_new<[1]>;
+libfunc [4] = array_append<[1]>;
+libfunc [7] = store_temp<[2]>;
+libfunc [3] = print;
+
+[11]() -> ([0]); // 0
+[10]([0]) -> ([2]); // 1
+[1]([2]) -> ([1]); // 2
+[9]([1]) -> (); // 3
+[0]() -> ([3]); // 4
+[8]([3]) -> ([4]); // 5
+return([4]); // 6
+[10]([0]) -> ([2]); // 7
+[2]([2]) -> ([1]); // 8
+[9]([1]) -> (); // 9
+[0]() -> ([3]); // 10
+[8]([3]) -> ([4]); // 11
+return([4]); // 12
+[5]() -> ([1]); // 13
+[4]([1], [0]) -> ([2]); // 14
+[7]([2]) -> ([2]); // 15
+[3]([2]) -> (); // 16
+[0]() -> ([3]); // 17
+[8]([3]) -> ([4]); // 18
+return([4]); // 19
+
+[2]@0() -> ([0]);
+[0]@7([0]: [1]) -> ([0]);
+[1]@13([0]: [1]) -> ([0]);
+

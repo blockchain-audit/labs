@@ -10,6 +10,7 @@ import "forge-std/console.sol";
 import "lib/openzeppelin-contracts/contracts/access/Ownable.sol";
 import "@hack/math/mathLend.sol";
 import "@hack/math/math.sol";
+import "@chainlink/interfaces/AggregatorV3Interface.sol";
 
 interface ILendingPool {
     function deposit(
@@ -72,6 +73,11 @@ contract Lend is Mathematics, DSMath, Ownable{
     MyToken private constant weth =
         MyToken(0xd0A1E359811322d97991E03f863a0C30C2cF029C);
 
+    AggregatorV3Interface internal constant priceFeed =
+        AggregatorV3Interface(0x9326BFA02ADD2366b30bacB125260Af641031331);
+    IUniswapRouter public constant uniswapRouter =
+        IUniswapRouter(0xE592427A0AEce92De3Edee1F18E0157C05861564);
+
     constructor(address _bond, address initialOwner) Ownable(initialOwner){
        bond = MyToken(_bond); 
     }
@@ -104,31 +110,87 @@ contract Lend is Mathematics, DSMath, Ownable{
         _withdrawDaiFromAave(daiToReceive);
     }   
 
-    //  function addCollateral() external payable {
-    //     require(msg.value != 0, "Cant send 0 ethers");
-    //     usersCollateral[msg.sender] += msg.value;
-    //     totalCollateral += msg.value;
-    //     _sendWethToAave(msg.value);
-    // }
+     function addCollateral() external payable {
+        require(msg.value != 0, "Cant send 0 ethers");
+        usersCollateral[msg.sender] += msg.value;
+        totalCollateral += msg.value;
+        _sendWethToAave(msg.value);
+    }
 
-    // function removeCollateral(uint256 _amount) external {
-    //     uint256 wethPrice = uint256(_getLatestPrice());
-    //     uint256 collateral = usersCollateral[msg.sender];
-    //     require(collateral > 0, "Dont have any collateral");
-    //     uint256 borrowed = usersBorrowed[msg.sender];
-    //     uint256 amountLeft = mulExp(collateral, wethPrice).sub(borrowed);
-    //     uint256 amountToRemove = mulExp(_amount, wethPrice);
-    //     require(amountToRemove < amountLeft, "Not enough collateral to remove");
-    //     usersCollateral[msg.sender] -= _amount;
-    //     totalCollateral -= _amount;
-    //     _withdrawWethFromAave(_amount);
-    //     payable(address(this)).transfer(_amount);
-    // }
+    function removeCollateral(uint256 _amount) external {
+        uint256 wethPrice = uint256(_getLatestPrice());
+        uint256 collateral = usersCollateral[msg.sender];
+        require(collateral > 0, "Dont have any collateral");
+        uint256 borrowed = usersBorrowed[msg.sender];
+        uint256 amountLeft = mulExp(collateral, wethPrice).sub(borrowed);
+        uint256 amountToRemove = mulExp(_amount, wethPrice);
+        require(amountToRemove < amountLeft, "Not enough collateral to remove");
+        usersCollateral[msg.sender] -= _amount;
+        totalCollateral -= _amount;
+        _withdrawWethFromAave(_amount);
+        // payable(address(this)).transfer(_amount);
+        payable(address(msg.sender)).transfer(_amount);
+    }
 
-    // function _getLatestPrice() public view returns (int256) {
-    //     (, int256 price, , , ) = priceFeed.latestRoundData();
-    //     return price * 10**10;
-    // }
+    function borrow(uint256 _amount) external {
+        require(_amount <= _borrowLimit(), "No collateral enough");
+        usersBorrowed[msg.sender] += _amount;
+        totalBorrowed += _amount;
+        _withdrawDaiFromAave(_amount);
+    }
+
+        function _borrowLimit() public view returns (uint256) {
+        uint256 amountLocked = usersCollateral[msg.sender];
+        require(amountLocked > 0, "No collateral found");
+        uint256 amountBorrowed = usersBorrowed[msg.sender];
+        uint256 wethPrice = uint256(_getLatestPrice());
+        uint256 amountLeft = mulExp(amountLocked, wethPrice).sub(
+            amountBorrowed
+        );
+        return percentage(amountLeft, maxLTV);
+    }
+
+    function repay(uint256 _amount) external {
+        require(usersBorrowed[msg.sender] > 0, "Doesnt have a debt to pay");
+        dai.transferFrom(msg.sender, address(this), _amount);
+        (uint256 fee, uint256 paid) = calculateBorrowFee(_amount);
+        usersBorrowed[msg.sender] -= paid;
+        totalBorrowed -= paid;
+        totalReserve += fee;
+        _sendDaiToAave(_amount);
+    }
+
+    function calculateBorrowFee(uint256 _amount)
+        public
+        view
+        returns (uint256, uint256)
+    {
+        uint256 borrowRate = _borrowRate();
+        uint256 fee = mulExp(_amount, borrowRate);
+        uint256 paid = _amount.sub(fee);
+        return (fee, paid);
+    }
+
+    function liquidation(address _user) external onlyOwner {
+        uint256 wethPrice = uint256(_getLatestPrice());
+        uint256 collateral = usersCollateral[_user];
+        uint256 borrowed = usersBorrowed[_user];
+        uint256 collateralToUsd = mulExp(wethPrice, collateral);
+        if (borrowed > percentage(collateralToUsd, maxLTV)) {
+            _withdrawWethFromAave(collateral);
+            uint256 amountDai = _convertEthToDai(collateral);
+            totalReserve += amountDai;
+            usersBorrowed[_user] = 0;
+            usersCollateral[_user] = 0;
+            totalCollateral -= collateral;
+        }
+    }
+    
+    //value of ETH for 1 ETh (in DAI)
+    function _getLatestPrice() public view returns (int256) {
+        (, int256 price, , , ) = priceFeed.latestRoundData();
+        return price * 10**10;
+    }
 
     function getExchangeRate() public view returns (uint256) {
         if (dai.totalSupply() == 0) {
