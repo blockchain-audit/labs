@@ -67,7 +67,7 @@ fn rotateImage(imageData: @Array<u256>, degrees:u256) -> Array<u256> {
                 break ();
             }
             let mut j: u32 = 0;
-            loop{
+            loop {
                 if j == height {
                     break ();
                 }
@@ -80,7 +80,7 @@ fn rotateImage(imageData: @Array<u256>, degrees:u256) -> Array<u256> {
             i = i + 1;
         };    
     }
-    rotatedImage
+    rotatedImage 
 }
 
 
