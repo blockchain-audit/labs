@@ -1,7 +1,6 @@
 // // import wasm_bindgen;
 // // import web_sys;
 
-use array::ArrayTrait;
 use array::SpanTrait;
 use option::OptionTrait;
 use debug::PrintTrait;
@@ -27,7 +26,7 @@ fn mul(width: u64, height: u64) -> u64 {
 fn rotate(self: @Img, clockwise: bool){ //rotate 90
     let w = self.width;
     let h = self.height;
-    let len: u64 = mul(*w, *h);
+    //let len: u64 = mul(*w, *h);
 }
 
 
@@ -60,6 +59,59 @@ fn rotate(self: @Img, clockwise: bool){ //rotate 90
 //     self.height = w as u32;
 //     self.last_operation = Operation::Transform
 // }
+fn rotateImage(imageData: @Array<u256>, degrees:u256) -> Array<u256> {
+  
+    // Extract image dimensions assuming a square image
+    let width = 5; //imageData.len() / 4;
+    let height = width;
+  
+    // Create a new array to store the rotated image data
+    let mut rotatedImage :Array<u256> = ArrayTrait::new(); //[imageData.len()];
+
+    let mut rotatedImage_dict = felt252_dict_new::<u32>();
+
+    // Define rotation logic based on degrees (handle 90 and 270 for simplicity)
+    if degrees == 90 {
+        let mut i: u32 = 0;
+        loop {
+            if i == width { // Break condition
+                break ();
+            }
+            let mut j: u32 = 0;
+            loop{
+                if j == height {
+                    break ();
+                }
+                let newIndex: felt252 = ((j * width) + (width - i - 1)).into();
+                let value = (*imageData.at(i * height + j)).try_into().unwrap();
+                rotatedImage_dict.insert(newIndex, value);
+                j = j + 1;
+            };
+            // Repeating code
+            i = i + 1;
+        };    
+    } else if degrees == 270 {
+        let mut i: u32 = 0;
+        loop {
+            if i == width { // Break condition
+                break ();
+            }
+            let mut j: u32 = 0;
+            loop{
+                if j == height {
+                    break ();
+                }
+                let newIndex: felt252 = (((height - j - 1) * width) + i).into();
+                let value = (*imageData.at(i * height + j)).try_into().unwrap();
+                rotatedImage_dict.insert(newIndex, value);
+                j = j + 1;
+            };
+            // Repeating code
+            i = i + 1;
+        };    
+    }
+    rotatedImage
+} 
 
 fn main(){
     let img = Img{ width: 100, height: 100 };
