@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-contract mapping {
+contract mappings {
     mapping (address => uint256) public myMap;
 
     function get(address addr) public view returns (uint256) {

@@ -1,6 +1,7 @@
 pragma solidity ^0.8.24;
 
-contract contractTest {
+import "forge-std/Test.sol";
+contract contractTest is Test{
 
     ERC20 ERC20contract ;
     address alice = vm.addr(1);
@@ -15,15 +16,15 @@ contract contractTest {
         vm.prank(alice);
         ERC20contract.approve(address(eve), type(uint256).max);
 
-        console.log("balance eve before" ERC20contract.balanceOf(eve));
+        console.log("balance eve before" ,ERC20contract.balanceOf(eve));
         console.log("eve can move funds from alice due to the permission given");
 
         vm.prank(eve);
 
         ERC20contract.transferFrom(address(alice), address(eve), 100000);
 
-        console.log("balance eve after" ERC20contract.balanceOf(eve));
-        console.log("done")
+        console.log("balance eve after" ,ERC20contract.balanceOf(eve));
+        console.log("done");
         
     }
 
@@ -52,7 +53,7 @@ interface IERC20{
 
 contract ERC20 is IERC20 {
     uint public totalSupply;
-    mapping ( (uint) => address) public balanceOf;
+    mapping ( uint => address) public balanceOf;
     mapping (address => mapping(address => uint)) public allowance;
     string public name = "Test examle";
     string public symbol = "test";
@@ -66,7 +67,7 @@ contract ERC20 is IERC20 {
     }
 
     function approve(address spender, uint amount) external returns (bool){
-        allowance[mag.sender][spender] = amount;
+        allowance[msg.sender][spender] = amount;
         emit Approval(msg.sender, spender, amount);
         return true;
     }

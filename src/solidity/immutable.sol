@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-contract immutable {
+contract immutables {
     address public immutable MY_ADDRESS;
     uint256 public immutable MY_UINT;
 

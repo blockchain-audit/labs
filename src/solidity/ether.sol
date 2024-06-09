@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-contract ether {
+contract ethers {
     uint256 public oneWei = 1 wei;
     bool public isOneWei = (oneWei == 1);
 

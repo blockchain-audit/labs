@@ -79,28 +79,28 @@ contract Proxy {
         return StorageSlot.getAddressSlot(ADMIN_SLOT).value;
     }
 
-    function setAdmin(address admin) private {
-        require(admin != address(0), "admin = zero address");
-        StorageSlot.getAddressSlot(ADMIN_SLOT).value = admin;
+    function setAdmin(address _admin) private {
+        require(_admin != address(0), "admin = zero address");
+        StorageSlot.getAddressSlot(ADMIN_SLOT).value = _admin;
     }
 
     function getImplementation() private view returns (address) {
         return StorageSlot.getAddressSlot(IMPLEMENTATION_SLOT).value;
     }
 
-    function setImplementation(address implementation) private {
+    function setImplementation(address _implementation) private {
         require(
-            implementation.code.length > 0, "implementation is not contract"
+            _implementation.code.length > 0, "implementation is not contract"
         );
-        StorageSlot.getAddressSlot(IMPLEMENTATION_SLOT).value = implementation;
+        StorageSlot.getAddressSlot(IMPLEMENTATION_SLOT).value = _implementation;
     }
 
-    function changeAdmin(address admin) external ifAdmin {
-        setAdmin(admin);
+    function changeAdmin(address _admin) external ifAdmin {
+        setAdmin(_admin);
     }
 
-    function upgradeTo(address implementation) external ifAdmin {
-        setImplementation(implementation);
+    function upgradeTo(address _implementation) external ifAdmin {
+        setImplementation(_implementation);
     }
 
     function admin() external ifAdmin returns (address) {
@@ -111,7 +111,7 @@ contract Proxy {
         return getImplementation();
     }
 
-    function _delegate(address implementation) internal virtual {
+    function delegate(address implementation) internal virtual {
         assembly {
             calldatacopy(0, 0, calldatasize())
             let result := delegatecall(gas(), implementation, 0, calldatasize(), 0, 0)
