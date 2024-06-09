@@ -1,0 +1,15 @@
+
+
+#define macro MAIN() = takes(0) returns(0) {
+    // store dynamic offset of 0x20 at 0x00
+    0x20                                     // PUSH1      [0x20]
+    0x00                                     // PUSH1      [0x00, 0x20]
+    mstore                                   // MSTORE     []
+    0x07536561706f7274                       // PUSH1      [0x07536561706f7274]
+    0x47                                     // PUSH1      [0x47, 0x07536561706f7274]
+    mstore                                   // MSTORE     []
+    0x60                                     // PUSH1      [0x60]
+    0x20                                     // PUSH1      [0x20, 0x60]
+    return
+}
+
