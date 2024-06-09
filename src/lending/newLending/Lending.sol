@@ -3,7 +3,9 @@ pragma solidity >=0.5.11;
 
 import "@labs/tokens/Erc20.sol";
 import "./Aave.sol";
-import "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
+import "./interfaces/Ipool.sol";
+import "./interfaces/IWETHGateway.sol";
+import "../../../../lib/chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 
 
 contract Lending {
@@ -26,12 +28,72 @@ contract Lending {
 
     //sum of eth that user put to coraterall
     uint256 public totalCollateral;
+// SPDX-License-Identifier: MIT
+// pragma solidity >=0.5.11;
+
+// import "openzeppelin-tokens/ERC20/IERC20.sol";
+// import "./interfaces/Ipool.sol";
+// import "./interfaces/IWETHGateway.sol";
+// import "./Lending.sol";
+
+// contract Aave {
+//     IERC20 public constant dai = IERC20(0x77FDe93fEe5fe272dC17d799cb61447431E6Eba2);
+//     Ipool public constant aave = Ipool(0x685b86a6659a1CbcfE168304386e1b54C543Ce16);
+//     IWETHGateway public constant fantomGateway = IWETHGateway(0xd2B0C9778d088Fc79C28Da719bC02158E64796bD);
+
+//     function depositDaiToAave(uint256 amount) public {
+//         // dai.approve(address(aave), amount);
+//         aave.deposit(address(dai), amount, msg.sender, 0);
+//     }
+
+//     function withdrawDaiFromAave(uint256 amount) external {
+//         aave.withdraw(address(dai), amount, msg.sender);
+//     }
+
+//     function depositFTMToAave(uint amount) external {
+//         fantomGateway.depositETH{value: amount}(address(aave), msg.sender, 0);
+//     }
+
+//     function withdrawFTMFromAave(uint256 amount) external {
+//         fantomGateway.withdrawETH(address(aave), amount, msg.sender);
+//     }
+// }
 
     //value of bond compared to eth - all bond = 0.02 eth
     uint256 public baseRate = 20000000000000000;
 
     // ?
     uint256 fixedAnnuBorrowrate = 300000000000000000;
+// SPDX-License-Identifier: MIT
+// pragma solidity >=0.5.11;
+
+// import "openzeppelin-tokens/ERC20/IERC20.sol";
+// import "./interfaces/Ipool.sol";
+// import "./interfaces/IWETHGateway.sol";
+// import "./Lending.sol";
+
+// contract Aave {
+//     IERC20 public constant dai = IERC20(0x77FDe93fEe5fe272dC17d799cb61447431E6Eba2);
+//     Ipool public constant aave = Ipool(0x685b86a6659a1CbcfE168304386e1b54C543Ce16);
+//     IWETHGateway public constant fantomGateway = IWETHGateway(0xd2B0C9778d088Fc79C28Da719bC02158E64796bD);
+
+//     function depositDaiToAave(uint256 amount) public {
+//         // dai.approve(address(aave), amount);
+//         aave.deposit(address(dai), amount, msg.sender, 0);
+//     }
+
+//     function withdrawDaiFromAave(uint256 amount) external {
+//         aave.withdraw(address(dai), amount, msg.sender);
+//     }
+
+//     function depositFTMToAave(uint amount) external {
+//         fantomGateway.depositETH{value: amount}(address(aave), msg.sender, 0);
+//     }
+
+//     function withdrawFTMFromAave(uint256 amount) external {
+//         fantomGateway.withdrawETH(address(aave), amount, msg.sender);
+//     }
+// }
 
     Erc20 BondToken;
     // Aave public aave;
@@ -79,13 +141,13 @@ contract Lending {
     function withdrawDaiLiquiduty(uint amount) external{
         require(amount <= BondToken.balanceOf(msg.sender) ,"not enough bonds! ");
         uint countDai = amount * ratioBetweenDaiAndBond() / WAD;
-        bondToken.burn(msg.sender , amount);
+        BondToken.burn(msg.sender , amount);
         totalDeposit -= countDai;
         aave.withdraw(address(dai), amount, msg.sender);
     }
 
     function borrow(uint amount) external {
-        require(userCollateral[msg.sender] >= minCollateralFromAmount(amount),"not enough collateral");
+        require(usersCollateral[msg.sender] >= minCollateralFromAmount(amount),"not enough collateral");
         usersBorrowed[msg.sender]+=amount;
         totalBorrowed +=amount;
         aave.withdraw(address(dai), amount, msg.sender);
@@ -111,7 +173,7 @@ contract Lending {
 
 
     function getPriceFTMMainnet()public{
-        AggregatorV3Interface internal constant priceFeed =
+        AggregatorV3Interface  priceFeed =
             AggregatorV3Interface(0xf4766552D15AE4d256Ad41B6cf2933482B0680dc);
             (,int price,,,) = priceFeed.latestRoundData();
             return uint(price * 10 ** 10);
