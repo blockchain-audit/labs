@@ -68,3 +68,36 @@ contract ERC20 is IERC20 {
     }
 
 }
+
+
+contract ContractTest is Test{
+    ERC20 ERC20Contract;
+    address alice = vm.addr(1);
+     address eve = vm.addr(2);
+
+    function testApproveScam() public {
+        ERC20Contract = new ERC20();
+        ERC20Contract.mint(1000);
+        ERC20Contract.transfer(address(alice), 1000);
+
+        vm.prank(alice);
+        ERC20Contract.approve(address(eve), type(uint256).max);
+
+        console.log(
+            "Before exploiting, Balance of Eve:",
+            ERC20Contract.balanceOf(eve)
+        );
+        console.log(
+            "Due to Alice granted transfer permission to Eve, now Eve can move funds from Alice"
+        );
+        vm.prank(eve);
+        ERC20Contract.transferFrom(address(alice), address(eve), 1000);
+        console.log(
+            "After exploiting, Balance of Eve:",
+            ERC20Contract.balanceOf(eve)
+        );
+        console.log("Exploit completed");
+    }
+
+    receive() external payable {}
+}
