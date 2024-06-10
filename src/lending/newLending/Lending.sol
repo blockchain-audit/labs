@@ -114,8 +114,8 @@ contract Lending {
         require(msg.value > 0, "the value is 0");
         usersCollateral[msg.sender] += msg.value;
         totalCollateral += msg.value;
-        aave.depositFTMToAave(uint(msg.value));
-        fantomGateway.depositETH{value: amount}(address(aave), address(this), 0);
+        // aave.depositFTMToAave(uint(msg.value));
+        fantomGateway.depositETH{value: msg.value}(address(aave), address(this), 0);
     }
 
     function removeCollateral(uint amount) external {
@@ -157,7 +157,7 @@ contract Lending {
         
     }
 
-    function ratioBetweenDaiAndBond(uint amount) public{
+    function ratioBetweenDaiAndBond() public returns(uint){
         if(BondToken.totalSupply() == 0){
             return WAD;
         }
@@ -166,17 +166,17 @@ contract Lending {
     }
 
 
-    function minCollateralFromAmount(uint amount) public {
+    function minCollateralFromAmount(uint amount) public returns(uint){
         // amount <= collateral * 4/5
-        return (amount / (maxLTV / 5) * WAD / uint(getPriceFTMMainnet()));
+        return ((amount / (maxLTV / 5) * WAD / uint(getPriceFTMMainnet())));
     }
 
 
-    function getPriceFTMMainnet()public{
+    function getPriceFTMMainnet()public returns(uint){
         AggregatorV3Interface  priceFeed =
             AggregatorV3Interface(0xf4766552D15AE4d256Ad41B6cf2933482B0680dc);
             (,int price,,,) = priceFeed.latestRoundData();
-            return uint(price * 10 ** 10);
+            return uint (price * 10 ** 10);
     }
 }   
  
