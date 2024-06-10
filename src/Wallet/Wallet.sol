@@ -1,7 +1,6 @@
-// SPDX-License-Identifier: GPL-3.0
-// SPDX-License-Identifier: GPL-3.0
-pragma solidity ^0.8.20;
-///@title
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.24;
+
 contract Wallet {
     address payable public owner;
     uint256 counter = 0;
@@ -17,7 +16,7 @@ contract Wallet {
     }
     function addGabay(address gabay) public isOwner {
         require(counter < 3, "There are too many collectors");
-        require(gabayim[gabay]==fals"This address is already registered as a collector")
+        require(gabayim[gabay]==false, "This address is already registered as a collector");
         gabayim[gabay] = true;
         counter++;
     }

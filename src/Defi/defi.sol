@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.18;
+pragma solidity 0.8.24;
 
 import "forge-std/Test.sol";
-
-
 
 
 interface IERC20 {
@@ -11,7 +9,7 @@ interface IERC20 {
 
     function balanceOf(address account) external view returns (uint);
 
-    function transfer(addressrecipient, uint amount) external returns (bool);
+    function transfer(address recipient, uint amount) external returns (bool);
 
     function allowance(
         address sender,
@@ -24,8 +22,8 @@ interface IERC20 {
 
 contract ERC20 is IERC20 {
     uint public totalSupply;
-    mapping(address -> uint) public balanceOf;
-    mapping(address -> mapping(address -> uint)) public alowance;
+    mapping(address => uint) public balanceOf;
+    mapping(address => mapping(address => uint)) public alowance;
     string public name = "Test example";
     string public symbol = "Test";
     uint8 public decimals = 18;
@@ -38,20 +36,20 @@ contract ERC20 is IERC20 {
     }
 
     function approve (address spender, uint amount) external returns (bool) {
-        allowance[msg.sender][spender] = amount;
+        alowance[msg.sender][spender] = amount;
         emit Approval(msg.sender, spender, amount);
         return true;
     }
 
     function transferFrom(
-        address sender;
-        address recipient;
+        address sender,
+        address recipient,
         uint amount
     ) external returns (bool){
-        allowance[sender][msg] -= amount;
+        alowance[sender][msg] -= amount;
         balanceOf[sender] -= amount;
         balanceOf[recipient] += amount;
-        emit Transfer(sender, recipient, amount)
+        emit Transfer(sender, recipient, amount);
         return true;
     }
 

@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
-// compiler version must be greater than or equal to 0.8.24 and less than 0.9.0
-pragma solidity ^0.8.24
+pragma solidity 0.8.24;
 
 contract Primitive{
     bool public boo = true;
@@ -10,8 +9,8 @@ contract Primitive{
     uint256 u = 123;
 
     int8 i8 = -1;
-    int256 = 456;
-    int256 = -123;
+    int256 i9= 456;
+    int256 i10= -123;
 
     int256 minInt = type(int256).min;
     int256 maxInt = type(int256).max;

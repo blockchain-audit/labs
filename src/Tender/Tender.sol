@@ -1,20 +1,22 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.8.24;
-import "../NFT/nft.sol";
+pragma solidity ^0.8.18;
+
 import "forge-std/console.sol";
-import "/home/user/newProject/myToken/script/myToken.sol";contract Tender {
-   address payable public owner;
+import "../../MyToken.sol";
+
+contract Tender {
+   address  payable public owner;
    mapping(address => uint256) users;
    mapping(uint256 => address) counter;
    int256 wad = 10 ** 18;
-   MyNFT public immutable myCoinNFT;
+   MyToken public immutable myCoinNFT;
    MyToken public immutable myCoineE;
    address public maxValue;
    uint256 public start = 0;
    uint256 public duration = 7 days;
    uint256 public count;
    bool public finish = false;    constructor(address _myCoinNFT,address _myCoineE) {
-       myCoinNFT = MyNFT(_myCoinNFT);
+       myCoinNFT = MyToken(_myCoinNFT);
        myCoineE = MyToken(_myCoineE);
        owner = payable(msg.sender);
        users[owner] = 100;
@@ -50,4 +52,4 @@ import "/home/user/newProject/myToken/script/myToken.sol";contract Tender {
        }
        finish = true;
    }
-}`
+}

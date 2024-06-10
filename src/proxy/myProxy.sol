@@ -38,7 +38,7 @@ contract BuggyProxy {
 //implementation הפונקציה ניגשת לחוזה 
 //delegatecall ומפעילה את הפונקציה 
 // ומחזירה משתנה ומאתחלת את אוקי מסוג בוליאני
-    function _deligate() private{
+    function _delegate() private{
         (bool ok) = implementation.deligatecall(msg.sender);
         require(ok,"delegatecall failed");
     }

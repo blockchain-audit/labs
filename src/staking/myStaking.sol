@@ -1,7 +1,7 @@
-/ SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MIT
 // https://solidity-by-example.org/defi/staking-rewards/
-pragma solidity ^0.8.20;
-import "../../../MyToken/new-project/src/MyToken.sol";
+pragma solidity ^0.8.24;
+import ".././MyToken.sol";
  import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 contract StakingRewards{
       IERC20 public immutable stakingToken;
