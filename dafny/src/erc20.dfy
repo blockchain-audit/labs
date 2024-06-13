@@ -23,7 +23,7 @@ class ERC20 {
     method fallback(msg: Transaction) returns (r: Result<()>)
     modifies this`balances {
         r := deposit(msg);
-    }
+    } 
 
     // allow users to deposit tokens into their account, updating their balances.
     // in dafny, the modifies clause is used to specify which state components a
@@ -68,6 +68,7 @@ class ERC20 {
     requires msg.value == 0 {  // non-payable
         r := transferFrom(msg, msg.sender, dst, wad);
     }
+
 
 
     // instead of assuming I added a dst_bal require

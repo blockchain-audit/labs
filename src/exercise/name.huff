@@ -1,0 +1,18 @@
+#define macro MAIN() = takes(0) returns(0) {
+
+0x20                                     // PUSH1      [0x20]
+0x00                                     // PUSH1      [0x00, 0x20]
+mstore                                   // MSTORE     []
+
+0x20
+0x20
+mstore
+
+0x47
+0x07536561706f7274
+mstore
+
+0x20
+0x60
+return
+}

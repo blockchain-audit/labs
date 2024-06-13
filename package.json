@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@chainlink/contracts": "^0.2.2",
+    "solc": "^0.8.25"
+  }
+}
