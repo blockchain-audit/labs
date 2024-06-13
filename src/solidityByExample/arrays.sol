@@ -1,18 +1,16 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-
-contract Array{
-      
+contract Array {
     uint256[] public arr;
-    uint256[] public arr2 = [1,2,3];
+    uint256[] public arr2 = [1, 2, 3];
     uint256[10] public arr3;
 
-    function get(uint256 i) public view returns (uint256){
+    function get(uint256 i) public view returns (uint256) {
         return arr[i];
     }
 
-    function getArr() public view returns (uint256[] memory){
+    function getArr() public view returns (uint256[] memory) {
         return arr;
     }
 
@@ -24,7 +22,7 @@ contract Array{
         arr.pop();
     }
 
-    function getLength() public view returns (uint256){
+    function getLength() public view returns (uint256) {
         return arr.length;
     }
 
@@ -35,9 +33,9 @@ contract Array{
         delete arr[index];
     }
 
-    function examples() pure external {
+    function examples() external pure {
         // create array in memory, only fixed size can be created.
         uint256[] memory a = new uint256[](1);
         delete a;
-    } 
+    }
 }
