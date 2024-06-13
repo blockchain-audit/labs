@@ -1,66 +1,12 @@
-
-
-// FUNCS :     view | pure | payable | nonpayable
-#define function testFunction(uint256, bytes32) view returns (bytes memory)
-#define function testFunction(uint256, bytes32) pure returns (bytes memory)
-#define function testFunction(uint256, bytes32) payable returns (bytes memory)
-#define function testFunction(uint256, bytes32) nonpayable returns (bytes memory)
-
-
-// EVENTS:     indexed | non-indexed
-#define event TestEvent(address indexed, uint256)
-
-
-// CONSTANTS:  bytes (32 max)  |  FREE_STORAGE_POINTER
-#define constant NUM = 0x420
-#define constant HELLO_WORLD = 0x48656c6c6f2c20576f726c6421
-#define constant FREE_STORAGE = FREE_STORAGE_POINTER()
-
-
-// ERRORS:  __ERROR push the left-padded 4 byte error selector to the stack
-#define error PanicError(uint256)
-#define error Error(string)
-#define macro PANIC() = takes (1) returns (0) {
-    __ERROR(PanicError)   // [panic_error_selector, panic_code]
-    0x00 mstore           // [panic_code]
-    0x04 mstore           // []
-    0x24 0x00 revert
-}
-#define macro REQUIRE() = takes (3) returns (0) {
-    continue jumpi        // [message_length, message]
-    __ERROR(Error)        // [error_selector, message_length, message]
-    0x00 mstore           // [message_length, message]
-    0x20 0x04 mstore      // [message_length, message]
-    0x24 mstore           // [message]
-    0x44 mstore           // []
-    0x64 0x00 revert
-    continue:
-        pop               // []
-}
-
-
-// JUMP: abstraction included into the language to make JUMPDEST
-#define macro MAIN() = takes (0) returns (0) {
-    // Store "Hello, World!" in memory
-    0x48656c6c6f2c20576f726c6421
-    0x00 mstore // ["Hello, World!"]
-    // Jump to success label, skipping the revert statement
-    success     // [success_label_pc, "Hello, World!"]
-    jump        // ["Hello, World!"]
-    // Revert if this point is reached
-    0x00 0x00 revert
-    // Labels are defined within macros or functions, and are designated
-    // by a word followed by a colon. Note that while it may appear as if
-    // labels are scoped code blocks due to the indentation, they are simply
-    // destinations to jump to in the bytecode. If operations exist below a label,
-    // they will be executed unless the program counter is altered or execution is
-    // halted by a `revert`, `return`, `stop`, or `selfdestruct` opcode.
-    success:
-        0x00 mstore
-        0x20 0x00 return
-}
-
-
+// Each time a macro is invoked, the code within it is placed at the point of invocation.^
+// it's gas efficient but makes the contract bigger.
+// 'takes' and 'returns' designate the amount of stack inputs the macro/function takes in
+// as well as the amount of stack elements the macro/function outputs.
+// MAIN ->  it's where the control flow begins, and the main fallback also
+// CONSTRUCTOR -. initialize the contract upon deployment, but if f the constructor contains a RETURN opcode,
+// the compiler will not include this bootstrap, and it will instead instantiate the contract with
+// the code returned by the constructor.
+// Macro arguments may be one of: LABEL, OPCODE, LITERAL, or a CONSTANT.
 // Define the contract's interface
 #define function addWord(uint256) pure returns (uint256)
 
@@ -95,19 +41,23 @@
 // Add a word (32 bytes) to a uint
 #define macro ADD_WORD() = takes (1) returns (1) {
     // Input Stack:          // [input_num]
+
     // Enforce that the caller is the owner. The code of the
     // `ONLY_OWNER` macro will be pasted at this invocation.
     ONLY_OWNER()
+
     // Call our helper macro that emits an event when a word is added
     // Here we pass a literal that represents how much we increment the word by.
     // NOTE: We need to duplicate the input number on our stack since
     //       emitWordAdded takes 1 stack item and returns 0
     dup1                     // [input_num, input_num]
     emitWordAdded(0x20)      // [input_num]
+
     // NOTE: 0x20 is automatically pushed to the stack, it is assumed to be a
     // literal by the compiler.
     0x20                     // [0x20, input_num]
     add                      // [0x20 + input_num]
+
     // Return stack:            [0x20 + input_num]
 }
 
@@ -115,6 +65,7 @@
     // Get the function signature from the calldata
     0x00 calldataload        // [calldata @ 0x00]
     0xE0 shr                 // [func_sig (calldata @ 0x00 >> 0xE0)]
+
     // Check if the function signature in the calldata is
     // a match to our `addWord` function definition.
     // More about the `__FUNC_SIG` builtin in the `Builtin Functions`
@@ -122,8 +73,10 @@
     __FUNC_SIG(addWord)      // [func_sig(addWord), func_sig]
     eq                       // [func_sig(addWord) == func_sig]
     add_word jumpi           // []
+
     // Revert if no function signature matched
     0x00 0x00 revert
+
     // Create a jump label
     add_word:
         // Call the `ADD_WORD` macro with the first calldata

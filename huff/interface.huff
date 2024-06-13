@@ -1,0 +1,9 @@
+// INTERFACE
+// interface can be used as arguments for the __FUNC_SIG and __EVENT_HASH builtins,
+// and to generate a Solidity Interface / Contract ABI.
+// functions can be of type view, pure, payable or nonpayable, and function interfaces
+// should only be defined for externally facing functions.
+
+#define function testFunction(uint256, bytes32) view returns (bytes memory)
+
+#define event TestEvent(address indexed, uint256)
