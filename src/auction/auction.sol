@@ -3,7 +3,7 @@
 // Code is a stripped down version of Synthetix
 pragma solidity ^0.8.24;
 
-import "../Auction/ERC721.sol";
+import "../tokens/ERC721.sol";
 
 contract Auction {
     struct Seller {

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // https://medium.com/@marketing.blockchain/how-to-create-a-multisig-wallet-in-solidity-cfb759dbdb35
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 contract Distribute {
     address[] public addresses = [

@@ -4,11 +4,11 @@
 
 pragma solidity ^0.8.20;
 
-import "../like/IERC20.sol";
+import "../interfaces/IERC20.sol";
 import "forge-std/console.sol";
 import "../audit/approve.sol";
-import "../staking/MyToken.sol";
-import "../staking/MyToken2.sol";
+import "../tokens/myToken1.sol";
+import "../tokens/myToken2.sol";
 
 contract Amm1 {
     struct tokens {

@@ -5,7 +5,7 @@
 pragma solidity ^0.8.24;
 
 // import "@hack/libs/ierc20.sol";
-import "../MyToken/MyToken.sol";
+import "../tokens/myToken.sol";
 
 contract Lending {
     struct Borrower {

@@ -6,7 +6,7 @@ pragma solidity ^0.8.24;
 import "forge-std/Test.sol";
 import "forge-std/console.sol";
 
-import "../../src/Auction/auction.sol";
+import "../../src/auction/auction.sol";
 
 contract AuctionTest is Test {
     Auction auction;

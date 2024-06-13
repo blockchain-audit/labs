@@ -1,7 +1,7 @@
 pragma solidity ^0.8.20;
 
 import "forge-std/console.sol";
-import "../like/IERC20.sol";
+import "../interfaces/IERC20.sol";
 
 contract MyToken is IERC20 {
     uint256 public totalSupply;

@@ -3,9 +3,9 @@
 // Code is a stripped down version of Synthetix
 pragma solidity ^0.8.24;
 
-import "../../src/AMM/amm1.sol";
-import "../../src/staking/MyToken.sol";
-import "../../src/staking/MyToken2.sol";
+import "../../src/amm/amm1.sol";
+import "../../src/tokens/myToken1.sol";
+import "../../src/tokens/myToken2.sol";
 import "forge-std/console.sol";
 
 contract Amm1Test is Test {

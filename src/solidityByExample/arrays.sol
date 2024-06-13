@@ -38,5 +38,6 @@ contract Array{
     function examples() pure external {
         // create array in memory, only fixed size can be created.
         uint256[] memory a = new uint256[](1);
+        delete a;
     } 
 }

@@ -3,9 +3,9 @@
 // Code is a stripped down version of Synthetix
 pragma solidity ^0.8.24;
 
-import "../../src/AMM/cpAmm.sol";
-import "../../src/staking/MyToken.sol";
-import "../../src/staking/MyToken2.sol";
+import "../../src/amm/cpAmm.sol";
+import "../../src/tokens/myToken1.sol";
+import "../../src/tokens/myToken2.sol";
 import "forge-std/console.sol";
 
 import "foundry-huff/HuffDeployer.sol";

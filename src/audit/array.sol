@@ -2,7 +2,7 @@
 pragma solidity ^0.8.18;
 
 import "forge-std/Test.sol";
-import "@hack/like/IERC20.sol";
+import "../interfaces/IERC20.sol";
 
 /*
 Name: Array Deletion Oversight: leading to data inconsistency
