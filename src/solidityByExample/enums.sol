@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
-
-contract Enums {
+    
     enum Status {
         Pending,
         Shipped,
@@ -18,4 +17,4 @@ contract Enums {
         Yellow,
         Pink
     }
-}
+
