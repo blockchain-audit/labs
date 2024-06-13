@@ -1,0 +1,19 @@
+// SPDX-License-Identifier: MIT
+
+#define macro MAIN() = takes(0) returns(0){
+
+    // [0x20] = 0x20 (size of the string)
+    0x20
+    0x20
+    mstore
+
+    // [0x47] = 0x07536561706f7274 (string "Seaport" in hex)
+    0x07536561706f7274
+    0x47
+    mstore
+
+    // Return the memory section containing the string
+    0x20
+    0x60
+    return
+}

@@ -20,3 +20,6 @@
 [submodule "lib/chainlink"]
 	path = lib/chainlink
 	url = https://github.com/smartcontractkit/chainlink
+[submodule "lib/huffc"]
+	path = lib/huffc
+	url = https://github.com/huff-language/huffc

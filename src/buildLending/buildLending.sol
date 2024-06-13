@@ -29,7 +29,7 @@ contract BuildLending{
         _;
     }
     //user
-    function deposint(uint amount) external{
+    function deposint(uint amount) pure external{
         require(amount > 0, "Amount be bigger than zero.");
         
     }
