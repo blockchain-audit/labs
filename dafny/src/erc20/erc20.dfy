@@ -1,7 +1,7 @@
 
-include "util/number.dfy"
-include "util/maps.dfy"
-include "util/tx.dfy"
+include "../util/number.dfy"
+include "../util/maps.dfy"
+include "../util/tx.dfy"
 
 
 import opened Number
@@ -14,10 +14,12 @@ class ERC20 {
     // this value is not directly used as the external representation, that is in u256
     var balances:  mapping<u160,u256>
     var allowance: mapping<u160, mapping<u160,u256>>
+    var supply: u256
 
     constructor() {
         balances := Map(map[], 0);
         allowance := Map(map[], Map(map[],0));
+        supply := 0;
     }
 
     method fallback(msg: Transaction) returns (r: Result<()>)
@@ -50,6 +52,16 @@ class ERC20 {
         if executed == Revert { return Revert; }
 
         return Ok(());
+    }
+
+    method mint(msg: Transaction, dst: u160, wad: u256)
+    requires balances.Get(dst) as nat + wad as nat <= MAX_U256
+    requires supply as nat + wad as nat <= MAX_U256
+    ensures supply as nat == old(supply) as nat + wad as nat
+    modifies this`balances, this`supply {
+        balances := balances.Set(dst, balances.Get(dst) + wad);
+        supply := supply + wad;
+
     }
 
     method approve(msg: Transaction, guy: u160, wad: u256) returns (r: Result<bool>)
@@ -117,7 +129,7 @@ class ERC20 {
             var b_base := prior.Items() - {b1,b2};
             var a_base := after.Items() - {a1,a2};
             // fixme: why assumtion here?
-            assume a_base == b_base;
+            assume {:axiom} a_base == b_base;
             // base case
             set_as_union(b1,b2);
             set_as_union(a1,a2);

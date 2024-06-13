@@ -162,7 +162,7 @@ module Number {
   // because Dafny (unlike just about every other programming
   // language) supports Euclidean division.  This operator, therefore,
   // always divides *towards* zero.
-  function Div(lhs: int, rhs: int) : int
+  function DivE(lhs: int, rhs: int) : int
     requires rhs != 0 {
     if lhs >= 0 then lhs / rhs
     else
@@ -584,12 +584,12 @@ module I256 {
   // because Dafny (unlike just about every other programming
   // language) supports Euclidean division.  This operator, therefore,
   // always divides *towards* zero.
-  function Div(lhs: i256, rhs: i256) : i256
+  function DivE(lhs: i256, rhs: i256) : i256
     // Cannot divide by zero!
     requires rhs != 0
     // Range restriction to prevent overflow
     requires (rhs != -1 || lhs != (-TWO_255 as i256)) {
-    Number.Div(lhs as int, rhs as int) as i256
+    Number.DivE(lhs as int, rhs as int) as i256
   }
 
   // This provides a non-Euclidean Remainder operator and is necessary
