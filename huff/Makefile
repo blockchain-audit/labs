@@ -1,0 +1,10 @@
+
+
+deploy:
+	cast send \
+		--private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 \
+	 	--rpc-url http://localhost:8545 \
+		--create 6080604052348015600e575f80fd5b50603e80601a5f395ff3fe60806040525f80fdfea2646970667358221220c246ec79df8af9843d92e6f326ebfe90f11eef876690cc57181c023409a32bb964736f6c63430008150033
+
+test:
+	huffc tests.huff test

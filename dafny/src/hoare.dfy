@@ -25,9 +25,9 @@ ensures  29 > x' >= 20 {
 }
 
 method hoare1b(x: int, y: int) returns (x': int, y': int)
-requires 21 > x >= 12 
+requires 21 > x >= 12
 requires y > 32
-ensures  29 > x' >= 20 
+ensures  29 > x' >= 20
 ensures  if x' > 21 then y' > 33 else y' > 40
 ensures  y' > 44 {
     x' := 20;
@@ -139,7 +139,7 @@ ensures y <= x {
 
 // { x == 3 } x == x + 1 { y == 4 } -> not hold
 // adding y := 4 holds
-method hoare24b(x: int) returns (y: int) 
+method hoare24b(x: int) returns (y: int)
 requires x == 3
 ensures  y == 4 {
     var x' := x + 1;
@@ -147,7 +147,7 @@ ensures  y == 4 {
 }
 
 // added y == 4 to make it hold
-method hoare24b2(y: int) 
+method hoare24b2(y: int)
 requires y == 4 {
     var x := 3;
     x := x + 1;

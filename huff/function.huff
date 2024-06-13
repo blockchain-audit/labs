@@ -1,0 +1,69 @@
+// FUNCTIONS
+// Instead of the code being inserted at each invocation, the compiler moves the code to the end of
+// the runtime bytecode, and a jump to and from that code is inserted at the points of invocation instead.
+// Functions can accept arguments to be "called" inside the macro or passed as a reference.
+// Function arguments may be one of: LABEL, OPCODE, LITERAL, or a CONSTANT.
+
+#define macro MUL_DIV_DOWN_WRAPPER() = takes (0) returns (0) {
+    0x44 calldataload // [denominator]
+    0x24 calldataload // [y, denominator]
+    0x04 calldataload // [x, y, denominator]
+
+    // Instead of the function's code being pasted at this invocation, it is put
+    // at the end of the contract's runtime bytecode and a jump to the function's
+    // code as well as a jumpdest to return to is inserted here.
+    //
+    // The compiler looks at the amount of stack inputs the function takes (N) and
+    // holds on to an array of N SWAP opcodes in descending order from
+    // SWAP1 (0x90) + N - 1 -> SWAP1 (0x90)
+    //
+    // For this function invocation, we would need three swaps starting from swap3
+    // and going to swap1. The return jumpdest PC must be below the function's
+    // stack inputs, and the inputs still have to be in order.
+    //
+    // [return_pc, x, y, denominator] (Starting stack state)
+    // [denominator, x, y, return_pc] - swap3
+    // [y, x, denominator, return_pc] - swap2
+    // [x, y, denominator, return_pc] - swap1
+    //
+    // After this, the compiler inserts a jump to the jumpdest inserted at the
+    // start of the function's code as well as a jumpdest to return to after
+    // the function is finished executing.
+    //
+    // Code inserted when a function is invoked:
+    // PUSH2 return_pc
+    // <num_inputs swap ops>
+    // PUSH2 func_start_pc
+    // JUMP
+    // JUMPDEST <- this is the return_pc
+    MUL_DIV_DOWN(err) // [result]
+
+    // Return result
+    0x00 mstore
+    0x20 0x00 return
+
+    err:
+        0x00 0x00 revert
+}
+
+#define fn MUL_DIV_DOWN(err) = takes (3) returns (1) {
+    // A jumpdest opcode is inserted here by the compiler
+    // Starting stack: [x, y, denominator, return_pc]
+
+    // function code ...
+
+    // Because the compiler knows how many stack items the function returns (N),
+    // it inserts N stack swaps in ascending order from
+    // SWAP1 (0x90) -> SWAP1 (0x90) + N - 1 in order to move the return_pc
+    // back to the top of the stack so that it can be consumed by a JUMP
+    //
+    // [result, return_pc] (Starting stack state)
+    // [return_pc, result] - swap1
+    //
+    // Final function code:
+    // 👇 func_start_pc
+    // JUMPDEST           [x, y, denominator, return_pc]
+    // function code ...  [result, return_pc]
+    // SWAP1              [return_pc, result]
+    // JUMP               [result]
+}

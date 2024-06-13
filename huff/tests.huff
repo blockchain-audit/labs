@@ -1,0 +1,38 @@
+// The compiler includes a simple testing framework for assertions and gas profiling
+// macros/functions. huff-rs' test suite is minimal and not a replacement for foundry-huff.
+// For production contracts, use both foundry and Huff tests. For learning, Huff tests
+// provide a lightweight option for testing contract logic.
+//
+// Tests are run via the CLI's test subcommand. See CLI Resources for more details.
+//
+// #Decorators
+// Modify the transaction environment for each test with decorators. They sit directly
+// above tests, formatted as #[flag_a(inputs...), flag_b(inputs...)].
+//
+// Available decorators include:
+//
+// calldata - Sets the calldata for the transaction environment. Accepts a single string
+// of calldata bytes.
+//
+// value - Sets the callvalue for the transaction environment. Accepts a single literal.
+
+#include "demos/error_lib.huff"
+
+
+#define macro MAIN() = takes (0) returns (0) {
+    0x48656c6c6f2c20776f726c6421 0x00 mstore // Store "Hello, World!"
+    0x1a 0x00 return // Return 26 bytes starting from memory pointer 0.
+}
+
+#define macro ADD_TWO() = takes (2) returns (1) {
+    // Input Stack:  [a, b]
+    add           // [a + b]
+    // Return Stack: [a + b]
+}
+
+#[calldata("0x0000000000000000000000000000000000000000000000000000000000000001"), value(0x01)]
+#define test MY_TEST() = {
+    0x00 calldataload   // [0x01]
+    callvalue           // [0x01, 0x01]
+    eq ASSERT()
+}

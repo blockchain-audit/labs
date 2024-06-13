@@ -18,14 +18,15 @@ ensures Fun() == 3 {
     var a: bool;
     a := true;
 
+    var j1: array<int>;
+    j1 := new int[3][1,2,3];
+
     // implicity
     var b := 3;
     var c := '2';
     var d := Fun();
+    var j0 := [1, 3, 4];
     assert Fun() == 3;
-
-
-    var j := [1, 3, 4];
 }
 
 

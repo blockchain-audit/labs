@@ -73,8 +73,8 @@ method membership() {
     assert 5 in {1,2,3,4,5};
     assert 1 in {1,2,3,4,5};
     assert 2 !in {1,3,4,5};
-    assert forall x: int :: x !in {};
-    assert exists x: int :: x !in {};
+    assert forall x: int {:trigger} :: x !in {};
+    assert exists x: int {:trigger} :: x !in {};
 }
 
 
@@ -96,10 +96,10 @@ method lenght() {
 // It usually has the same type as the resulting set, but it does not need to.
 
 method comprehension() {
-    assert (set x | x in {0,1,2} :: x + 0) == {0,1,2};
-    assert (set x | x in {0,1,2,3,4,5} && x < 3) == {0,1,2};
-    assert (set x | x in {0,1,2,3,4,5} && x < 2) == {0,1};
-    assert (set x | x in {0,1,2,3,4,5} && x > 9) == {};
+    assert (set x {:trigger} | x in {0,1,2} :: x + 0) == {0,1,2};
+    assert (set x {:trigger} | x in {0,1,2,3,4,5} && x < 3) == {0,1,2};
+    assert (set x {:trigger} | x in {0,1,2,3,4,5} && x < 2) == {0,1};
+    assert (set x {:trigger} | x in {0,1,2,3,4,5} && x > 9) == {};
     // assert (set x | x in {0,1,2} :: x * 1) == {0,1,2}; // potential infinite set
 }
 

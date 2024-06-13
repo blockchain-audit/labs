@@ -1,0 +1,14 @@
+// CONSTANTS
+// constants are called within the contract at compile time
+// can either be bytes (32 max) or a FREE_STORAGE_POINTER, that represent an
+// unused storage slot.
+// we use [ ] to push a constant to the stack.
+
+#define constant NUM = 0x420
+#define constant HELLO_WORLD = 0x48656c6c6f2c20576f726c6421
+#define constant FREE_STORAGE = FREE_STORAGE_POINTER()
+
+
+#define macro MAIN() = takes (0) returns (0) {
+    [NUM]    // [0x420] - the constant's value is pushed to the stack
+}

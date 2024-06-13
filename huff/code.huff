@@ -1,0 +1,7 @@
+// CODE TABLES
+
+// Code Tables contain raw bytecode. The compiler places the code within them at the end of
+// the runtime bytecode, assuming they are referenced somewhere within the contract.
+#define table CODE_TABLE {
+    0x604260005260206000F3
+}
