@@ -3,7 +3,9 @@ pragma solidity >=0.5.11;
 
 import "@labs/tokens/Erc20.sol";
 import "./Aave.sol";
-import "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
+import "./interfaces/Ipool.sol";
+import "src/lending/newLending/interfaces/IWETHGateway.sol";
+import "lib/chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 
 
 contract Lending {
@@ -110,7 +112,7 @@ contract Lending {
     }
 
     function getPriceFTMMainnet()public{
-        AggregatorV3Interface internal constant priceFeed =
+        AggregatorV3Interface priceFeed =
             AggregatorV3Interface(0xf4766552D15AE4d256Ad41B6cf2933482B0680dc);
             (,int price,,,) = priceFeed.latestRoundData();
             return uint(price * 10 ** 10);
