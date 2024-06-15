@@ -3,9 +3,8 @@ pragma solidity >=0.5.11;
 
 import "@labs/tokens/Erc20.sol";
 import "./Aave.sol";
-import "./interfaces/Ipool.sol";
-import "./interfaces/IWETHGateway.sol";
-import "../../../../lib/chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
+import "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
+
 
 contract Lending {
     uint256 public constant WAD = 1e18;
@@ -26,72 +25,12 @@ contract Lending {
 
     //sum of eth that user put to coraterall
     uint256 public totalCollateral;
-    // SPDX-License-Identifier: MIT
-    // pragma solidity >=0.5.11;
-
-    // import "openzeppelin-tokens/ERC20/IERC20.sol";
-    // import "./interfaces/Ipool.sol";
-    // import "./interfaces/IWETHGateway.sol";
-    // import "./Lending.sol";
-
-    // contract Aave {
-    //     IERC20 public constant dai = IERC20(0x77FDe93fEe5fe272dC17d799cb61447431E6Eba2);
-    //     Ipool public constant aave = Ipool(0x685b86a6659a1CbcfE168304386e1b54C543Ce16);
-    //     IWETHGateway public constant fantomGateway = IWETHGateway(0xd2B0C9778d088Fc79C28Da719bC02158E64796bD);
-
-    //     function depositDaiToAave(uint256 amount) public {
-    //         // dai.approve(address(aave), amount);
-    //         aave.deposit(address(dai), amount, msg.sender, 0);
-    //     }
-
-    //     function withdrawDaiFromAave(uint256 amount) external {
-    //         aave.withdraw(address(dai), amount, msg.sender);
-    //     }
-
-    //     function depositFTMToAave(uint amount) external {
-    //         fantomGateway.depositETH{value: amount}(address(aave), msg.sender, 0);
-    //     }
-
-    //     function withdrawFTMFromAave(uint256 amount) external {
-    //         fantomGateway.withdrawETH(address(aave), amount, msg.sender);
-    //     }
-    // }
 
     //value of bond compared to eth - all bond = 0.02 eth
     uint256 public baseRate = 20000000000000000;
 
     // ?
     uint256 fixedAnnuBorrowrate = 300000000000000000;
-    // SPDX-License-Identifier: MIT
-    // pragma solidity >=0.5.11;
-
-    // import "openzeppelin-tokens/ERC20/IERC20.sol";
-    // import "./interfaces/Ipool.sol";
-    // import "./interfaces/IWETHGateway.sol";
-    // import "./Lending.sol";
-
-    // contract Aave {
-    //     IERC20 public constant dai = IERC20(0x77FDe93fEe5fe272dC17d799cb61447431E6Eba2);
-    //     Ipool public constant aave = Ipool(0x685b86a6659a1CbcfE168304386e1b54C543Ce16);
-    //     IWETHGateway public constant fantomGateway = IWETHGateway(0xd2B0C9778d088Fc79C28Da719bC02158E64796bD);
-
-    //     function depositDaiToAave(uint256 amount) public {
-    //         // dai.approve(address(aave), amount);
-    //         aave.deposit(address(dai), amount, msg.sender, 0);
-    //     }
-
-    //     function withdrawDaiFromAave(uint256 amount) external {
-    //         aave.withdraw(address(dai), amount, msg.sender);
-    //     }
-
-    //     function depositFTMToAave(uint amount) external {
-    //         fantomGateway.depositETH{value: amount}(address(aave), msg.sender, 0);
-    //     }
-
-    //     function withdrawFTMFromAave(uint256 amount) external {
-    //         fantomGateway.withdrawETH(address(aave), amount, msg.sender);
-    //     }
-    // }
 
     Erc20 BondToken;
     // Aave public aave;
@@ -139,39 +78,41 @@ contract Lending {
         aave.deposit(address(dai), amount, address(this), 0);
     }
 
-    function withdrawDaiLiquiduty(uint256 amount) external {
-        require(amount <= BondToken.balanceOf(msg.sender), "not enough bonds! ");
-        uint256 countDai = amount * ratioBetweenDaiAndBond() / WAD;
-        BondToken.burn(msg.sender, amount);
+    function withdrawDaiLiquiduty(uint amount) external{
+        require(amount <= BondToken.balanceOf(msg.sender) ,"not enough bonds! ");
+        uint countDai = amount * ratioBetweenDaiAndBond() / WAD;
+        bondToken.burn(msg.sender , amount);
         totalDeposit -= countDai;
         aave.withdraw(address(dai), amount, msg.sender);
     }
 
-    function borrow(uint256 amount) external {
-        require(usersCollateral[msg.sender] >= minCollateralFromAmount(amount), "not enough collateral");
-        usersBorrowed[msg.sender] += amount;
-        totalBorrowed += amount;
+    function borrow(uint amount) external {
+        require(userCollateral[msg.sender] >= minCollateralFromAmount(amount),"not enough collateral");
+        usersBorrowed[msg.sender]+=amount;
+        totalBorrowed +=amount;
         aave.withdraw(address(dai), amount, msg.sender);
     }
 
     function repay(uint256 amount) external {}
 
-    function ratioBetweenDaiAndBond() public returns (uint256) {
-        if (BondToken.totalSupply() == 0) {
+    function ratioBetweenDaiAndBond(uint amount) public{
+        if(BondToken.totalSupply() == 0){
             return WAD;
         }
         uint256 countDai = totalDeposit + totalReserve;
         return countDai * WAD / BondToken.totalSupply();
     }
 
-    function minCollateralFromAmount(uint256 amount) public returns (uint256) {
+
+    function minCollateralFromAmount(uint amount) public {
         // amount <= collateral * 4/5
-        return ((amount / (maxLTV / 5) * WAD / uint256(getPriceFTMMainnet())));
+        return (amount / (maxLTV / 5) * WAD / uint(getPriceFTMMainnet()));
     }
 
-    function getPriceFTMMainnet() public returns (uint256) {
-        AggregatorV3Interface priceFeed = AggregatorV3Interface(0xf4766552D15AE4d256Ad41B6cf2933482B0680dc);
-        (, int256 price,,,) = priceFeed.latestRoundData();
-        return uint256(price * 10 ** 10);
+    function getPriceFTMMainnet()public{
+        AggregatorV3Interface internal constant priceFeed =
+            AggregatorV3Interface(0xf4766552D15AE4d256Ad41B6cf2933482B0680dc);
+            (,int price,,,) = priceFeed.latestRoundData();
+            return uint(price * 10 ** 10);
     }
 }

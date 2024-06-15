@@ -22,12 +22,12 @@
 // //         uint16 referralCode
 // //         ) external payable;
 
-// //     function withdrawETH(
-// //         address lendingPool,
-// //          uint256 amount,
-// //          address onBehalfOf
-// //          ) external;
-// // }
+//     function withdrawETH(
+//         address lendingPool,
+//          uint256 amount, 
+//          address onBehalfOf
+//          ) external;
+// }
 
 // interface IUniswapRouter is ISwapRouter {
 //     function refundETH() external payable;
@@ -215,18 +215,18 @@
 //         return getExp(num, uRatio);
 //     }
 
-//     function _borrowRate() public view returns (uint256) {
-//         uint256 uRatio = _utilizationRatio();
-//         uint256 interestMul = _interestMultiplier();
-//         uint256 product = mulExp(uRatio, interestMul);
-//         return product.add(baseRate);
-//     }
-// //
-//     function _depositRate() public view returns (uint256) {
-//         uint256 uRatio = _utilizationRatio();
-//         uint256 bRate = _borrowRate();
-//         return mulExp(uRatio, bRate);
-//     }
+    function _borrowRate() public view returns (uint256) {
+        uint256 uRatio = _utilizationRatio();
+        uint256 interestMul = _interestMultiplier();
+        uint256 product = mulExp(uRatio, interestMul);
+        return product.add(baseRate);
+    }
+
+    function _depositRate() public view returns (uint256) {
+        uint256 uRatio = _utilizationRatio();
+        uint256 bRate = _borrowRate();
+        return mulExp(uRatio, bRate);
+    }
 
 //     function _convertEthToDai(uint256 _amount) internal returns (uint256) {
 //         require(_amount > 0, "Must pass non 0 amount");
@@ -251,5 +251,5 @@
 
 //     // receive() external payable {}
 
-//     // fallback() external payable {}
-// }
+    // fallback() external payable {}
+}
