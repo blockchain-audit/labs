@@ -44,7 +44,7 @@ contract Amm {
         if (totalLiquidity == 0) {
             liquidity[msg.sender] = (amountA + amountB) / 2;
         } else {
-            require(balanceA * wad / balanceB == amountA * wad / amountB,"not");
+            require(balanceA * wad / balanceB == amountA * wad / amountB, "not");
             // require(amountA * getValueOfAPer1Token() / wad == amountB * getValueOfBPer1Token() / wad, "not equals value");
             liquidity[msg.sender] += amountA * getValueOfAPer1Token() / wad;
         }
@@ -56,8 +56,8 @@ contract Amm {
     }
 
     function removeAllLiquidity() public {
-        uint256 countA = liquidity[msg.sender] *wad/ getValueOfAPer1Token();
-        uint256 countB = liquidity[msg.sender] *wad/ getValueOfBPer1Token();
+        uint256 countA = liquidity[msg.sender] * wad / getValueOfAPer1Token();
+        uint256 countB = liquidity[msg.sender] * wad / getValueOfBPer1Token();
         tokenA.transfer(msg.sender, countA);
         balanceA -= countA;
         tokenB.transfer(msg.sender, countB);

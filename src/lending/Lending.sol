@@ -19,7 +19,7 @@ contract Lending {
     // IERC20 Dai;
     MyToken Dai;
     uint256 minRatio;
-    uint constant wad = 10 ** 18;
+    uint256 constant wad = 10 ** 18;
 
     constructor(address bondsToken, uint256 _minRatio) public {
         owner = msg.sender;
@@ -55,8 +55,8 @@ contract Lending {
     }
 
     function returnBorrow() public {
-        uint countEth = borrowers[msg.sender].eth;
-        uint countDai = borrowers[msg.sender].dai;
+        uint256 countEth = borrowers[msg.sender].eth;
+        uint256 countDai = borrowers[msg.sender].dai;
         Dai.transferFrom(msg.sender, address(this), countDai);
         payable(msg.sender).transfer(countEth);
     }
@@ -64,40 +64,36 @@ contract Lending {
     function discharge(address to) public isOwner {
         require(borrowers[to].eth * getETHPrice() / wad < borrowers[msg.sender].dai * minRatio / wad);
 
-        uint amountEth = borrowers[to].eth;
-        uint valueEth = amountEth * getETHPrice() / wad;
+        uint256 amountEth = borrowers[to].eth;
+        uint256 valueEth = amountEth * getETHPrice() / wad;
 
-        uint amountRatio = valueEth - borrowers[msg.sender].dai;
-        uint amountRatioEth = amountRatio * wad /getETHPrice();
+        uint256 amountRatio = valueEth - borrowers[msg.sender].dai;
+        uint256 amountRatioEth = amountRatio * wad / getETHPrice();
 
-        uint amountFee = amountRatio / 2;
-        uint amountFeeEth = amountFee * wad / getETHPrice();
+        uint256 amountFee = amountRatio / 2;
+        uint256 amountFeeEth = amountFee * wad / getETHPrice();
 
         borrowers[to].eth = amountRatioEth - amountFeeEth;
         borrowers[msg.sender].dai = 0;
 
         swapEthToDai(amountEth - amountFeeEth);
-        
     }
 
     function getETHPrice() public view returns (uint256) {
         AggregatorV3Interface priceFeed = AggregatorV3Interface(0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419);
         (uint80 roundID, int256 price, uint256 startedAt, uint256 timeStamp, uint80 answeredInRound) =
             priceFeed.latestRoundData();
-        return (uint(price) * wad / 100000000) ;
+        return (uint256(price) * wad / 100000000);
     }
 
-
-    function swapEthToDai(uint amountETH)private{
-
+    function swapEthToDai(uint256 amountETH) private {
         //mock swap eth to dai
-        uint amountDai = getETHPrice() * amountETH / wad ;
+        uint256 amountDai = getETHPrice() * amountETH / wad;
 
-        uint gas = amountDai * 995 / 1000;
+        uint256 gas = amountDai * 995 / 1000;
 
         Dai.mint(amountDai - gas);
 
         payable(address(0)).transfer(amountETH);
-        
     }
 }

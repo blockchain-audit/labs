@@ -9,7 +9,7 @@ contract TestAmm is Test {
     MyToken tokenA;
     MyToken tokenB;
     Amm amm;
-    uint256 wad = 1e18 ;
+    uint256 wad = 1e18;
     address user1;
     address user2;
 
@@ -48,7 +48,6 @@ contract TestAmm is Test {
     //     amm.removeAllLiquidity();
     //     assertEq(amm.totalLiquidity(), 0);
     // }
-
 
     // function test() public {
     //     add(10 * wad, 5 * wad);

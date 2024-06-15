@@ -2,8 +2,8 @@
 pragma solidity >=0.5.11;
 
 import "openzeppelin-tokens/ERC20/IERC20.sol";
-import "./Interfaces/Ipool.sol";
-import "./Interfaces/IWETHGateway.sol";
+import "./interfaces/Ipool.sol";
+import "./interfaces/IWETHGateway.sol";
 import "./Lending.sol";
 
 contract Aave {
@@ -20,7 +20,7 @@ contract Aave {
         aave.withdraw(address(dai), amount, msg.sender);
     }
 
-    function depositFTMToAave(uint amount) external {
+    function depositFTMToAave(uint256 amount) external {
         fantomGateway.depositETH{value: amount}(address(aave), msg.sender, 0);
     }
 
