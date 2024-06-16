@@ -78,7 +78,7 @@ contract Enum {
 
     error big20(uint x);
 
-    function funError(uint x) public view{
+    function funError(uint x) public pure{
         if(x == 0){
             revert("zero");
         }
