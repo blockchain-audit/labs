@@ -15,7 +15,7 @@ contract TestStaking is Test {
     }
 
     function testStake() public {
-        uint256 totalStaking = staking.totalStaking();
+        // uint256 totalStaking = staking.totalStaking();
         uint256 wad = 10 ** 18;
         myToken.mint(10 * wad);
         myToken.approve(address(staking), 2 * wad);
@@ -24,7 +24,7 @@ contract TestStaking is Test {
     }
 
     function testWithdraw() public {
-        uint256 totalStaking = myToken.balanceOf(address(staking));
+        // uint256 totalStaking = myToken.balanceOf(address(staking));
         uint256 wad = 10 ** 18;
         myToken.mint(2 * wad);
         myToken.approve(address(staking), 2 * wad);
@@ -37,7 +37,7 @@ contract TestStaking is Test {
     }
 
     function testWithdrawMoreOneStaker() public {
-        uint256 totalStaking = myToken.balanceOf(address(staking));
+        // uint256 totalStaking = myToken.balanceOf(address(staking));
         uint256 wad = 10 ** 18;
         //staker 1 : stake 2 tokens
         myToken.mint(2 * wad);
@@ -71,7 +71,7 @@ contract TestStaking is Test {
     }
 
     function testWithdrawLessSevenDays() public {
-        uint256 totalStaking = myToken.balanceOf(address(staking));
+        // uint256 totalStaking = myToken.balanceOf(address(staking));
         uint256 wad = 10 ** 18;
         myToken.mint(2 * wad);
         myToken.approve(address(staking), 2 * wad);

@@ -83,13 +83,13 @@ contract Lending {
     function withdrawDaiLiquiduty(uint amount) external{
         require(amount <= BondToken.balanceOf(msg.sender) ,"not enough bonds! ");
         uint countDai = amount * ratioBetweenDaiAndBond() / WAD;
-        bondToken.burn(msg.sender , amount);
+        BondToken.burn(msg.sender , amount);
         totalDeposit -= countDai;
         aave.withdraw(address(dai), amount, msg.sender);
     }
 
     function borrow(uint amount) external {
-        require(userCollateral[msg.sender] >= minCollateralFromAmount(amount),"not enough collateral");
+        require(usersCollateral[msg.sender] >= minCollateralFromAmount(amount),"not enough collateral");
         usersBorrowed[msg.sender]+=amount;
         totalBorrowed +=amount;
         aave.withdraw(address(dai), amount, msg.sender);
@@ -97,7 +97,7 @@ contract Lending {
 
     function repay(uint256 amount) external {}
 
-    function ratioBetweenDaiAndBond(uint amount) public{
+    function ratioBetweenDaiAndBond() public view returns(uint){
         if(BondToken.totalSupply() == 0){
             return WAD;
         }
@@ -106,12 +106,12 @@ contract Lending {
     }
 
 
-    function minCollateralFromAmount(uint amount) public {
+    function minCollateralFromAmount(uint amount) public view returns(uint){
         // amount <= collateral * 4/5
         return (amount / (maxLTV / 5) * WAD / uint(getPriceFTMMainnet()));
     }
 
-    function getPriceFTMMainnet()public{
+    function getPriceFTMMainnet()public view returns (uint){
         AggregatorV3Interface priceFeed =
             AggregatorV3Interface(0xf4766552D15AE4d256Ad41B6cf2933482B0680dc);
             (,int price,,,) = priceFeed.latestRoundData();

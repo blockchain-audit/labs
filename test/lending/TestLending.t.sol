@@ -15,10 +15,10 @@ contract TestLending {
     function setUp() public {
         // dai = new MyToken();
         bonds = new MyToken();
-        lending = new Lending(address(bonds), 1500000000000000000);
+        lending = new Lending(1500000000000000000);
     }
 
-    function test() public {
+    function test() view public {
         uint256 s = lending.getETHPrice();
         console.log(s);
     }

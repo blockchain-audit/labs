@@ -1,5 +1,5 @@
-// // //SPDX-License-Identifier: Unlicense
-// // pragma solidity ^0.8.7;
+//SPDX-License-Identifier: Unlicense
+pragma solidity >=0.5.11;
 
 // // import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 // // import "@openzeppelin/contracts/token/ERC20/IERC20.sol";

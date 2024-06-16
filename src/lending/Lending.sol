@@ -21,12 +21,12 @@ contract Lending {
     uint256 minRatio;
     uint256 constant wad = 10 ** 18;
 
-    constructor(address bondsToken, uint256 _minRatio) public {
+    constructor(uint256 _minRatio) {
         owner = msg.sender;
         bonds = new MyToken();
         // Dai = IERC20(0x6B175474E89094C44Da98b954EedeAC495271d0F);
         Dai = new MyToken();
-        minRatio = minRatio;
+        minRatio = _minRatio;
     }
 
     modifier isOwner() {
@@ -81,7 +81,7 @@ contract Lending {
 
     function getETHPrice() public view returns (uint256) {
         AggregatorV3Interface priceFeed = AggregatorV3Interface(0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419);
-        (uint80 roundID, int256 price, uint256 startedAt, uint256 timeStamp, uint80 answeredInRound) =
+        (, int256 price, , , ) =
             priceFeed.latestRoundData();
         return (uint256(price) * wad / 100000000);
     }

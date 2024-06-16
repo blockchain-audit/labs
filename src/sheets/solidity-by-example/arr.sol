@@ -17,7 +17,7 @@ contract Hello {
         console.log(arr[4]);
     }
 
-    function run() public {
+    function run() public  view {
         console.log("tuiuhjm");
     }
     // function addTwo(uint256 x, uint256 y) public pure returns (uint256) {

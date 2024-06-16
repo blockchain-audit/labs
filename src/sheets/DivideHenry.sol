@@ -44,4 +44,5 @@ contract Distribute {
             payable(addresses[i]).transfer(share);
         }
     }
+    receive() external payable{} 
 }

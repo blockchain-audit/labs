@@ -5,6 +5,8 @@ import "openzeppelin-tokens/ERC20/ERC20.sol";
 
 contract ERC4626 is ERC20{
 
+        mapping(address account => mapping(address spender => uint256)) private _allowances;
+
     event Deposit(address indexed caller , address indexed owner, uint assets,uint shares);
 
     event Withdraw(
@@ -88,7 +90,7 @@ contract ERC4626 is ERC20{
         return asset.totalSupply();
     }
 
-    function convertAssetToShares(uint amountAsset) public returns(uint){
+    function convertAssetToShares(uint amountAsset) public view returns(uint){
         if(totalSupply() == 0){
             return amountAsset;
         }
@@ -102,11 +104,11 @@ contract ERC4626 is ERC20{
         return amountShares * (totalAsset()/totalSupply());
     }
 
-    function previewDepositByAsset(uint amountAsset) public returns(uint){
+    function previewDepositByAsset(uint amountAsset) public view returns(uint){
         return convertAssetToShares(amountAsset);
     }
 
-    function previewDepositByShares(uint amountShares) public returns(uint){
+    function previewDepositByShares(uint amountShares) public view returns(uint){
          if(totalSupply() == 0){
             return amountShares;
         }
@@ -114,7 +116,7 @@ contract ERC4626 is ERC20{
         return mod >0 ?1:0 + amountShares * totalAsset() / totalSupply();
     }
 
-    function previewWithdrawByAsset(uint amountAsset)public returns(uint){
+    function previewWithdrawByAsset(uint amountAsset)public view returns(uint){
           if(totalSupply() == 0){
             return amountAsset;
         }
@@ -122,15 +124,15 @@ contract ERC4626 is ERC20{
         return mod >0 ?1:0 + amountAsset * totalSupply() / totalAsset();
     }
 
-    function previewWithdrawByShares(uint amountShares) public returns(uint){
+    function previewWithdrawByShares(uint amountShares) public view returns(uint){
         return convertSharesToAsset(amountShares);
     }
 
-    function maxWithdrawByAsset(address owner) public returns(uint){
+    function maxWithdrawByAsset(address owner) public view returns(uint){
         return convertSharesToAsset(balanceOf(owner));
     }
 
-    function maxWithdrawByShares(address owner) public returns(uint){
+    function maxWithdrawByShares(address owner) public view returns(uint){
         return balanceOf(owner);
     }
 

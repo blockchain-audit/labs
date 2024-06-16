@@ -27,7 +27,7 @@ contract Enum {
 
     function run() public {
         console.log(s.text);
-        eat eats = eat.chocolate;
+        // eat eats = eat.chocolate;
         console.log(uint256(eat.cake));
         todo memory t1 = todo({text: "aaaaaaaaaa", isDo: false});
         todo memory t2 = todo({text: "bbbbbbbbbb", isDo: false});
@@ -49,6 +49,7 @@ contract Enum {
 
         // fun3();
         viewFun();
+        funError(50);
     }
 
     function fun() public pure returns (uint256, bool) {
@@ -66,7 +67,7 @@ contract Enum {
         y = true;
     }
 
-    function fun2(uint256 x, bool y) public {
+    function fun2(uint256 x, bool y) public view{
         console.log(x, y);
     }
 
@@ -74,4 +75,19 @@ contract Enum {
     //     mapping(uint256 => uint256) storage map;
     //     console.log(map[0]);
     // }
+
+    error big20(uint x);
+
+    function funError(uint x) public view{
+        if(x == 0){
+            revert("zero");
+        }
+        require(x > 10 ,"small 10");
+
+        assert(x>10);
+
+        revert big20(x);
+
+        
+    }
 }
