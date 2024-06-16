@@ -4,7 +4,6 @@ pragma solidity ^0.8.24;
 import "./enums.sol";
 
 contract Enum {
-
     // Default value is the first element listed in
     // definition of the type, in this case 'Pending'
     Status public status;
@@ -12,6 +11,7 @@ contract Enum {
     function get() public view returns (Status) {
         return status;
     }
+
     function set(Status _status) public {
         status = _status;
     }
@@ -22,7 +22,7 @@ contract Enum {
     }
 
     // dekete reset the enum to be the first
-    function reset () public {
+    function reset() public {
         delete status;
     }
 }
