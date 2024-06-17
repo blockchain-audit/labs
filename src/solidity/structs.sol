@@ -8,7 +8,7 @@ contract Todos{
         bool completed;
     }
 
-    Todo public todos[];
+    Todo[] public todos;
 
     function create(string _text) public
     {

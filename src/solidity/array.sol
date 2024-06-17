@@ -2,9 +2,9 @@
 pragma solidity ^0.8.24;
 
 contract Array {
-    uint256[] arr1 public;
-    uint256[] arr2 public = [1,2,3];
-    uint256[10] arr3 public;
+    uint256[] public arr1 ;
+    uint256[] public arr2 = [1,2,3];
+    uint256[10] public arr3;
 
     function get(uint256 i) public view returns (uint256)
     {
