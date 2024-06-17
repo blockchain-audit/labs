@@ -7,6 +7,8 @@ import "../../src/amm/amm1.sol";
 import "../../src/tokens/myToken1.sol";
 import "../../src/tokens/myToken2.sol";
 import "forge-std/console.sol";
+import "forge-std/Test.sol";
+
 
 contract Amm1Test is Test {
     MyToken x;

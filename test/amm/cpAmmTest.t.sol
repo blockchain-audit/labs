@@ -7,7 +7,6 @@ import "../../src/amm/cpAmm.sol";
 import "../../src/tokens/myToken1.sol";
 import "../../src/tokens/myToken2.sol";
 import "forge-std/console.sol";
-
 import "foundry-huff/HuffDeployer.sol";
 import "forge-std/Test.sol";
 

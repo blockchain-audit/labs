@@ -6,7 +6,6 @@ pragma solidity ^0.8.20;
 
 import "../interfaces/IERC20.sol";
 import "forge-std/console.sol";
-import "../audit/approve.sol";
 
 contract CpAmm {
     IERC20 public immutable tokenA;

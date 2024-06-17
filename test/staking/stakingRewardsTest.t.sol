@@ -5,7 +5,6 @@ import "forge-std/console.sol";
 import "foundry-huff/HuffDeployer.sol";
 import "forge-std/Test.sol";
 import "../../src/staking/stakingRewards.sol";
-import "../../src/audit/approve.sol";
 import "../../src/tokens/myToken1.sol";
 
 contract StakingRewardsTest is Test {

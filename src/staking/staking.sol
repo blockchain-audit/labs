@@ -2,7 +2,6 @@
 pragma solidity ^0.8.24;
 
 import "forge-std/console.sol";
-import "../audit/approve.sol";
 import "../tokens/myToken1.sol";
 
 contract Staking {
