@@ -1,0 +1,30 @@
+checked by Itty Fishman
+
+in the contract :
+The code is structured very nicely and clearly
+
+In the removeBid function, in my opinion, the amount should be reset manually so as not to cause disruption
+
+and when the endAuction function is activated?
+
+test:
+
+ testAddBid()  pass
+
+ testNotAddBid() pass
+
+  testAdd2Bidds() pass 
+
+  testNotAdd2Bidds() pass
+
+  testRemoveBid() pass
+
+  testNotRemoveBid() pass
+
+  testEndAuction() pass
+
+  testEndAuctionNoBidds() pass
+
+  testNotEndAuction() pass
+
+  testEndAuctionNotExist() pass---

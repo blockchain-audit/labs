@@ -16,7 +16,6 @@ ensures  r == 35 {
     m + 3
 }
 
-
 method get(m:set<(u160,u256)>) returns (r: (nat,nat))
 requires m == {(1,2)}
 ensures r == (1,2) {
