@@ -2,7 +2,6 @@
 pragma solidity ^0.8.24;
 
 contract SimpleStorage {
-
     uint256 public num;
 
     function set(uint256 _num) public {
@@ -13,4 +12,3 @@ contract SimpleStorage {
         return num;
     }
 }
-
