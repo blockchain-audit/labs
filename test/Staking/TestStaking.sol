@@ -1,28 +1,27 @@
-pragma solidity ^0.8.20;
+pragma solidity 0.8.24;
 //  import "foundry-huff/HuffDeployer.sol";
 import "forge-std/Test.sol";
-import "@hack/store/store.sol";
-import "../../../src/staking/staking.sol";
-import "../../../MyToken/new-project/src/MyToken.sol";
+import "../../src/staking/staking.sol";
+import "../../src/MyToken.sol";
 
 contract TestStaking is Test {
     uint WAD = 10 ** 18;
-    StakingRewards public stack;
+    StakingRewards public stake;
     MyToken token;
     address public myUser = vm.addr(1234);
 
     function setUp() public {
         token = new MyToken();
-        stack = new StakingRewards(address(token));
+        stake = new StakingRewards(address(token));
     }
 
     function TestDeposit() public {
         uint sum = 100 * WAD;
         token.mint(address(this), 1000);
-        uint256 balanceBefore = stack.getBalance();
+        uint256 balanceBefore = stake.getBalance();
         token.approve(address(stake), sum);
-        stack.deposit(sum);
-        uint256 balanceAffterDeposit = stack.getBalance();
+        stake.deposit(sum);
+        uint256 balanceAfterDeposit = stake.getBalance();
         assertEq(
             balanceBefore,
             balanceAfterDeposit,
@@ -30,7 +29,7 @@ contract TestStaking is Test {
         );
     }
 
-    function TestWithdraw() {
+    function TestWithdraw() public {
         console.log("test withdraw");
         uint256 sum = 100 * WAD;
         token.mint(address(this), sum);
@@ -44,7 +43,7 @@ contract TestStaking is Test {
         assertEq(firstBalance, finalBalance, "error");
     }
 
-    function TestIsntWithdraw() {
+    function TestIsntWithdraw() public {
         uint256 sum = 200 * WAD;
         token.mint(address(this), sum);
         token.approve(address(stake), sum);

@@ -2,17 +2,18 @@
 pragma solidity ^0.8.24;
 import "forge-std/Test.sol";
 import "forge-std/console.sol";
-import "@hack/wallet/wallet.sol";
-import "../../../src/wallet/gabayim.sol"
+import "../../src/Wallet/Wallet.sol";
+
 contract WalletTest is Test{
     Wallet public w;
     address public myUser = 0x2881A96386DD97c5B4C63956A420e6E1A674Fc44;
+    address gabay1;
      //Initializes all variables
     function setUp() public{
         vm.startPrank(myUser);
         vm.deal(myUser,200);
         payable(address(w)).transfer(100);
-        address gabay1=w.addGabay(0x81Ee0c1564B711bDf324295a1f1e02E1920876aD);
+        gabay1=w.addGabay(0x81Ee0c1564B711bDf324295a1f1e02E1920876aD);
         vm.stopPrank();
     }
     function testReceive() public {
@@ -52,7 +53,7 @@ contract WalletTest is Test{
         uint256 expectedbalance=prevbalance+amount;
         vm.startPrank(myUser);
         w.withdraw(amount);
-        assertEq(prevbalance,expectedbalanceת"You don't have enough money in your account");
+        assertEq(prevbalance,expectedbalance,"You don't have enough money in your account");
         vm.stopPrank();
 }
     function testWithdrowIsntAllowd() public{
@@ -85,10 +86,10 @@ contract WalletTest is Test{
     function testDeleatGabayIsAlowdIsGabay()public{
         address testGabay= 0x09E7D0A2e83C6830CFcaf3C2822a74420D23EB63;
         uint256 testCounter=w.counter;
-        startPrank(myUser);
+        vm.startPrank(myUser);
         w.deleatGabay(testGabay);
         vm.expectRevert("The address is not that of a debt collector");
-        assertEq(w.counter,testCounter-1)
+        assertEq(w.counter,testCounter-1);
         vm.stopPrank();
     }
 }
