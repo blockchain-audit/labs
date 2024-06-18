@@ -1,4 +1,66 @@
-shape: sequence_diagram
-Alice -> Lido:ETH
-Lido -> Ethereum network:ETH
-Ethereum network -> Alice:stETH
+# Liquid Staking: {
+# shape: sequence_diagram
+# Alice -> Lido: ETH
+# Lido. "stakes Alice's ETH on the Ethereum network"
+# Lido -> Alice: stETH (Lido's staked ETH token)
+# Alice. "can transfer, trade, or lend stETH without affecting her staked ETH"
+# }
+
+# Lending/Borrowing: {
+# shape: sequence_diagram
+# Bob -> Aave: DAI
+# Aave -> Charles: USDC
+# Charles -> Aave: offering DAI as collateral
+# Bob."earns interest on his deposited DAI"
+# Charles -> Aave: pays interest on his borrowed USDC
+# }
+
+# Decentralized Exchanges (DEXs): {
+# shape: sequence_diagram
+# Diana. "wants to exchange ETH for LINK"
+# Diana -> Uniswap: providing ETH to a liquidity pool\n containing RTH and LINK
+# Uniswap. "The pool automatically exchanges Diana's ETH for LINK\n based on the current pool ratio"
+# Uniswap -> Diana: LINK
+# }
+
+# Cross-Chain Bridges: {
+# shape: sequence_diagram
+# Eric."wants to move his BTC from Bitcoin to Ethereum"
+# Eric -> Ren Protocol: using Ren Protocol
+# Ren Protocol -> BTC: locking his BTC on the Bitcoin network
+# Ren Protocol -> Ethereum: mints an equivalent amount of wrapped BTC on Ethereum
+# Ethereum -> Eric: renBTC
+# }
+
+# Collateralized Debt Positions (CDPs): {
+# shape: sequence_diagram
+# Sarah -> MakerDAO: ETH
+# MakerDAO -> Sarah: DAI
+# Sarah. "can spend or use DAI like any other stablecoin"
+# if the value of Sarah's ETH falls: {
+# Sarah -> MakerDAO: more ETH to maintain her CDP or face liquidation
+# }
+# }
+
+# Real-World Asset (RWA) Protocols: {
+# shape: sequence_diagram
+# David -> RWA Protocol: tokenizes his houseon Real World Finance
+# Invertors -> RWA Protocol: purchase RWF tokens representing ownership fractions of the house
+# RWA Protocol -> David: receives funding based on the token sale
+# RWA Protocol -> Invertors: earn rental income distributed proportionally to their token holdings
+# }
+
+# Services: {
+# shape: sequencer_diagram 
+# Developers -> The Graph's service: pay in tokens
+# The Graph's service -> Developers: benefit from a smoother and more efficient DeFi experience
+# }
+
+# Yield Aggregators: {
+# shape: sequence_diagram
+# Emily -> Yearn Finance: deposits tokens
+# Yearn Finance -> Various Lending Protocols: distributes Emily's tokens
+# Various Lending Protocols -> Yearn Finance: yield stream
+# Yearn Finance -> Emily: single yield stream representing the combined earnings from all protocols
+# Emily -> Yearn Finance: charges a small fee for its management services
+# }

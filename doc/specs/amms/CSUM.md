@@ -144,7 +144,7 @@ In this unique report, we will dissect and analyze the **CSAMM** (Constant Sum A
 
 ```solidity
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 contract CSAMM {
     IERC20 public immutable token0;
