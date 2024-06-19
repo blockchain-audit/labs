@@ -51,7 +51,7 @@ contract Variables{
     string public text = "Hello";
     uint public num = 123;
 
-    function doSomething() public{
+    function doSomething() public view{
         uint256 i = 456;
 
         uint256 timestamp = block.timestamp;
@@ -207,7 +207,7 @@ contract Array{
         delete arr[index];
     }
 
-    function examples() external {
+    function examples() external pure{
         uint [] memory a = new uint[](5);
     }
 }
@@ -371,12 +371,12 @@ contract DataLocations {
         _myStruct.foo = 5;
     }
 
-    function g(uint [] memory _arr) public returns (uint[] memory) {
+    function g(uint [] memory _arr) public pure returns (uint[] memory) {
         _arr[0] = 1;
         return _arr;
     }
 
-    function h(uint [] calldata _arr) external {
+    function h(uint [] calldata _arr) external pure{
         uint num = _arr[0];
     }
 }
@@ -495,9 +495,9 @@ contract DataLocations {
             return (i, b, j, x, y);
         }
 
-        function arrayInput(uint [] memory arr) public {}
+        function arrayInput(uint[] memory arr) public {}
 
-        uint [] public arr;
+        uint[] public arr;
 
         function arrayOutput() public view returns (uint [] memory) {
             return arr;
@@ -560,9 +560,9 @@ contract DataLocations {
 
             if(bal < _withdrawAmount) {
                 revert InsufficientBalance({
-                    balance: bal;
-                    withdrawAmount: _withdrawAmount;
-                })
+                    balance: bal,
+                    withdrawAmount: _withdrawAmount
+                });
             }
         }
     }
@@ -581,6 +581,157 @@ contract DataLocations {
             assert(balance >= oldBalance);
         }
 
-        function withdraw
+        function withdraw(uint _amount) public {
+            uint oldBalance = balance;
+
+            require(balance >= _amount, "Underflow");
+
+            if(balance < _amount){
+                revert("Underflow");
+            }
+
+            balance -= _amount;
+
+            assert(balance <= oldBalance);
+        }
     }
+
+    contract FunctionModifier{
+        address public owner;
+        uint public x = 10;
+        bool public locked;
+
+        constructor() {
+            owner = msg.sender;
+        }
+
+        modifier onlyOwner() {
+            require(msg.sender == owner, "Not owner");
+            _;
+        }
+
+        modifier validAddress(address _addr) {
+            require(_addr != address(0), "Not valid address");
+            _;
+        }
+
+        function changeOwner(address _newOwner) public onlyOwner validAddress(_newOwner) {
+            owner = _newOwner;
+        }
+
+        modifier noReentrancy() {
+            require(!locked, "No reentrancy");
+            locked = true;
+            _;
+            locked = false;
+        }
+
+        function decrement(uint i) public noReentrancy {
+            x -= i;
+
+            if(i > 1) {
+                decrement(i - 1);
+            }
+        }
+    }
+
+    contract Event {
+        // Up to 3 parameters can be indexed.
+        // מאפשרים לרשום נתונים על הבלוקצ'יין שניתן לשאוב ולקרוא מחוץ לחוזה.
+        // פרמטרים מסומנים כ-indexed מאפשרים חיפוש ואיתור יעילים יותר של האירועים ביומני הבלוקצ'יין.
+        event Log(address indexed sender, string messge);
+        event AnotherLog();
+
+        function test() public {
+            emit Log(msg.sender, "Hello World!");
+            emit Log(msg.sender, "Hello EVM!");
+            emit AnotherLog();
+        }
+    }
+
+    contract X {
+        string public name;
+
+        constructor(string memory _name){
+            name = _name;
+        }
+    }
+
+    contract Y {
+        string public text;
+
+        constructor(string memory _text) {
+            text = _text;
+        }
+    }
+
+    contract B is X("Input to X"), Y("Input to Y") {}
+
+    contract C is X, Y {
+        constructor(string memory _name, string memory _text) X(_name) Y(_text) {}
+    }
+
+    contract D is X, Y {
+        constructor() X("X was called") Y("Y was called") {}
+    }
+
+    contract E is X, Y {
+        constructor() Y("Y was called") X("X was called") {}
+    }
+
+
+   contract AA {
+
+        // virtual - פונקציה שניתן לדרוס אותה
+        function foo() public pure virtual returns (string memory) {
+            return "A";
+        }
+   } 
+
+   contract BB is AA {
+    function foo() public pure virtual override returns(string memory) {
+        return "B";
+    }
+   }
+
+   contract CC is AA {
+    function foo() public pure virtual override returns (string memory) {
+        return "C";
+    }
+   }
+
+contract DD is BB, CC {
+    
+    function foo() public pure override(BB, CC) returns (string memory) {
+        return super.foo();
+    }
+}
+
+contract EE is CC, BB {
+    function foo() public pure override(CC, BB) returns (string memory) {
+        return super.foo();
+    }
+}
+
+contract FF is AA, BB {
+    function foo() public pure override(AA, BB) returns (string memory) {
+        return super.foo();
+    }
+}
+
+
+contract AAA {
+    string public name = "Contract A";
+
+    function getName() public view returns(string memory) {
+        return name;
+    }
+}
+
+contract CCC is AAA {
+    constructor() {
+        name = "Contract c";
+    }
+    // C.getName return "Contract C"
+}
 
