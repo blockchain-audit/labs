@@ -81,8 +81,7 @@ contract Lending {
 
     function getETHPrice() public view returns (uint256) {
         AggregatorV3Interface priceFeed = AggregatorV3Interface(0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419);
-        (, int256 price, , , ) =
-            priceFeed.latestRoundData();
+        (, int256 price,,,) = priceFeed.latestRoundData();
         return (uint256(price) * wad / 100000000);
     }
 

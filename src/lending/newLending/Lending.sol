@@ -7,7 +7,6 @@ import "./interfaces/Ipool.sol";
 import "src/lending/newLending/interfaces/IWETHGateway.sol";
 import "lib/chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 
-
 contract Lending {
     uint256 public constant WAD = 1e18;
     //sum of the people borrow
@@ -80,41 +79,39 @@ contract Lending {
         aave.deposit(address(dai), amount, address(this), 0);
     }
 
-    function withdrawDaiLiquiduty(uint amount) external{
-        require(amount <= BondToken.balanceOf(msg.sender) ,"not enough bonds! ");
-        uint countDai = amount * ratioBetweenDaiAndBond() / WAD;
-        BondToken.burn(msg.sender , amount);
+    function withdrawDaiLiquiduty(uint256 amount) external {
+        require(amount <= BondToken.balanceOf(msg.sender), "not enough bonds! ");
+        uint256 countDai = amount * ratioBetweenDaiAndBond() / WAD;
+        BondToken.burn(msg.sender, amount);
         totalDeposit -= countDai;
         aave.withdraw(address(dai), amount, msg.sender);
     }
 
-    function borrow(uint amount) external {
-        require(usersCollateral[msg.sender] >= minCollateralFromAmount(amount),"not enough collateral");
-        usersBorrowed[msg.sender]+=amount;
-        totalBorrowed +=amount;
+    function borrow(uint256 amount) external {
+        require(usersCollateral[msg.sender] >= minCollateralFromAmount(amount), "not enough collateral");
+        usersBorrowed[msg.sender] += amount;
+        totalBorrowed += amount;
         aave.withdraw(address(dai), amount, msg.sender);
     }
 
     function repay(uint256 amount) external {}
 
-    function ratioBetweenDaiAndBond() public view returns(uint){
-        if(BondToken.totalSupply() == 0){
+    function ratioBetweenDaiAndBond() public view returns (uint256) {
+        if (BondToken.totalSupply() == 0) {
             return WAD;
         }
         uint256 countDai = totalDeposit + totalReserve;
         return countDai * WAD / BondToken.totalSupply();
     }
 
-
-    function minCollateralFromAmount(uint amount) public view returns(uint){
+    function minCollateralFromAmount(uint256 amount) public view returns (uint256) {
         // amount <= collateral * 4/5
-        return (amount / (maxLTV / 5) * WAD / uint(getPriceFTMMainnet()));
+        return (amount / (maxLTV / 5) * WAD / uint256(getPriceFTMMainnet()));
     }
 
-    function getPriceFTMMainnet()public view returns (uint){
-        AggregatorV3Interface priceFeed =
-            AggregatorV3Interface(0xf4766552D15AE4d256Ad41B6cf2933482B0680dc);
-            (,int price,,,) = priceFeed.latestRoundData();
-            return uint(price * 10 ** 10);
+    function getPriceFTMMainnet() public view returns (uint256) {
+        AggregatorV3Interface priceFeed = AggregatorV3Interface(0xf4766552D15AE4d256Ad41B6cf2933482B0680dc);
+        (, int256 price,,,) = priceFeed.latestRoundData();
+        return uint256(price * 10 ** 10);
     }
 }

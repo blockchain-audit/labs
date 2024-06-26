@@ -67,7 +67,7 @@ contract Enum {
         y = true;
     }
 
-    function fun2(uint256 x, bool y) public view{
+    function fun2(uint256 x, bool y) public view {
         console.log(x, y);
     }
 
@@ -76,18 +76,16 @@ contract Enum {
     //     console.log(map[0]);
     // }
 
-    error big20(uint x);
+    error big20(uint256 x);
 
-    function funError(uint x) public pure{
-        if(x == 0){
+    function funError(uint256 x) public pure {
+        if (x == 0) {
             revert("zero");
         }
-        require(x > 10 ,"small 10");
+        require(x > 10, "small 10");
 
-        assert(x>10);
+        assert(x > 10);
 
         revert big20(x);
-
-        
     }
 }

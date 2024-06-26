@@ -19,7 +19,7 @@ contract TestLending {
     }
 
     // need run with:'forge test --fork-url https://eth.llamarpc.com --mc TestLending'
-    function test() view public {
+    function test() public view {
         uint256 s = lending.getETHPrice();
         console.log(s);
     }
