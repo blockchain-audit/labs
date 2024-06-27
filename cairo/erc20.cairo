@@ -46,7 +46,7 @@ mod ERC20{
     }
     #[drive(Drop, starknet::Event)]
     struct Approval{
-        owner : ContractAddress,
+        owner : ContractAddress,price_feed
         spender : ContractAddress,
         amount: felt252,
     }
